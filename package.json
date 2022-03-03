@@ -1,0 +1,24 @@
+{
+  "name": "planner",
+  "description": "Planner website built with Next.js",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NickWentworth/planner.git"
+  },
+  "author": "Nick Wentworth",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NickWentworth/planner/issues"
+  },
+  "homepage": "https://github.com/NickWentworth/planner#readme",
+  "dependencies": {
+    "next": "^12.1.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  }
+}
