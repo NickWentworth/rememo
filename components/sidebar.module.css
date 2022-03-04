@@ -1,0 +1,30 @@
+.sidebar {
+    background-color: gray;
+    position: relative;
+    width: fit-content;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.sidebar > * {
+    padding: 20px;
+}
+
+.sidebarPanel {
+    margin-bottom: 10px;
+
+    display: flex;
+    align-items: center;
+}
+
+.sidebarPanelText {
+    margin-left: 20px;
+}
+
+.sidebarBottom {
+    display: flex;
+    flex-direction: row-reverse;
+}
