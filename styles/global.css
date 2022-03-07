@@ -1,6 +1,16 @@
-html,
-body,
-p {
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&display=swap');
+
+/* remove margins and padding by default */
+html, body, p, h1, h2, h3, h4, h5, h6, a {
     padding: 0;
     margin: 0;
+}
+
+/* apply font */
+p, h1, h2, h3, h4, h5, h6, a {
+    font-family: 'Manrope', sans-serif;
+}
+
+a {
+    text-decoration: none;
 }

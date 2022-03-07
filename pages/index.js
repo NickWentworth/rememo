@@ -1,9 +1,11 @@
-import Sidebar from "../components/sidebar";
+import Link from 'next/link';
 
 export default () => {
     return (
         <div>
-            <Sidebar />
+            <Link href='dashboard'>
+                <a>To Dashboard</a>
+            </Link>
         </div>
-    );
+    )
 }

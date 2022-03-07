@@ -10,7 +10,7 @@
 }
 
 .sidebar > * {
-    padding: 20px;
+    padding: 10px;
 }
 
 .sidebarPanel {
@@ -21,7 +21,7 @@
 }
 
 .sidebarPanelText {
-    margin-left: 20px;
+    margin-left: 10px;
 }
 
 .sidebarBottom {
