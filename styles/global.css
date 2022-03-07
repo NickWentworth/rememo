@@ -1,5 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&display=swap');
 
+/* dark mode colors */
+* {
+    --dark: #1B1F22;
+    --medium: #373A43;
+    --light: #96959E;
+    --accent: #00B4D8;
+    --white: #EDFAFD;
+}
+
+/* converts text to accent color */
+.accentColor {
+    color: var(--accent);
+}
+
+body {
+    background-color: var(--medium);
+}
+
 /* remove margins and padding by default */
 html, body, p, h1, h2, h3, h4, h5, h6, a {
     padding: 0;
@@ -9,6 +27,7 @@ html, body, p, h1, h2, h3, h4, h5, h6, a {
 /* apply font */
 p, h1, h2, h3, h4, h5, h6, a {
     font-family: 'Manrope', sans-serif;
+    color: var(--white);
 }
 
 a {

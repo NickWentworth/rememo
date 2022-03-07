@@ -1,5 +1,5 @@
 .sidebar {
-    background-color: gray;
+    background-color: var(--dark);
     position: relative;
     width: fit-content;
     height: 100vh;
@@ -18,6 +18,11 @@
 
     display: flex;
     align-items: center;
+}
+
+/* added because <Image /> was adding extra height pixels */
+.sidebarPanelImage {
+    display: flex;
 }
 
 .sidebarPanelText {

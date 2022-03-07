@@ -15,14 +15,14 @@ const tabNameToElement = {
 export default function Tab({ tabData, currentTab }) {
     return (
         <div className={styles.page}>
-            <Sidebar tabData={tabData} />
+            <Sidebar tabData={tabData} currentTab={currentTab} />
             {tabNameToElement[currentTab]}
         </div>
     )
 }
 
 export async function getStaticPaths() {
-    const paths = getAllTabNames();
+    let paths = getAllTabNames();
     
     return {
         paths,
@@ -31,7 +31,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-    const tabData = getAllTabData();
+    let tabData = getAllTabData();
 
     return {
         props: {
