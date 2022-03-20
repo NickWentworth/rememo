@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { capitalize } from '../lib/utility.js';
 import styles from './sidebar.module.css';
 
-const iconSize = 64;
+const iconSize = 50;
 
 export default function Sidebar({ tabData, currentTab }) {
     const [extend, setExtend] = useState(true);
@@ -31,7 +31,14 @@ export default function Sidebar({ tabData, currentTab }) {
             </div>
 
             <div className={styles.sidebarBottom}>
-                <input className={styles.expandButton} type='image' src='/images/test.png' width={iconSize} height={iconSize} onClick={handleClick} />
+                <input
+                    className={styles.expandButton}
+                    type='image'
+                    src='/images/icons/hamburger.svg'
+                    width={iconSize}
+                    height={iconSize} 
+                    onClick={handleClick} 
+                />
             </div>
         </nav>
     )
@@ -40,18 +47,17 @@ export default function Sidebar({ tabData, currentTab }) {
 const SidebarPanel = ({ name, link, icon, extend, focused }) => {
     return (
         <div className={styles.sidebarPanel}>
-            <p>{focused}</p>
             <Link href={link}>
                 <a className={styles.sidebarPanelImage}>
-                    <Image src={focused ? icon.replace('.png', 'Accent.png') : icon} width={iconSize} height={iconSize} layout='fixed' />
+                    <Image src={focused ? icon.replace('.svg', 'A.svg') : icon} width={iconSize} height={iconSize} layout='fixed' />
                 </a>
             </Link>
 
             <Link href={link}>
                 <a className={styles.sidebarPanelText} style={{ display: extend ? 'block' : 'none' }}>
-                    <h2 className={focused ? 'accentColor' : ''}>
+                    <h3 className={focused ? 'accentColor' : ''}>
                         {capitalize(name)}
-                    </h2>
+                    </h3>
                 </a>
             </Link>
         </div>
