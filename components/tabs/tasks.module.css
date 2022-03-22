@@ -1,0 +1,23 @@
+.tasks {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.taskPanel {
+    background-color: var(--dark);
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.taskPanel > hr {
+    margin: 10px 0px;
+    opacity: 0.2;
+}
+
+.taskHeader {
+    width: 500px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

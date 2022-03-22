@@ -7,7 +7,7 @@ import styles from './sidebar.module.css';
 const iconSize = 50;
 
 export default function Sidebar({ tabData, currentTab }) {
-    const [extend, setExtend] = useState(true);
+    const [extend, setExtend] = useState(false);
 
     const handleClick = () => {
         setExtend(!extend);
