@@ -5,19 +5,35 @@
 }
 
 .taskPanel {
-    background-color: var(--dark);
     margin-bottom: 10px;
-    padding: 10px;
+    display: flex;
 }
 
-.taskPanel > hr {
+.taskPanelBody {
+    background-color: var(--dark);
+    padding: 10px;
+    inline-size: 600px;
+    overflow: visible;
+}
+
+.taskPanelBody > hr {
     margin: 10px 0px;
     opacity: 0.2;
 }
 
-.taskHeader {
-    width: 500px;
+.taskPanelHeader {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+
+.taskEditBar {
+    background-color: var(--light);
+    padding: 2px;
+    border-radius: 0px 10px 10px 0px;
+    transition: 0.1s;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
