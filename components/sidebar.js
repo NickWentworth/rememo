@@ -2,16 +2,13 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { capitalize } from '../lib/utility.js';
+import { interactable, accentColor } from '../lib/styleClasses.js';
 import styles from './sidebar.module.css';
 
 const iconSize = 50;
 
 export default function Sidebar({ tabData, currentTab }) {
     const [extend, setExtend] = useState(false);
-
-    const handleClick = () => {
-        setExtend(!extend);
-    }
 
     return (
         <nav className={styles.sidebar}>
@@ -31,13 +28,13 @@ export default function Sidebar({ tabData, currentTab }) {
             </div>
 
             <div className={styles.sidebarBottom}>
-                <input
-                    className={styles.expandButton}
+                <Image
+                    className={styles.expandButton + interactable}
                     type='image'
                     src='/images/icons/hamburger.svg'
                     width={iconSize}
                     height={iconSize} 
-                    onClick={handleClick} 
+                    onClick={setExtend.bind(this, !extend)} 
                 />
             </div>
         </nav>
@@ -55,7 +52,7 @@ const SidebarPanel = ({ name, link, icon, extend, focused }) => {
 
             <Link href={link}>
                 <a className={styles.sidebarPanelText} style={{ display: extend ? 'block' : 'none' }}>
-                    <h3 className={focused ? 'accentColor' : ''}>
+                    <h3 className={focused ? accentColor : ''}>
                         {capitalize(name)}
                     </h3>
                 </a>

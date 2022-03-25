@@ -9,11 +9,6 @@
     --white: #EDFAFD;
 }
 
-/* converts text to accent color */
-.accentColor {
-    color: var(--accent);
-}
-
 body {
     background-color: var(--medium);
 }

@@ -1,5 +1,7 @@
 import { useState } from 'react';
+import Image from 'next/image';
 import { getFormattedDueDateString } from '../../lib/utility.js';
+import { interactable } from '../../lib/styleClasses.js';
 import styles from './tasks.module.css';
 
 const iconSize = 30;
@@ -26,7 +28,7 @@ function TaskPanel({ task, index, taskFunctions }) {
         <div className={styles.taskPanel} onMouseEnter={setShowEditBar.bind(this, true)} onMouseLeave={setShowEditBar.bind(this, false)}>
             <div className={styles.taskPanelBody} style={{ borderRadius: showEditBar ? '10px 0px 0px 10px' : '10px' }}>
                     <div className={styles.taskPanelHeader}>
-                        <h3>{index} - {task.name}</h3>
+                        <h2>{task.name}</h2>
                         <h4>{task.class}</h4>
                     </div>
 
@@ -38,21 +40,23 @@ function TaskPanel({ task, index, taskFunctions }) {
             </div>
 
             <div className={styles.taskEditBar} style={{ opacity: showEditBar ? '100%' : '0%' }}>
-                <input
-                    className={styles.editButton}
+                <Image
+                    className={styles.editButton + interactable}
                     type='image'
                     src='/images/icons/edit.svg'
                     width={iconSize}
                     height={iconSize} 
-                    // TODO -- add edit task window
+                    // TODO - add edit task window
                     onClick={() => alert('Editing Task ' + index)} 
                 />
-                <input
-                    className={styles.deleteButton}
+                
+                <Image
+                    className={styles.deleteButton + interactable}
                     type='image'
                     src='/images/icons/delete.svg'
                     width={iconSize}
                     height={iconSize} 
+                    // TODO - add 'are you sure?' popup
                     onClick={taskFunctions.delete.bind(this, index)} 
                 />
             </div>

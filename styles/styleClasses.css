@@ -1,0 +1,12 @@
+/* used for elements not initially interactable, such as next/image */
+.interactable:hover {
+    cursor: pointer;
+}
+
+/* used for setting text color */
+.accentColor {
+    color: var(--accent);
+}
+.whiteColor {
+    color: var(--white);
+}
