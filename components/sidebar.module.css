@@ -1,8 +1,8 @@
 .sidebar {
     background-color: var(--dark);
-    position: relative;
     width: fit-content;
     height: 100vh;
+    float: left;
 
     display: flex;
     flex-direction: column;

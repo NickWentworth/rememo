@@ -20,9 +20,33 @@ html, body, p, h1, h2, h3, h4, h5, h6, a {
 }
 
 /* apply font */
-p, h1, h2, h3, h4, h5, h6, a {
+p, h1, h2, h3, h4, h5, h6, a, input, label, textarea, button {
     font-family: 'Manrope', sans-serif;
     color: var(--white);
+}
+
+input, textarea, button {
+    font-size: larger;
+    background-color: var(--medium);
+    border-radius: 3px;
+    border: 0px;
+    width: 100%;
+}
+
+input:required:invalid {
+    border: 1px solid red;
+}
+
+button {
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid var(--white);
+    padding: 10px;
+}
+
+.checkbox {
+    width: auto;
+    margin: 0px 3px 0px 0px;
 }
 
 a {
