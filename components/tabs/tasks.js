@@ -7,19 +7,27 @@ import styles from './tasks.module.css';
 
 const iconSize = 30;
 
+const taskModifyMode = {
+    closed: 0,
+    add: 1,
+    edit: 2
+}
+
 export default function Tasks({ tasks, taskFunctions }) {
     const [currentViewInfo, setCurrentViewInfo] = useState({
-        showForm: false, // show task form
-        addingTask: false, // true if currently adding task, false if editing
-        editTaskIndex: -1, // index in tasks array of task being edited
+        mode: taskModifyMode.closed, // current view of manage task window
+        taskIndex: -1, // index in tasks array of task being edited
         initialTask: emptyTask // task currently being edited before changes
     })
 
     function getTask(task) {
-        if (currentViewInfo.addingTask) {
-            taskFunctions.addTask(task);
-        } else {
-            taskFunctions.editTask(currentViewInfo.editTaskIndex, task);
+        switch (currentViewInfo.mode) {
+            case taskModifyMode.add:
+                taskFunctions.addTask(task);
+                break;
+            case taskModifyMode.edit:
+                taskFunctions.editTask(currentViewInfo.taskIndex, task);
+                break;
         }
     }
 
@@ -30,9 +38,8 @@ export default function Tasks({ tasks, taskFunctions }) {
                         <button
                             className={styles.addButton}
                             onClick={setCurrentViewInfo.bind(this, {
-                                showForm: true,
-                                addingTask: true,
-                                editTaskIndex: -1,
+                                mode: taskModifyMode.add,
+                                taskIndex: -1,
                                 initialTask: emptyTask
                             })}
                         >
@@ -48,13 +55,13 @@ export default function Tasks({ tasks, taskFunctions }) {
                         key={index}
                         task={task}
                         index={index}
+                        focused={currentViewInfo.taskIndex == index}
                         deleteTask={taskFunctions.deleteTask}
-                        currentViewInfo={currentViewInfo}
                         setCurrentViewInfo={setCurrentViewInfo}
                     />)}
                 </div>
                     
-                <div className={styles.taskManage} hidden={!currentViewInfo.showForm}>
+                <div className={styles.taskManage} hidden={currentViewInfo.mode == taskModifyMode.closed}>
                     <div className={styles.closeButton}>
                         <Image
                             className={interactable}
@@ -62,15 +69,15 @@ export default function Tasks({ tasks, taskFunctions }) {
                             width={40}
                             height={40}
                             onClick={setCurrentViewInfo.bind(this, {
-                                showForm: false,
-                                addingTask: false,
-                                editTaskIndex: -1,
+                                mode: taskModifyMode.closed,
+                                taskIndex: -1,
                                 initialTask: emptyTask
                             })}
                         />
                     </div>
                     
-                    <h1>{currentViewInfo.addingTask ? 'Add Task' : 'Edit Task'}</h1>
+                    <h1 hidden={currentViewInfo.mode != taskModifyMode.add}>Add Task</h1>
+                    <h1 hidden={currentViewInfo.mode != taskModifyMode.edit}>Edit Task</h1>
 
                     <hr />
 
@@ -83,15 +90,15 @@ export default function Tasks({ tasks, taskFunctions }) {
     )
 }
 
-function TaskPanel({ task, index, deleteTask, currentViewInfo, setCurrentViewInfo }) {
+function TaskPanel({ task, index, focused, deleteTask, setCurrentViewInfo }) {
     const [showEditBar, setShowEditBar] = useState(false);
 
     return (
         <div
             className={styles.taskPanel}
             style={{
-                border: (index == currentViewInfo.editTaskIndex) ? '3px solid var(--white)' : 'none',
-                margin: (index == currentViewInfo.editTaskIndex) ? '0px' : '3px'
+                border: focused ? '3px solid var(--white)' : 'none',
+                margin: focused ? '0px' : '3px'
             }}
             onMouseEnter={setShowEditBar.bind(this, true)}
             onMouseLeave={setShowEditBar.bind(this, false)
@@ -109,16 +116,15 @@ function TaskPanel({ task, index, deleteTask, currentViewInfo, setCurrentViewInf
                 <p>{task.description}</p>
             </div>
 
-            <div className={styles.taskEditBar} style={{ opacity: (showEditBar || index == currentViewInfo.editTaskIndex) ? '100%' : '0%' }}>
+            <div className={styles.taskEditBar} style={{ opacity: (showEditBar || focused) ? '100%' : '0%' }}>
                 <Image
                     className={styles.editButton + interactable}
                     src='/images/icons/edit.svg'
                     width={iconSize}
                     height={iconSize}
                     onClick={setCurrentViewInfo.bind(this, {
-                        showForm: true,
-                        addingTask: false,
-                        editTaskIndex: index,
+                        mode: taskModifyMode.edit,
+                        taskIndex: index,
                         initialTask: task
                     })}
                 />

@@ -12,7 +12,11 @@ export default function TaskForm({ getTask, initialTask }) {
 
     function handleSubmit(event) {
         event.preventDefault(); // don't want to redirect page
-        getTask(formData); // return form data to parent component
+
+        let data = {...formData};
+        data.dueTime = showTime ? data.dueTime : ''; // if time is not included, remove it from the form data
+
+        getTask(data); // return form data to parent component
     }
 
     function onInputChanged(event) {
