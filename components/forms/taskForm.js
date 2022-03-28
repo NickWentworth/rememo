@@ -1,17 +1,18 @@
 import { useState, useEffect } from 'react';
 import styles from './taskForm.module.css'
 
-export default function TaskForm({ currentViewInfo, editTask, addTask }) {
-    const [formData, setFormData] = useState(currentViewInfo.initialTask);
-    const [showTime, setShowTime] = useState(false);
-    useEffect(() => {
-        setFormData(currentViewInfo.initialTask); // reset form data when new task is selected
-    }, [currentViewInfo.initialTask])
+export default function TaskForm({ getTask, initialTask }) {
+    const [formData, setFormData] = useState(initialTask);
+    const [showTime, setShowTime] = useState(initialTask.dueTime);
 
-    // TODO - submit should close task form window and reset editing index
+    useEffect(() => {
+        setFormData(initialTask); // reset form data when new initial task is changed
+        setShowTime(initialTask.dueTime); // and show/hide time option based on due time
+    }, [initialTask])
+
     function handleSubmit(event) {
         event.preventDefault(); // don't want to redirect page
-        currentViewInfo.addingTask ? addTask(formData) : editTask(currentViewInfo.editTaskIndex, formData);        
+        getTask(formData); // return form data to parent component
     }
 
     function onInputChanged(event) {
@@ -55,7 +56,7 @@ export default function TaskForm({ currentViewInfo, editTask, addTask }) {
 
                 <div>
                     <label>
-                        <input className='checkbox' name='dueTimeCheckBox' type='checkbox' onChange={setShowTime.bind(this, !showTime)} />
+                        <input className='checkbox' name='dueTimeCheckBox' type='checkbox' onChange={setShowTime.bind(this, !showTime)} checked={showTime} />
                         Include Time
                     </label>
                     
@@ -65,9 +66,7 @@ export default function TaskForm({ currentViewInfo, editTask, addTask }) {
 
             <hr />
             
-            <button className={styles.submitButton} type='submit'>
-                {currentViewInfo.addingTask ? 'Add Task' : 'Confirm Changes'}
-            </button>
+            <button className={styles.submitButton} type='submit'>Submit</button>
         </form>
     )
 }

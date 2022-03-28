@@ -15,6 +15,14 @@ export default function Tasks({ tasks, taskFunctions }) {
         initialTask: emptyTask // task currently being edited before changes
     })
 
+    function getTask(task) {
+        if (currentViewInfo.addingTask) {
+            taskFunctions.addTask(task);
+        } else {
+            taskFunctions.editTask(currentViewInfo.editTaskIndex, task);
+        }
+    }
+
     return (
             <div className={styles.content}>
                 <div className={styles.taskList}>
@@ -67,9 +75,8 @@ export default function Tasks({ tasks, taskFunctions }) {
                     <hr />
 
                     <TaskForm
-                        currentViewInfo={currentViewInfo}
-                        addTask={taskFunctions.addTask}
-                        editTask={taskFunctions.editTask}
+                        getTask={getTask}
+                        initialTask={currentViewInfo.initialTask}
                     />
                 </div>
             </div>
