@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import TaskForm from '../forms/taskForm.js';
-import { emptyTask, getFormattedDueDateString } from '../../lib/taskUtility.js';
+import { emptyTask, getISO, getFormattedDueString } from '../../lib/taskUtility.js';
 import { interactable } from '../../lib/styleClasses.js';
 import styles from './tasks.module.css';
 
@@ -47,10 +47,12 @@ export default function Tasks({ tasks, taskFunctions }) {
                         </button>
                     </div>
 
-                    {tasks.sort((a, b) => {
-                        let dateA = a.dueDate + (a.dueTime ? ('T' + a.dueTime) : '');
-                        let dateB = b.dueDate + (b.dueTime ? ('T' + b.dueTime) : '');
-                        return Date.parse(dateA) - Date.parse(dateB);
+                    {tasks.sort((aTask, bTask) => {
+                        // TODO - add dividers separating tasks such as 'due today', 'due this week', etc.
+                        // sort tasks by due date, earliest first
+                        let aDate = new Date(getISO(aTask));
+                        let bDate = new Date(getISO(bTask));
+                        return aDate - bDate;
                     }).map((task, index) => <TaskPanel
                         key={index}
                         task={task}
@@ -93,6 +95,8 @@ export default function Tasks({ tasks, taskFunctions }) {
 function TaskPanel({ task, index, focused, deleteTask, setCurrentViewInfo }) {
     const [showEditBar, setShowEditBar] = useState(false);
 
+    let [formattedString, color] = getFormattedDueString(task);
+
     return (
         <div
             className={styles.taskPanel}
@@ -109,7 +113,7 @@ function TaskPanel({ task, index, focused, deleteTask, setCurrentViewInfo }) {
                     <h4>{task.class}</h4>
                 </div>
 
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;{getFormattedDueDateString(task)}</p>
+                <p style={{ color }}>&nbsp;&nbsp;&nbsp;&nbsp;{formattedString}</p>
 
                 <hr hidden={!task.description} />
                 
