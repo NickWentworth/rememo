@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import TaskForm from '../forms/taskForm.js';
-import { emptyTask, getISO, getFormattedDueString } from '../../lib/taskUtility.js';
+import { emptyTask, getISO, getTimeDivider, getFormattedDueString } from '../../lib/taskUtility.js';
 import { interactable } from '../../lib/styleClasses.js';
 import styles from './tasks.module.css';
 
@@ -19,6 +19,8 @@ export default function Tasks({ tasks, taskFunctions }) {
         taskIndex: -1, // index in tasks array of task being edited
         initialTask: emptyTask // task currently being edited before changes
     })
+
+    let previousDividerName = ''; // used for keeping track of when to insert a new time divider
 
     function getTask(task) {
         switch (currentViewInfo.mode) {
@@ -48,19 +50,37 @@ export default function Tasks({ tasks, taskFunctions }) {
                     </div>
 
                     {tasks.sort((aTask, bTask) => {
-                        // TODO - add dividers separating tasks such as 'due today', 'due this week', etc.
                         // sort tasks by due date, earliest first
                         let aDate = new Date(getISO(aTask));
                         let bDate = new Date(getISO(bTask));
                         return aDate - bDate;
-                    }).map((task, index) => <TaskPanel
-                        key={index}
-                        task={task}
-                        index={index}
-                        focused={currentViewInfo.taskIndex == index}
-                        deleteTask={taskFunctions.deleteTask}
-                        setCurrentViewInfo={setCurrentViewInfo}
-                    />)}
+                    }).map((task, index) => {
+                        // insert time dividers for organization
+                        let dividerName = getTimeDivider(task);
+
+                        let elements = []; // eventually contains output elements
+
+                        // check for new divider
+                        if (dividerName != previousDividerName) {
+                            elements.push(<div key={dividerName} className={styles.timeDivider}>
+                                <h1>{dividerName}</h1>
+                                <hr />
+                            </div>)
+
+                            previousDividerName = dividerName;
+                        }
+
+                        elements.push(<TaskPanel
+                            key={index}
+                            task={task}
+                            index={index}
+                            focused={currentViewInfo.taskIndex == index}
+                            deleteTask={taskFunctions.deleteTask}
+                            setCurrentViewInfo={setCurrentViewInfo}
+                        />)
+
+                        return elements;
+                    }).flat()}
                 </div>
                     
                 <div className={styles.taskManage} hidden={currentViewInfo.mode == taskModifyMode.closed}>

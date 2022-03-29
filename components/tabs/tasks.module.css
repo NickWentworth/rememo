@@ -18,6 +18,17 @@
     flex-direction: column;
 }
 
+.timeDivider {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.timeDivider hr {
+    flex-grow: 1;
+    margin: 0px 40px 0px 15px;
+}
+
 .taskPanel {
     display: flex;
     border-radius: 12px;
