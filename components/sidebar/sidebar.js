@@ -1,30 +1,43 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { capitalize } from '../lib/utility.js';
-import { interactable, accentColor } from '../lib/styleClasses.js';
+import { interactable, accentColor } from '../../lib/styleClasses';
 import styles from './sidebar.module.css';
 
+// TODO - maintain sidebar extend state between pages
+
+const iconPath = '/images/icons/';
 const iconSize = 50;
 
-export default function Sidebar({ tabData, currentTab }) {
+export default function Sidebar({ currentTab }) {
     const [extend, setExtend] = useState(false);
 
     return (
         <nav className={styles.sidebar}>
             <div className={styles.sidebarTop}>
-                {tabData.map((data) => {
-                    return (
-                        <SidebarPanel
-                            key={data.tabName}
-                            name={data.tabName}
-                            link={data.tabPath}
-                            icon={data.iconPath}
-                            extend={extend}
-                            focused={currentTab == data.tabName}
-                        />
-                    )
-                })}
+                <SidebarPanel
+                    name={'Dashboard'}
+                    link={'/dashboard'}
+                    icon={`${iconPath}dashboard.svg`}
+                    extend={extend}
+                    focused={currentTab === 'Dashboard'}
+                />
+
+                <SidebarPanel
+                    name={'Tasks'}
+                    link={'/tasks'}
+                    icon={`${iconPath}tasks.svg`}
+                    extend={extend}
+                    focused={currentTab === 'Tasks'}
+                />
+                
+                <SidebarPanel
+                    name={'Notes'}
+                    link={'/notes'}
+                    icon={`${iconPath}notes.svg`}
+                    extend={extend}
+                    focused={currentTab === 'Notes'}
+                />
             </div>
 
             <div className={styles.sidebarBottom}>
@@ -52,9 +65,7 @@ const SidebarPanel = ({ name, link, icon, extend, focused }) => {
 
             <Link href={link}>
                 <a className={styles.sidebarPanelText} style={{ display: extend ? 'block' : 'none' }}>
-                    <h3 className={focused ? accentColor : ''}>
-                        {capitalize(name)}
-                    </h3>
+                    <h3 className={focused ? accentColor : ''}>{name}</h3>
                 </a>
             </Link>
         </div>

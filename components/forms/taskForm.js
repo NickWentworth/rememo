@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import styles from './taskForm.module.css'
 
-export default function TaskForm({ getTask, initialTask }) {
+export default function TaskForm({ fetch, initialTask }) {
     const [formData, setFormData] = useState(initialTask);
     const [showTime, setShowTime] = useState(initialTask.dueTime);
 
@@ -16,7 +16,7 @@ export default function TaskForm({ getTask, initialTask }) {
         let data = {...formData};
         data.dueTime = showTime ? data.dueTime : ''; // if time is not included, remove it from the form data
 
-        getTask(data); // return form data to parent component
+        fetch(data); // return form data to parent component
     }
 
     function onInputChanged(event) {

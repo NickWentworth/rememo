@@ -1,21 +1,14 @@
-.content {
+.page {
     display: flex;
 }
-
-.content hr {
+.page hr {
     margin: 10px 0px;
     opacity: 0.2;
 }
 
-.addButton {
-    width: auto;
-}
-
 .taskList {
-    width: 100%; /* fill up rest of content */
+    flex-grow: 1;
     padding: 30px;
-    display: flex;
-    flex-direction: column;
 }
 
 .timeDivider {
@@ -23,7 +16,6 @@
     display: flex;
     align-items: center;
 }
-
 .timeDivider hr {
     flex-grow: 1;
     margin: 0px 40px 0px 15px;
@@ -33,14 +25,12 @@
     display: flex;
     border-radius: 12px;
 }
-
 .taskPanelBody {
     background-color: var(--dark);
     padding: 10px;
     inline-size: 100%;
     overflow: visible;
 }
-
 .taskPanelHeader {
     display: flex;
     flex-direction: row;
@@ -58,10 +48,14 @@
     justify-content: center;
 }
 
-.taskManage {
+.taskModifyPanel {
     background-color: var(--dark);
+    height: calc(100vh - 30px); /* factor in padding as well*/
     min-width: 25vw;
     padding: 15px;
+
+    position: sticky;
+    top: 0px;
 }
 
 .closeButton {

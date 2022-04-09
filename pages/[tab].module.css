@@ -1,8 +1,0 @@
-.page {
-    display: flex;
-}
-
-/* last child will be the tab content and it should fill the rest of view width */
-.page > *:last-child {
-    width: 100%;
-}

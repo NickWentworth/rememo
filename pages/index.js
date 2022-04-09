@@ -1,11 +1,10 @@
-import Link from 'next/link';
+import Sidebar from '../components/sidebar';
 
-export default () => {
+export default function Login() {
     return (
         <div>
-            <Link href='dashboard'>
-                <a>To Dashboard</a>
-            </Link>
+            <Sidebar />
+            <p>Login</p>
         </div>
     )
 }
