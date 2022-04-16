@@ -22,6 +22,8 @@ export default function Sidebar({ currentTab }) {
                     focused={currentTab === 'Dashboard'}
                 />
 
+                <hr />
+
                 <SidebarPanel
                     name={'Tasks'}
                     link={'/tasks'}
@@ -30,6 +32,8 @@ export default function Sidebar({ currentTab }) {
                     focused={currentTab === 'Tasks'}
                 />
                 
+                <hr />
+
                 <SidebarPanel
                     name={'Notes'}
                     link={'/notes'}
@@ -37,17 +41,19 @@ export default function Sidebar({ currentTab }) {
                     extend={extend}
                     focused={currentTab === 'Notes'}
                 />
+
+                <hr />
             </div>
 
             <div className={styles.sidebarBottom}>
-                <Image
-                    className={styles.expandButton + ' interactable'}
-                    type='image'
-                    src='/images/icons/hamburger.svg'
-                    width={iconSize}
-                    height={iconSize} 
-                    onClick={setExtend.bind(this, !extend)} 
-                />
+                <div className={styles.expandButtonWrapper + ' interactableHighlight'}>
+                    <Image
+                        src='/images/icons/hamburger.svg'
+                        width={iconSize}
+                        height={iconSize}
+                        onClick={setExtend.bind(this, !extend)}
+                    />
+                </div>
             </div>
         </nav>
     )
@@ -55,18 +61,15 @@ export default function Sidebar({ currentTab }) {
 
 const SidebarPanel = ({ name, link, icon, extend, focused }) => {
     return (
-        <div className={styles.sidebarPanel}>
-            <Link href={link}>
-                <a className={styles.sidebarPanelImage}>
-                    <Image src={focused ? icon.replace('.svg', 'A.svg') : icon} width={iconSize} height={iconSize} layout='fixed' />
-                </a>
-            </Link>
+        <Link href={link}>
+            <a>
+                <div className={styles.sidebarPanel + ' interactableHighlight'}>
+                    <Image src={focused ? icon.replace('.svg', 'A.svg') : icon} width={iconSize} height={iconSize} priority />
 
-            <Link href={link}>
-                <a className={styles.sidebarPanelText} style={{ display: extend ? 'block' : 'none' }}>
-                    <h3 className={focused ? 'accentColor' : ''}>{name}</h3>
-                </a>
-            </Link>
-        </div>
+                    <h3 className={styles.sidebarPanelText + (focused ? ' accentColor' : '')} hidden={extend}>{name}</h3>
+                </div>
+            </a>
+            
+        </Link>
     )
 }

@@ -12,23 +12,32 @@
     justify-content: space-between;
 }
 .sidebar > * {
-    padding: 15px;
+    padding: 10px;
+}
+
+.sidebarTop hr {
+    margin: 5px 0px 5px 0px;
+    background-color: var(--medium);
 }
 
 .sidebarPanel {
-    margin-bottom: 15px;
+    padding: 5px;
+    border-radius: 10px;
 
     display: flex;
     align-items: center;
 }
-.sidebarPanelImage {
-    display: flex; /* added because <Image /> was adding extra height pixels */
-}
 .sidebarPanelText {
     margin-left: 15px;
+    margin-right: 5px;
 }
 
 .sidebarBottom {
     display: flex;
     flex-direction: row-reverse;
+}
+.expandButtonWrapper {
+    padding: 5px;
+    border-radius: 10px;
+    display: flex; /* fixes next.js adding space under image */
 }

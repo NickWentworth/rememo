@@ -1,14 +1,14 @@
 .page {
     display: flex;
 }
-.page hr {
-    margin: 10px 0px;
-    background-color: var(--medium);
-}
 
 .taskList {
     flex-grow: 1;
     padding: 30px;
+}
+.taskList hr, .taskModifyPanel hr {
+    background-color: var(--medium);
+    margin: 10px 0px;
 }
 
 .timeDivider {
@@ -19,8 +19,8 @@
 .timeDivider hr {
     background-color: var(--light);
     height: 2px;
-    flex-grow: 1;
     margin: 0px 40px 0px 15px;
+    flex-grow: 1;
 }
 
 .taskPanel {
@@ -53,13 +53,16 @@
 .taskModifyPanel {
     background-color: var(--dark);
     height: calc(100vh - 30px); /* factor in padding as well*/
-    min-width: 25vw;
+    width: 25vw;
     padding: 15px;
 
     position: sticky;
     top: 0px;
 }
 
-.closeButton {
+.closeButtonWrapper {
+    padding: 3px;
+    border-radius: 10px;
     float: right;
+    display: flex;
 }

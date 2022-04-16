@@ -1,6 +1,11 @@
 /* used for elements not initially interactable, such as next/image */
-.interactable:hover {
+.interactable:hover,
+.interactableHighlight:hover {
     cursor: pointer;
+}
+/* also optionally applies a slight highlight to the element on hover */
+.interactableHighlight:hover {
+    background-color: rgb(255, 255, 255, 0.12);
 }
 
 /* apply simple box shadow to element */

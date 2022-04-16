@@ -5,6 +5,7 @@ import TaskForm from '../components/forms/taskForm';
 import { emptyTask, getISO, getTimeDivider, getFormattedDueString } from '../lib/taskUtility.js';
 import styles from './tasks.module.css';
 
+// TODO - move entire task list into components to simplify page and allow reuse for dashboard
 // TODO - set scrollbar into the task list div, not outside next to manage task window
 
 const iconSize = 30; // size of tab panel edit/remove buttons
@@ -97,9 +98,8 @@ export default function Tasks() {
             </div>
 
             <div className={styles.taskModifyPanel + ' boxShadowDark'} hidden={viewInfo.mode == taskModifyMode.closed}>
-                <div className={styles.closeButton}>
+                <div className={styles.closeButtonWrapper + ' interactableHighlight'}>
                     <Image
-                        className='interactable'
                         src='/images/icons/close.svg'
                         width={40}
                         height={40}
