@@ -3,6 +3,11 @@
     cursor: pointer;
 }
 
+/* apply simple box shadow to element */
+.boxShadowDark {
+    box-shadow: 0px 0px 10px var(--dark);
+}
+
 /* used for setting text color */
 .accentColor {
     color: var(--accent);

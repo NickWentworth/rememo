@@ -3,7 +3,6 @@ import Image from 'next/image';
 import Sidebar from '../components/sidebar';
 import TaskForm from '../components/forms/taskForm';
 import { emptyTask, getISO, getTimeDivider, getFormattedDueString } from '../lib/taskUtility.js';
-import { interactable } from '../lib/styleClasses';
 import styles from './tasks.module.css';
 
 // TODO - set scrollbar into the task list div, not outside next to manage task window
@@ -97,10 +96,10 @@ export default function Tasks() {
                 }).flat()}
             </div>
 
-            <div className={styles.taskModifyPanel} hidden={viewInfo.mode == taskModifyMode.closed}>
+            <div className={styles.taskModifyPanel + ' boxShadowDark'} hidden={viewInfo.mode == taskModifyMode.closed}>
                 <div className={styles.closeButton}>
                     <Image
-                        className={interactable}
+                        className='interactable'
                         src='/images/icons/close.svg'
                         width={40}
                         height={40}
@@ -131,13 +130,10 @@ function TaskPanel({ task, index, focused, deleteTask, setViewInfo }) {
     return (
         <div
             className={styles.taskPanel}
-            style={{
-                border: focused ? '3px solid var(--white)' : 'none',
-                margin: focused ? '0px' : '3px'
-            }}
+            style={{ border: focused ? '3px solid var(--white)' : '3px solid transparent' }}
             onMouseEnter={setShowEditBar.bind(this, true)}
-            onMouseLeave={setShowEditBar.bind(this, false)
-        }>
+            onMouseLeave={setShowEditBar.bind(this, false)}
+        >
             <div className={styles.taskPanelBody} style={{ borderRadius: showEditBar ? '10px 0px 0px 10px' : '10px' }}>
                 <div className={styles.taskPanelHeader}>
                     <h2>{task.name}</h2>
@@ -153,7 +149,7 @@ function TaskPanel({ task, index, focused, deleteTask, setViewInfo }) {
 
             <div className={styles.taskEditBar} style={{ opacity: (showEditBar || focused) ? '100%' : '0%' }}>
                 <Image
-                    className={styles.editButton + interactable}
+                    className={styles.editButton + ' interactable'}
                     src='/images/icons/edit.svg'
                     width={iconSize}
                     height={iconSize}
@@ -165,7 +161,7 @@ function TaskPanel({ task, index, focused, deleteTask, setViewInfo }) {
                 />
                 
                 <Image
-                    className={styles.deleteButton + interactable}
+                    className={styles.deleteButton + ' interactable'}
                     src='/images/icons/delete.svg'
                     width={iconSize}
                     height={iconSize} 

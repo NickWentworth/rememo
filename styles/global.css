@@ -52,3 +52,8 @@ button {
 a {
     text-decoration: none;
 }
+
+hr {
+    border: none;
+    height: 1px;
+}

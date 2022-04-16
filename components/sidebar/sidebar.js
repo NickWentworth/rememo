@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { interactable, accentColor } from '../../lib/styleClasses';
 import styles from './sidebar.module.css';
 
 // TODO - maintain sidebar extend state between pages
@@ -13,7 +12,7 @@ export default function Sidebar({ currentTab }) {
     const [extend, setExtend] = useState(false);
 
     return (
-        <nav className={styles.sidebar}>
+        <nav className={styles.sidebar + ' boxShadowDark'}>
             <div className={styles.sidebarTop}>
                 <SidebarPanel
                     name={'Dashboard'}
@@ -42,7 +41,7 @@ export default function Sidebar({ currentTab }) {
 
             <div className={styles.sidebarBottom}>
                 <Image
-                    className={styles.expandButton + interactable}
+                    className={styles.expandButton + ' interactable'}
                     type='image'
                     src='/images/icons/hamburger.svg'
                     width={iconSize}
@@ -65,7 +64,7 @@ const SidebarPanel = ({ name, link, icon, extend, focused }) => {
 
             <Link href={link}>
                 <a className={styles.sidebarPanelText} style={{ display: extend ? 'block' : 'none' }}>
-                    <h3 className={focused ? accentColor : ''}>{name}</h3>
+                    <h3 className={focused ? 'accentColor' : ''}>{name}</h3>
                 </a>
             </Link>
         </div>
