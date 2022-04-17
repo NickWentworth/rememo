@@ -1,0 +1,31 @@
+.taskPanel {
+    border-radius: 10px;
+    overflow: hidden;
+
+    display: flex;
+}
+
+.taskPanelColorTab {
+    background-color: var(--accent); /* backup background color */
+    width: 30px;
+    padding: 5px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.taskPanelColorTabButtonWrapper > * {
+    border-radius: 10px;
+}
+
+.taskPanelBody {
+    background-color: var(--dark);
+    width: 100%;
+    padding: 10px;
+}
+
+.taskPanelHeader {
+    display: flex;
+    justify-content: space-between;
+}

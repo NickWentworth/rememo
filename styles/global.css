@@ -9,6 +9,16 @@
     --white: #EDFAFD;
 }
 
+/* change color of user-highlighted text */
+::selection {
+    background-color: var(--white);
+    color: var(--dark);
+}
+
+html {
+    overflow: hidden;
+}
+
 body {
     background-color: var(--medium);
 }
@@ -26,8 +36,10 @@ p, h1, h2, h3, h4, h5, h6, a, input, label, textarea, button {
 }
 
 input, textarea, button {
+    padding: 5px;
     font-size: larger;
     background-color: var(--medium);
+    color-scheme: dark;
     border-radius: 3px;
     border: 0px;
     width: 100%;
@@ -37,16 +49,16 @@ input:required:invalid {
     border: 1px solid red;
 }
 
+input[type=checkbox] {
+    width: 30px;
+    height: 30px;
+}
+
 button {
     cursor: pointer;
     border-radius: 5px;
     border: 1px solid var(--white);
     padding: 10px;
-}
-
-.checkbox {
-    width: auto;
-    margin: 0px 3px 0px 0px;
 }
 
 a {
