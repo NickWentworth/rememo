@@ -18,8 +18,6 @@ export function TaskModifyForm({ viewInfo, closeView, collectData }) {
         let data = {...formData};
         data.dueTime = showTime ? data.dueTime : ''; // if time is not included, remove it from the form data
 
-        console.log(data);
-
         collectData(data); // return form data to parent component
     }
 

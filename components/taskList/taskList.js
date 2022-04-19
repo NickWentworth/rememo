@@ -1,10 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { TaskPanel } from './taskPanel';
 import { TaskModifyForm } from './taskModifyForm';
 import { emptyTask, getISO, getTimeDivider } from '../../lib/taskUtility';
 import styles from './taskList.module.css';
 
 // TODO - add class creation panel and a way to get a class's assigned color
+
+// TEMP
+const userID = 0;
+// ----
 
 // different modify modes for task modify form
 export const taskModifyMode = {
@@ -13,13 +17,6 @@ export const taskModifyMode = {
     edit: 2
 }
 
-// TODO - add database and interact with database (prisma)
-const initialTasks = [
-    { name: 'Homework A', class: 'Math', color: '#54C6EB', description: '.........', dueDate: '2022-04-17', dueTime: '23:59', progress: 0 },
-    { name: 'Homework B', class: 'Science', color: '#06D6A0', description: '.........', dueDate: '2022-04-21', dueTime: '23:59', progress: 0 },
-    { name: 'Homework C', class: 'English', color: '#F39237', description: '.........', dueDate: '2022-04-23', dueTime: '', progress: 0 }
-]
-
 const initialViewInfo = {
     mode: taskModifyMode.closed, // current view of modify form
     initialTask: emptyTask, // index in tasks array of task being edited
@@ -27,27 +24,52 @@ const initialViewInfo = {
 }
 
 export function TaskList() {
-    const [tasks, setTasks] = useState(initialTasks);
+    const [tasks, setTasks] = useState([]);
     const [viewInfo, setViewInfo] = useState(initialViewInfo);
 
+    useEffect(() => {
+        fetch(`/api/tasks/${userID}`)
+            .then((res) => res.json())
+            .then((tasks) => setTasks(tasks))
+    }, [])
+
+    // TODO - probably shouldn't send the entire list of tasks, only the part that needs updating
     // functions used by components to modify tasks list
     const taskFunctions = {
         add: (newTask) => {
-            setTasks([...tasks, newTask]);
+            let updatedTasks = tasks.concat(newTask);
+            setTasks(updatedTasks);
+
+            fetch(`api/tasks/${userID}`, {
+                method: 'POST',
+                body: JSON.stringify({ tasks: updatedTasks })
+            })
         },
         delete: (index) => {
-            setTasks(tasks.filter((task, i) => {
+            let updatedTasks = tasks.filter((task, i) => {
                 return i != index;
-            }))
+            })
+            setTasks(updatedTasks);
+
+            fetch(`api/tasks/${userID}`, {
+                method: 'POST',
+                body: JSON.stringify({ tasks: updatedTasks })
+            })
 
             if (index == viewInfo.index) {
                 viewFunctions.close();
             }
         },
         edit: (newTask, index) => {
-            setTasks(tasks.map((task, i) => {
+            let updatedTasks = tasks.map((task, i) => {
                 return (i != index) ? task : newTask;
-            }))
+            })
+            setTasks(updatedTasks);
+            
+            fetch(`api/tasks/${userID}`, {
+                method: 'POST',
+                body: JSON.stringify({ tasks: updatedTasks })
+            })
 
             viewFunctions.close();
         }
@@ -77,6 +99,9 @@ export function TaskList() {
                 break;
         }
     }
+
+    // TODO - make loading component
+    if (!tasks) return <p>Loading...</p>
 
     return (
         <div className={styles.taskList}>
