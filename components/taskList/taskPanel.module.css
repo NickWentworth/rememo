@@ -1,6 +1,7 @@
 .taskPanel {
     border-radius: 10px;
     overflow: hidden;
+    transition: 0.5s;
 
     display: flex;
 }
@@ -28,4 +29,14 @@
 .taskPanelHeader {
     display: flex;
     justify-content: space-between;
+}
+
+.taskPanelProgress {
+    display: flex;
+    align-items: center;
+}
+
+.taskPanelProgressLabel {
+    width: 50px;
+    text-align: right;
 }

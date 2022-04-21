@@ -137,6 +137,7 @@ export function TaskList() {
                         focused={viewInfo.index == index}
                         editTask={viewFunctions.edit}
                         deleteTask={taskFunctions.delete}
+                        setProgress={(amount) => taskFunctions.edit({ ...task, progress: amount }, index)}
                     />)
 
                     return elements;

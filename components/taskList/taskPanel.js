@@ -5,15 +5,22 @@ import styles from './taskPanel.module.css';
 
 const iconSize = 30;
 
-export function TaskPanel({ task, index, focused, editTask, deleteTask }) {
+export function TaskPanel({ task, index, focused, editTask, deleteTask, setProgress }) {
     const [showIcons, setShowIcons] = useState(false);
 
     let [formattedString, color] = getFormattedDueString(task);
 
+    function handleProgressChange(event) {
+        setProgress(event.target.value);
+    }
+
     return (
         <div
             className={styles.taskPanel}
-            style={{ border: focused ? '3px solid var(--white)' : '3px solid transparent' }}
+            style={{
+                border: focused ? '3px solid var(--white)' : '3px solid transparent',
+                opacity: (task.progress == 100) ? '50%' : '100%'
+            }}
             onMouseEnter={setShowIcons.bind(this, true)}
             onMouseLeave={setShowIcons.bind(this, false)}
         >
@@ -45,8 +52,12 @@ export function TaskPanel({ task, index, focused, editTask, deleteTask }) {
 
                 <p style={{ color }}>{formattedString}</p>
 
+                <div className={styles.taskPanelProgress}>
+                    <input type='range' value={task.progress} min={0} max={100} step={5} onChange={handleProgressChange} />
+                    <p className={styles.taskPanelProgressLabel}>{task.progress}%</p>
+                </div>
+
                 <hr hidden={!task.description} />
-                
                 <p>{task.description}</p>
             </div>
         </div>
