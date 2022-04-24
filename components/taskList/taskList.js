@@ -23,7 +23,7 @@ const initialViewInfo = {
 }
 
 export function TaskList() {
-    const [tasks, setTasks] = useState([]);
+    const [tasks, setTasks] = useState(null);
     const [viewInfo, setViewInfo] = useState(initialViewInfo);
 
     // on page load, fetch tasks from database
