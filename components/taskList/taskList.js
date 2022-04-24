@@ -7,7 +7,7 @@ import styles from './taskList.module.css';
 // TODO - add class creation panel and a way to get a class's assigned color
 
 // TEMP
-const userID = 0;
+const userId = 'root';
 // ----
 
 // different modify modes for task modify form
@@ -28,27 +28,32 @@ export function TaskList() {
 
     // on page load, fetch tasks from database
     useEffect(async () => {
-        let response = await fetch(`/api/tasks/${userID}`);
+        let response = await fetch(`/api/tasks/${userId}`);
         let data = await response.json();
         setTasks(data.tasks);
     }, [])
 
-    // TODO - finish delete and edit functions
     // functions used by components to modify tasks list
     const taskFunctions = {
         add: async (addedTask) => {
-            let response = await fetch(`api/tasks/${userID}`, {
+            let response = await fetch(`api/tasks/${userId}`, {
                 method: 'POST',
-                body: JSON.stringify({ task: addedTask, function: 'add' })
+                body: JSON.stringify({
+                    task: { ...addedTask, userId: userId },
+                    function: 'add'
+                })
             })
             let data = await response.json();
             
             setTasks(tasks.concat(data.task));
         },
         delete: async (deletedTask) => {
-            let response = await fetch(`api/tasks/${userID}`, {
+            let response = await fetch(`api/tasks/${userId}`, {
                 method: 'POST',
-                body: JSON.stringify({ task: deletedTask, function: 'delete' })
+                body: JSON.stringify({
+                    task: { ...deletedTask, userId: userId },
+                    function: 'delete'
+                })
             })
             let data = await response.json();
 
@@ -62,9 +67,12 @@ export function TaskList() {
             }
         },
         edit: async (editedTask) => {
-            let response = await fetch(`api/tasks/${userID}`, {
+            let response = await fetch(`api/tasks/${userId}`, {
                 method: 'POST',
-                body: JSON.stringify({ task: editedTask, function: 'edit' })
+                body: JSON.stringify({
+                    task: { ...editedTask, userId: userId },
+                    function: 'edit'
+                })
             })
             let data = await response.json();
 

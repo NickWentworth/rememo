@@ -3,10 +3,10 @@ import { PrismaClient } from '@prisma/client';
 // TODO - set prisma as singleton to prevent so many clients being created
 const prisma = new PrismaClient();
 
-// GET: gets all tasks matching a given userID
+// GET: gets all tasks matching a given userId
 // POST: updates tasks table based on provided function
 export default async (req, res) => {
-    let userID = req.query.userID;
+    let givenUserId = req.query.userId;
 
     switch (req.method) {
         case 'POST':
@@ -48,9 +48,12 @@ export default async (req, res) => {
             break;
 
         case 'GET':
-            const tasks = await prisma.task.findMany();
+            const tasks = await prisma.task.findMany({
+                where: { userId: givenUserId }
+            })
+
             res.status(200);
-            res.json({ tasks: tasks});
+            res.json({ tasks: tasks });
             break;
 
         default:

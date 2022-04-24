@@ -7,13 +7,22 @@ datasource db {
   url      = "file:./dev.db"
 }
 
-// TODO - setup user model and assign 1 user to many tasks
+// TODO - add class data model
+model User {
+  id       String @id @default(cuid())
+  username String
+  tasks    Task[]
+}
+
 model Task {
   id          String  @id @default(cuid())
-  name        String
+  name        String  @default("Unnamed Task")
   class       String?
   description String?
   dueDate     String
   dueTime     String?
-  progress    Int
+  progress    Int     @default(0)
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
 }
