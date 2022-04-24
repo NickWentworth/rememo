@@ -7,6 +7,7 @@
     --light: #96959E;
     --accent: #00B4D8;
     --white: #EDFAFD;
+    color-scheme: dark;
 }
 
 /* change color of user-highlighted text */
@@ -39,7 +40,6 @@ input, textarea, button {
     padding: 5px;
     font-size: larger;
     background-color: var(--medium);
-    color-scheme: dark;
     border-radius: 3px;
     border: 0px;
     width: 100%;

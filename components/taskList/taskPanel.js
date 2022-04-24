@@ -5,7 +5,7 @@ import styles from './taskPanel.module.css';
 
 const iconSize = 30;
 
-export function TaskPanel({ task, index, focused, editTask, deleteTask, setProgress }) {
+export function TaskPanel({ task, focused, editTask, deleteTask, setProgress }) {
     const [showIcons, setShowIcons] = useState(false);
 
     let [formattedString, color] = getFormattedDueString(task);
@@ -31,7 +31,7 @@ export function TaskPanel({ task, index, focused, editTask, deleteTask, setProgr
                         src='/images/icons/edit.svg'
                         width={iconSize}
                         height={iconSize}
-                        onClick={editTask.bind(this, task, index)}
+                        onClick={editTask.bind(this, task)}
                     />
 
                     <Image
@@ -39,7 +39,7 @@ export function TaskPanel({ task, index, focused, editTask, deleteTask, setProgr
                         src='/images/icons/delete.svg'
                         width={iconSize}
                         height={iconSize}
-                        onClick={deleteTask.bind(this, index)}
+                        onClick={deleteTask.bind(this, task)}
                     />
                 </div>
             </div>
@@ -53,7 +53,8 @@ export function TaskPanel({ task, index, focused, editTask, deleteTask, setProgr
                 <p style={{ color }}>{formattedString}</p>
 
                 <div className={styles.taskPanelProgress}>
-                    <input type='range' value={task.progress} min={0} max={100} step={5} onChange={handleProgressChange} />
+                    {/* TODO - figure out why range slider doesn't work anymore */}
+                    <input type='range' value={task.progress} min={0} max={100} step={5} onChange={handleProgressChange} disabled />
                     <p className={styles.taskPanelProgressLabel}>{task.progress}%</p>
                 </div>
 

@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "next dev"
+    "dev": "next dev",
+    "prisma": "prisma format && prisma studio"
   },
   "repository": {
     "type": "git",
@@ -17,8 +18,12 @@
   },
   "homepage": "https://github.com/NickWentworth/planner#readme",
   "dependencies": {
+    "@prisma/client": "^3.12.0",
     "next": "^12.1.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "prisma": "^3.12.0"
   }
 }

@@ -1,0 +1,19 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// TODO - setup user model and assign 1 user to many tasks
+model Task {
+  id          String  @id @default(cuid())
+  name        String
+  class       String?
+  description String?
+  dueDate     String
+  dueTime     String?
+  progress    Int
+}

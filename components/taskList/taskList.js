@@ -19,57 +19,58 @@ export const taskModifyMode = {
 
 const initialViewInfo = {
     mode: taskModifyMode.closed, // current view of modify form
-    initialTask: emptyTask, // index in tasks array of task being edited
-    index: -1 // task currently being edited before changes
+    focusedTask: emptyTask, // task currently focused, used for editing
 }
 
 export function TaskList() {
     const [tasks, setTasks] = useState([]);
     const [viewInfo, setViewInfo] = useState(initialViewInfo);
 
-    useEffect(() => {
-        fetch(`/api/tasks/${userID}`)
-            .then((res) => res.json())
-            .then((tasks) => setTasks(tasks))
+    // on page load, fetch tasks from database
+    useEffect(async () => {
+        let response = await fetch(`/api/tasks/${userID}`);
+        let data = await response.json();
+        setTasks(data.tasks);
     }, [])
 
-    // TODO - probably shouldn't send the entire list of tasks, only the part that needs updating
+    // TODO - finish delete and edit functions
     // functions used by components to modify tasks list
     const taskFunctions = {
-        add: (newTask) => {
-            let updatedTasks = tasks.concat(newTask);
-            setTasks(updatedTasks);
-
-            fetch(`api/tasks/${userID}`, {
+        add: async (addedTask) => {
+            let response = await fetch(`api/tasks/${userID}`, {
                 method: 'POST',
-                body: JSON.stringify({ tasks: updatedTasks })
+                body: JSON.stringify({ task: addedTask, function: 'add' })
             })
+            let data = await response.json();
+            
+            setTasks(tasks.concat(data.task));
         },
-        delete: (index) => {
-            let updatedTasks = tasks.filter((task, i) => {
-                return i != index;
-            })
-            setTasks(updatedTasks);
-
-            fetch(`api/tasks/${userID}`, {
+        delete: async (deletedTask) => {
+            let response = await fetch(`api/tasks/${userID}`, {
                 method: 'POST',
-                body: JSON.stringify({ tasks: updatedTasks })
+                body: JSON.stringify({ task: deletedTask, function: 'delete' })
             })
+            let data = await response.json();
 
-            if (index == viewInfo.index) {
-                viewFunctions.close();
+            // ensure successful task deletion
+            if (data.task) {
+                setTasks(tasks.filter((task) => task.id != deletedTask.id));
+
+                if (deletedTask.id == viewInfo.focusedTask.id) {
+                    viewFunctions.close();
+                }
             }
         },
-        edit: (newTask, index) => {
-            let updatedTasks = tasks.map((task, i) => {
-                return (i != index) ? task : newTask;
-            })
-            setTasks(updatedTasks);
-            
-            fetch(`api/tasks/${userID}`, {
+        edit: async (editedTask) => {
+            let response = await fetch(`api/tasks/${userID}`, {
                 method: 'POST',
-                body: JSON.stringify({ tasks: updatedTasks })
+                body: JSON.stringify({ task: editedTask, function: 'edit' })
             })
+            let data = await response.json();
+
+            setTasks(tasks.map((task) => {
+                return (task.id == editedTask.id) ? data.task : task;
+            }))
 
             viewFunctions.close();
         }
@@ -78,24 +79,24 @@ export function TaskList() {
     // functions used by components to change view mode for modify form
     const viewFunctions = {
         close: () => {
-            setViewInfo({ mode: taskModifyMode.closed, initialTask: emptyTask, index: -1 });
+            setViewInfo({ mode: taskModifyMode.closed, focusedTask: emptyTask });
         },
         add: () => {
-            setViewInfo({ mode: taskModifyMode.add, initialTask: emptyTask, index: -1 });
+            setViewInfo({ mode: taskModifyMode.add, focusedTask: emptyTask });
         },
-        edit: (initialTask, index) => {
-            setViewInfo({ mode: taskModifyMode.edit, initialTask, index});
+        edit: (focusedTask) => {
+            setViewInfo({ mode: taskModifyMode.edit, focusedTask: focusedTask });
         }
     }
 
     // called by form when submitting
-    function collectTaskFormData(newTask) {
+    function collectTaskFormData(task) {
         switch (viewInfo.mode) {
             case taskModifyMode.add:
-                taskFunctions.add(newTask);
+                taskFunctions.add(task);
                 break;
             case taskModifyMode.edit:
-                taskFunctions.edit(newTask, viewInfo.index);
+                taskFunctions.edit(task);
                 break;
         }
     }
@@ -131,13 +132,12 @@ export function TaskList() {
                     }
 
                     elements.push(<TaskPanel
-                        key={index}
+                        key={task.id}
                         task={task}
-                        index={index}
-                        focused={viewInfo.index == index}
+                        focused={task.id === viewInfo.focusedTask.id}
                         editTask={viewFunctions.edit}
                         deleteTask={taskFunctions.delete}
-                        setProgress={(amount) => taskFunctions.edit({ ...task, progress: amount }, index)}
+                        setProgress={(amount) => taskFunctions.edit({ ...task, progress: amount })}
                     />)
 
                     return elements;

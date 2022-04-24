@@ -4,13 +4,13 @@ import { taskModifyMode } from './taskList';
 import styles from './taskModifyForm.module.css';
 
 export function TaskModifyForm({ viewInfo, closeView, collectData }) {
-    const [formData, setFormData] = useState(viewInfo.initialTask);
-    const [showTime, setShowTime] = useState(viewInfo.initialTask.dueTime);
+    const [formData, setFormData] = useState(viewInfo.focusedTask);
+    const [showTime, setShowTime] = useState(viewInfo.focusedTask.dueTime);
 
     useEffect(() => {
-        setFormData(viewInfo.initialTask); // reset form data
-        setShowTime(viewInfo.initialTask.dueTime); // and show/hide time option based on due time
-    }, [viewInfo.initialTask]) // when initial task changes
+        setFormData(viewInfo.focusedTask); // reset form data
+        setShowTime(viewInfo.focusedTask.dueTime); // and show/hide time option based on due time
+    }, [viewInfo.focusedTask]) // when initial task changes
 
     function handleSubmit(event) {
         event.preventDefault(); // don't want to redirect page
