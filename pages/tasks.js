@@ -1,5 +1,5 @@
 import Sidebar from '../components/sidebar';
-import { TaskList } from '../components/taskList/taskList';
+import TaskList from '../components/taskList';
 
 export default function Tasks() {
     return (

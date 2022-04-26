@@ -1,10 +1,10 @@
 import Sidebar from '../components/sidebar';
 
-export default function Login() {
+export default function Index() {
     return (
-        <div>
+        <div className='page'>
             <Sidebar />
-            <p>Login</p>
+            <p>Index Page</p>
         </div>
     )
 }

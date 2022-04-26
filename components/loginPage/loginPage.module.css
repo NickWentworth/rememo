@@ -1,0 +1,38 @@
+.loginPage {
+    height: 100vh;
+    width: 100vw;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loginWindow {
+    background-color: var(--dark);
+    width: 30%;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.loginWindow > * {
+    margin-bottom: 30px;
+}
+
+.loginWindow > form > *:not(button) {
+    display: flex;
+    margin-bottom: 5px;
+}
+
+.responseMessage {
+    color: red;
+}
+
+.submitButton {
+    width: 50%;
+    margin-top: 5px;
+}
+
+.swapReturningUserText {
+    text-decoration: underline;
+}

@@ -4,11 +4,12 @@ import Image from 'next/image';
 import styles from './sidebar.module.css';
 
 // TODO - maintain sidebar extend state between pages
+// TODO - possibly use next router to check current tab
 
 const iconPath = '/images/icons/';
 const iconSize = 50;
 
-export default function Sidebar({ currentTab }) {
+export function Sidebar({ currentTab }) {
     const [extend, setExtend] = useState(false);
 
     return (
@@ -59,7 +60,7 @@ export default function Sidebar({ currentTab }) {
     )
 }
 
-const SidebarPanel = ({ name, link, icon, extend, focused }) => {
+function SidebarPanel({ name, link, icon, extend, focused }) {
     return (
         <Link href={link}>
             <a>

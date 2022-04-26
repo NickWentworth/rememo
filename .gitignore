@@ -4,5 +4,5 @@ node_modules
 # next.js created files
 .next
 
-# prisma development database
-dev.db
+# database
+*.db
