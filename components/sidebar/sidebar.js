@@ -67,7 +67,7 @@ function SidebarPanel({ name, link, icon, extend, focused }) {
                 <div className={styles.sidebarPanel + ' interactableHighlight'}>
                     <Image src={focused ? icon.replace('.svg', 'A.svg') : icon} width={iconSize} height={iconSize} priority />
 
-                    <h3 className={styles.sidebarPanelText + (focused ? ' accentColor' : '')} hidden={extend}>{name}</h3>
+                    <h3 className={styles.sidebarPanelText + (focused ? ' accentColor' : '')} hidden={!extend}>{name}</h3>
                 </div>
             </a>
             

@@ -10,7 +10,7 @@ const initialFormData = {
 
 export function LoginPage() {
     const [formData, setFormData] = useState(initialFormData);
-    const [returningUser, setReturningUser] = useState(false);
+    const [returningUser, setReturningUser] = useState(true);
     const [responseMessage, setResponseMessage] = useState('');
 
     async function handleSubmit(event) {
