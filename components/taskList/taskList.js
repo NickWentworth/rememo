@@ -36,11 +36,10 @@ export function TaskList() {
     // functions used by components to modify tasks list
     const taskFunctions = {
         add: async (addedTask) => {
-            let response = await fetch(`api/tasks/${userId}`, {
+            let response = await fetch(`api/tasks/add`, {
                 method: 'POST',
                 body: JSON.stringify({
                     task: { ...addedTask, userId: userId },
-                    function: 'add'
                 })
             })
             let data = await response.json();
@@ -48,11 +47,10 @@ export function TaskList() {
             setTasks(tasks.concat(data.task));
         },
         delete: async (deletedTask) => {
-            let response = await fetch(`api/tasks/${userId}`, {
+            let response = await fetch(`api/tasks/delete`, {
                 method: 'POST',
                 body: JSON.stringify({
                     task: { ...deletedTask, userId: userId },
-                    function: 'delete'
                 })
             })
             let data = await response.json();
@@ -67,11 +65,10 @@ export function TaskList() {
             }
         },
         edit: async (editedTask) => {
-            let response = await fetch(`api/tasks/${userId}`, {
+            let response = await fetch(`api/tasks/edit`, {
                 method: 'POST',
                 body: JSON.stringify({
                     task: { ...editedTask, userId: userId },
-                    function: 'edit'
                 })
             })
             let data = await response.json();

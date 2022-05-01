@@ -3,12 +3,14 @@ import { PrismaClient } from '@prisma/client';
 // TODO - set prisma as singleton to prevent so many clients being created
 const prisma = new PrismaClient();
 
-// GET: gets all tasks matching a given userId
+// POST: deletes task from database
 export default async (req, res) => {
-    let tasks = await prisma.task.findMany({
-        where: { userId: req.query.userId }
+    let body = JSON.parse(req.body);
+
+    let deletedTask = await prisma.task.delete({
+        where: { id: body.task.id }
     })
 
     res.status(200);
-    res.json({ tasks: tasks });
+    res.json({ task: deletedTask });
 }
