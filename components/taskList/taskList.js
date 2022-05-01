@@ -6,8 +6,8 @@ import styles from './taskList.module.css';
 
 // TODO - add class creation panel and a way to get a class's assigned color
 
-// TEMP
-const userId = 'root';
+// TEMP - until storing userId on login is implemented
+const userId = 'cl2gq2clv0097p8ur47v57qxs';
 // ----
 
 // different modify modes for task modify form
@@ -122,21 +122,18 @@ export function TaskList() {
                     let aDate = new Date(getISO(aTask));
                     let bDate = new Date(getISO(bTask));
                     return aDate - bDate;
-                }).map((task, index) => {
+                }).flatMap((task, index) => {
                     // insert time dividers for organization
-                    let dividerName = getTimeDivider(task);
-                    let previousDividerName = getTimeDivider( (index == 0) ? '' : tasks[index - 1] ); // gets previous task's divider or blank for first task
-
                     let elements = []; // eventually contains output elements
+                    
+                    let dividerName = getTimeDivider(task);
 
                     // check for new divider
-                    if (dividerName != previousDividerName) {
+                    if (index == 0 || dividerName != getTimeDivider(tasks[index - 1])) {
                         elements.push(<div key={dividerName} className={styles.timeDivider}>
                             <h1>{dividerName}</h1>
                             <hr />
                         </div>)
-
-                        previousDividerName = dividerName;
                     }
 
                     elements.push(<TaskPanel
@@ -149,7 +146,7 @@ export function TaskList() {
                     />)
 
                     return elements;
-                }).flat()}
+                })}
 
                 <h1 hidden={tasks.length != 0}>No tasks left!</h1>
             </div>
