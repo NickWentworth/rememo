@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { TokenContext } from '../../pages/_app';
 import { TaskPanel } from './taskPanel';
 import { TaskModifyForm } from './taskModifyForm';
 import { emptyTask, getISO, getTimeDivider } from '../../lib/taskUtility';
@@ -23,14 +24,26 @@ const initialViewInfo = {
 }
 
 export function TaskList() {
+    const { token, setToken } = useContext(TokenContext);
+
     const [tasks, setTasks] = useState(null);
     const [viewInfo, setViewInfo] = useState(initialViewInfo);
 
     // on page load, fetch tasks from database
     useEffect(async () => {
-        let response = await fetch(`/api/tasks/${userId}`);
+        let response = await fetch(`/api/tasks/${token}`);
+
+        // TODO - possibly create a custom fetch method that always checks for bad responses
+        // need to login again, bad token
+        if (response.status == 401) {
+            console.log('Bad token');
+            setToken('');
+            return;
+        }
+
         let data = await response.json();
         setTasks(data.tasks);
+        setToken(data.token);
     }, [])
 
     // functions used by components to modify tasks list
@@ -113,6 +126,7 @@ export function TaskList() {
         <div className={styles.taskList}>
             <div className={styles.taskPanels}>
                 <button onClick={viewFunctions.add}>Add Task</button>
+                <p>{token}</p>
 
                 {tasks.sort((aTask, bTask) => {
                     // sort tasks by due date, earliest first

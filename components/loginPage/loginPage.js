@@ -8,7 +8,7 @@ const initialFormData = {
     password: ''
 }
 
-export function LoginPage() {
+export function LoginPage({ setToken }) {
     const [formData, setFormData] = useState(initialFormData);
     const [returningUser, setReturningUser] = useState(true);
     const [responseMessage, setResponseMessage] = useState('');
@@ -25,16 +25,16 @@ export function LoginPage() {
             })
             let data = await response.json();
 
-            if (!data.accountExists) {
+            if (data.invalidEmail) {
                 setResponseMessage('Invalid email');
                 return;
             }
-            if (!data.successfulLogin) {
+            if (data.invalidPassword) {
                 setResponseMessage('Invalid password');
                 return;
             }
 
-            userId = data.userId;
+            setToken(data.token);
         } else {
             let response = await fetch('/api/user/signup', {
                 method: 'POST',
@@ -47,14 +47,8 @@ export function LoginPage() {
                 return;
             }
 
-            userId = data.userId;
+            setToken(data.token);
         }
-
-        // TODO - route to dashboard page and bring along userId
-        // TEMP
-        setResponseMessage('');
-        console.log('Logging in with: ' + userId);
-        // ----
     }
 
     function onInputChanged(event) {
