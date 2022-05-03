@@ -7,10 +7,6 @@ import styles from './taskList.module.css';
 
 // TODO - add class creation panel and a way to get a class's assigned color
 
-// TEMP - until storing userId on login is implemented
-const userId = 'cl2gq2clv0097p8ur47v57qxs';
-// ----
-
 // different modify modes for task modify form
 export const taskModifyMode = {
     closed: 0,
@@ -52,43 +48,69 @@ export function TaskList() {
             let response = await fetch(`api/tasks/add`, {
                 method: 'POST',
                 body: JSON.stringify({
-                    task: { ...addedTask, userId: userId },
+                    task: addedTask,
+                    token: token
                 })
             })
+
+            // need to login again, bad token
+            if (response.status == 401) {
+                console.log('Bad token');
+                setToken('');
+                return;
+            }
+            
             let data = await response.json();
             
             setTasks(tasks.concat(data.task));
+            setToken(data.token);
         },
         delete: async (deletedTask) => {
             let response = await fetch(`api/tasks/delete`, {
                 method: 'POST',
                 body: JSON.stringify({
-                    task: { ...deletedTask, userId: userId },
+                    task: deletedTask,
+                    token: token
                 })
             })
+
+            // need to login again, bad token
+            if (response.status == 401) {
+                console.log('Bad token');
+                setToken('');
+                return;
+            }
+            
             let data = await response.json();
+            setTasks(tasks.filter((task) => task.id != deletedTask.id));
+            setToken(data.token);
 
-            // ensure successful task deletion
-            if (data.task) {
-                setTasks(tasks.filter((task) => task.id != deletedTask.id));
-
-                if (deletedTask.id == viewInfo.focusedTask.id) {
-                    viewFunctions.close();
-                }
+            if (deletedTask.id == viewInfo.focusedTask.id) {
+                viewFunctions.close();
             }
         },
         edit: async (editedTask) => {
             let response = await fetch(`api/tasks/edit`, {
                 method: 'POST',
                 body: JSON.stringify({
-                    task: { ...editedTask, userId: userId },
+                    task: editedTask,
+                    token: token
                 })
             })
+
+            // need to login again, bad token
+            if (response.status == 401) {
+                console.log('Bad token');
+                setToken('');
+                return;
+            }
+
             let data = await response.json();
 
             setTasks(tasks.map((task) => {
                 return (task.id == editedTask.id) ? data.task : task;
             }))
+            setToken(data.token);
 
             viewFunctions.close();
         }
