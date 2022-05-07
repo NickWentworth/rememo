@@ -7,6 +7,8 @@ import styles from './taskList.module.css';
 
 // TODO - add class creation panel and a way to get a class's assigned color
 
+const taskApiRoute = '/api/task/';
+
 // different modify modes for task modify form
 export const taskModifyMode = {
     closed: 0,
@@ -27,7 +29,7 @@ export function TaskList() {
 
     // on page load, fetch tasks from database
     useEffect(async () => {
-        let response = await fetch(`/api/tasks/${token}`);
+        let response = await fetch(`${taskApiRoute}${token}`);
 
         // TODO - possibly create a custom fetch method that always checks for bad responses
         // need to login again, bad token
@@ -45,7 +47,7 @@ export function TaskList() {
     // functions used by components to modify tasks list
     const taskFunctions = {
         add: async (addedTask) => {
-            let response = await fetch(`api/tasks/add`, {
+            let response = await fetch(`${taskApiRoute}add`, {
                 method: 'POST',
                 body: JSON.stringify({
                     task: addedTask,
@@ -66,7 +68,7 @@ export function TaskList() {
             setToken(data.token);
         },
         delete: async (deletedTask) => {
-            let response = await fetch(`api/tasks/delete`, {
+            let response = await fetch(`${taskApiRoute}delete`, {
                 method: 'POST',
                 body: JSON.stringify({
                     task: deletedTask,
@@ -90,7 +92,7 @@ export function TaskList() {
             }
         },
         edit: async (editedTask) => {
-            let response = await fetch(`api/tasks/edit`, {
+            let response = await fetch(`${taskApiRoute}edit`, {
                 method: 'POST',
                 body: JSON.stringify({
                     task: editedTask,
@@ -148,7 +150,6 @@ export function TaskList() {
         <div className={styles.taskList}>
             <div className={styles.taskPanels}>
                 <button onClick={viewFunctions.add}>Add Task</button>
-                <p>{token}</p>
 
                 {tasks.sort((aTask, bTask) => {
                     // sort tasks by due date, earliest first
