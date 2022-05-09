@@ -9,8 +9,9 @@
     right: 0px;
 }
 
+
 /* give all children of form space between, not button as it uncenters it */
-.taskModifyForm > form > *:not(button) {
+.taskModifyForm > form > *:not(button, hr) {
     display: flex; /* needed because input elements stretched outside of form area */
     margin: 5px 0px;
 }

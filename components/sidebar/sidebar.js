@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './sidebar.module.css';
@@ -9,8 +10,9 @@ import styles from './sidebar.module.css';
 const iconPath = '/images/icons/';
 const iconSize = 50;
 
-export function Sidebar({ currentTab }) {
+export function Sidebar() {
     const [extend, setExtend] = useState(false);
+    const router = useRouter();
 
     return (
         <nav className={styles.sidebar + ' boxShadowDark'}>
@@ -20,7 +22,7 @@ export function Sidebar({ currentTab }) {
                     link={'/dashboard'}
                     icon={`${iconPath}dashboard.svg`}
                     extend={extend}
-                    focused={currentTab === 'Dashboard'}
+                    focused={router.asPath === '/dashboard'}
                 />
 
                 <hr />
@@ -30,7 +32,7 @@ export function Sidebar({ currentTab }) {
                     link={'/tasks'}
                     icon={`${iconPath}tasks.svg`}
                     extend={extend}
-                    focused={currentTab === 'Tasks'}
+                    focused={router.asPath === '/tasks'}
                 />
                 
                 <hr />
@@ -40,7 +42,7 @@ export function Sidebar({ currentTab }) {
                     link={'/notes'}
                     icon={`${iconPath}notes.svg`}
                     extend={extend}
-                    focused={currentTab === 'Notes'}
+                    focused={router.asPath === '/notes'}
                 />
 
                 <hr />
