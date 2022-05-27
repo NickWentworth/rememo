@@ -1,13 +1,11 @@
-import { useState, useEffect, useContext } from 'react';
-import { TokenContext } from '../../pages/_app';
+import { useState } from 'react';
+import { useTasks } from '../hooks/useTasks';
 import { TaskPanel } from './taskPanel';
 import { TaskModifyForm } from './taskModifyForm';
 import { emptyTask, getISO, getTimeDivider } from '../../lib/taskUtility';
 import styles from './taskList.module.css';
 
 // TODO - add class creation panel and a way to get a class's assigned color
-
-const taskApiRoute = '/api/task/';
 
 // different modify modes for task modify form
 export const taskModifyMode = {
@@ -22,97 +20,23 @@ const initialViewInfo = {
 }
 
 export function TaskList() {
-    const { token, setToken } = useContext(TokenContext);
-
-    const [tasks, setTasks] = useState(null);
+    const [tasks, baseTaskFunctions] = useTasks();
     const [viewInfo, setViewInfo] = useState(initialViewInfo);
 
-    // on page load, fetch tasks from database
-    useEffect(async () => {
-        let response = await fetch(`${taskApiRoute}${token}`);
-
-        // TODO - possibly create a custom fetch method that always checks for bad responses
-        // need to login again, bad token
-        if (response.status == 401) {
-            console.log('Bad token');
-            setToken('');
-            return;
-        }
-
-        let data = await response.json();
-        setTasks(data.tasks);
-        setToken(data.token);
-    }, [])
-
-    // functions used by components to modify tasks list
+    // need to close task modify form on delete and edit
     const taskFunctions = {
         add: async (addedTask) => {
-            let response = await fetch(`${taskApiRoute}add`, {
-                method: 'POST',
-                body: JSON.stringify({
-                    task: addedTask,
-                    token: token
-                })
-            })
-
-            // need to login again, bad token
-            if (response.status == 401) {
-                console.log('Bad token');
-                setToken('');
-                return;
-            }
-            
-            let data = await response.json();
-            
-            setTasks(tasks.concat(data.task));
-            setToken(data.token);
+            await baseTaskFunctions.add(addedTask);
         },
         delete: async (deletedTask) => {
-            let response = await fetch(`${taskApiRoute}delete`, {
-                method: 'POST',
-                body: JSON.stringify({
-                    task: deletedTask,
-                    token: token
-                })
-            })
-
-            // need to login again, bad token
-            if (response.status == 401) {
-                console.log('Bad token');
-                setToken('');
-                return;
-            }
+            await baseTaskFunctions.delete(deletedTask);
             
-            let data = await response.json();
-            setTasks(tasks.filter((task) => task.id != deletedTask.id));
-            setToken(data.token);
-
             if (deletedTask.id == viewInfo.focusedTask.id) {
                 viewFunctions.close();
             }
         },
         edit: async (editedTask) => {
-            let response = await fetch(`${taskApiRoute}edit`, {
-                method: 'POST',
-                body: JSON.stringify({
-                    task: editedTask,
-                    token: token
-                })
-            })
-
-            // need to login again, bad token
-            if (response.status == 401) {
-                console.log('Bad token');
-                setToken('');
-                return;
-            }
-
-            let data = await response.json();
-
-            setTasks(tasks.map((task) => {
-                return (task.id == editedTask.id) ? data.task : task;
-            }))
-            setToken(data.token);
+            await baseTaskFunctions.edit(editedTask);
 
             viewFunctions.close();
         }
