@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
+import { UserPanel } from './userPanel';
 import styles from './sidebar.module.css';
 
 // TODO - maintain sidebar extend state between pages
@@ -11,7 +12,7 @@ const iconPath = '/images/icons/';
 const iconSize = 50;
 
 export function Sidebar() {
-    const [extend, setExtend] = useState(false);
+    const [extend, setExtend] = useState(true);
     const router = useRouter();
 
     return (
@@ -49,6 +50,12 @@ export function Sidebar() {
             </div>
 
             <div className={styles.sidebarBottom}>
+                <hr />
+                
+                <UserPanel extend={extend} />
+                
+                <hr />
+
                 <div className={styles.expandButtonWrapper + ' interactableHighlight'}>
                     <Image
                         src='/images/icons/hamburger.svg'

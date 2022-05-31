@@ -15,7 +15,7 @@
     padding: 10px;
 }
 
-.sidebarTop hr {
+.sidebar hr {
     margin: 5px 0px 5px 0px;
     background-color: var(--medium);
 }
@@ -32,10 +32,10 @@
     margin-right: 5px;
 }
 
-.sidebarBottom {
+/* .sidebarBottom {
     display: flex;
-    flex-direction: row-reverse;
-}
+    flex-direction: column;
+} */
 .expandButtonWrapper {
     padding: 5px;
     border-radius: 10px;

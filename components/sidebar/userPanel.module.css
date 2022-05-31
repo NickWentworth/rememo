@@ -1,0 +1,28 @@
+.userPanel {
+    display: flex;
+    align-items: center;
+}
+
+.userImageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.userImage {
+    border-radius: 50%;
+    padding: 5px;
+}
+
+.userOptionsList {
+    flex-grow: 1;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.userOptionsList > * {
+    padding: 5px 10px;
+    margin-left: 10px;
+    border-radius: 5px;
+}

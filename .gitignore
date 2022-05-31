@@ -6,3 +6,6 @@ node_modules
 
 # database
 *.db
+
+# env file
+.env
