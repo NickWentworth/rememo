@@ -1,27 +1,22 @@
-import { useState, useEffect, useContext } from 'react';
-import { TokenContext } from '../../pages/_app';
+import { useState, useEffect } from 'react';
 
 const taskApiRoute = '/api/task/';
 
 export function useTasks() {
-    const { token, setToken } = useContext(TokenContext);
     const [tasks, setTasks] = useState(null);
 
     // on page load, fetch tasks from database
     useEffect(async () => {
-        let response = await fetch(`${taskApiRoute}${token}`);
+        let response = await fetch(`${taskApiRoute}`);
+        let data = await response.json();
 
         // TODO - possibly create a custom fetch method that always checks for bad responses
-        // need to login again, bad token
-        if (response.status == 401) {
-            console.log('Bad token');
-            setToken('');
+        if (!response.ok) {
+            console.error(data.text);
             return;
         }
 
-        let data = await response.json();
         setTasks(data.tasks);
-        setToken(data.token);
     }, [])
 
     // functions used by components to modify tasks list
@@ -29,66 +24,46 @@ export function useTasks() {
         add: async (addedTask) => {
             let response = await fetch(`${taskApiRoute}add`, {
                 method: 'POST',
-                body: JSON.stringify({
-                    task: addedTask,
-                    token: token
-                })
+                body: JSON.stringify({ task: addedTask })
             })
+            let data = await response.json();
 
-            // need to login again, bad token
-            if (response.status == 401) {
-                console.log('Bad token');
-                setToken('');
+            if (!response.ok) {
+                console.error(data.text);
                 return;
             }
             
-            let data = await response.json();
-            
             setTasks(tasks.concat(data.task));
-            setToken(data.token);
         },
         delete: async (deletedTask) => {
             let response = await fetch(`${taskApiRoute}delete`, {
                 method: 'POST',
-                body: JSON.stringify({
-                    task: deletedTask,
-                    token: token
-                })
+                body: JSON.stringify({ task: deletedTask })
             })
+            let data = await response.json();
 
-            // need to login again, bad token
-            if (response.status == 401) {
-                console.log('Bad token');
-                setToken('');
+            if (!response.ok) {
+                console.error(data.text);
                 return;
             }
             
-            let data = await response.json();
             setTasks(tasks.filter((task) => task.id != deletedTask.id));
-            setToken(data.token);
         },
         edit: async (editedTask) => {
             let response = await fetch(`${taskApiRoute}edit`, {
                 method: 'POST',
-                body: JSON.stringify({
-                    task: editedTask,
-                    token: token
-                })
+                body: JSON.stringify({ task: editedTask })
             })
+            let data = await response.json();
 
-            // need to login again, bad token
-            if (response.status == 401) {
-                console.log('Bad token');
-                setToken('');
+            if (!response.ok) {
+                console.error(data.text);
                 return;
             }
-
-            let data = await response.json();
 
             setTasks(tasks.map((task) => {
                 return (task.id == editedTask.id) ? data.task : task;
             }))
-            setToken(data.token);
         }
     }
 

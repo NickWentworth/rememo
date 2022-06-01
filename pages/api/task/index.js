@@ -4,21 +4,14 @@ import { getUserId } from '../../../lib/user';
 // TODO - set prisma as singleton to prevent so many clients being created
 const prisma = new PrismaClient();
 
-// POST: deletes task from database
+// GET: gets all tasks belonging to a user
 export default async (req, res) => {
     const userId = await getUserId(req, res);
     if (!userId) { return; }
 
-    let body = JSON.parse(req.body);
-
-    let deletedTask = await prisma.task.delete({
-        where: { id: body.task.id }
+    let tasks = await prisma.task.findMany({
+        where: { userId: userId }
     })
 
-    if (!deletedTask) {
-        res.status(400).json({ text: 'Error deleting task' });
-        return;
-    }
-
-    res.status(200).json({ task: deletedTask });
+    res.status(200).json({ tasks: tasks });
 }

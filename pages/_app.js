@@ -1,4 +1,4 @@
-import { SessionProvider, useSession, signIn } from 'next-auth/react';
+import { SessionProvider, useSession } from 'next-auth/react';
 import '../styles/global.css';
 import '../styles/classes.css';
 

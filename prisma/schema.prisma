@@ -7,23 +7,18 @@ datasource db {
   url      = "file:./database.db"
 }
 
+// partially next-auth managed table, line break is planner data
+// base model of a person's linked accounts, sessions, and other data
 model User {
-  id       String  @id @default(cuid())
-  email    String  @unique
-  password String
-  verified Boolean @default(false)
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
 
-  tokens Token[]
-
-  tasks   Task[]
-  classes Class[]
-}
-
-model Token {
-  id String @id @default(cuid())
-
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
+  tasks Task[]
 }
 
 model Task {
@@ -39,11 +34,40 @@ model Task {
   userId String
 }
 
-model Class {
-  id    String @id @default(cuid())
-  name  String
-  color String
+// model Class {
+//   id    String @id @default(cuid())
+//   name  String
+//   color String
 
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
+//   user   User   @relation(fields: [userId], references: [id])
+//   userId String
+// }
+
+// next-auth managed table, represents a provided account (google, github, etc)
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+// next-auth managed table, respresents an individual session for users (desktop, mobile, etc)
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

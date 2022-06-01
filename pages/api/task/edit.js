@@ -1,29 +1,25 @@
 import { PrismaClient } from '@prisma/client';
-import { verifyToken } from '../../../lib/auth';
+import { getUserId } from '../../../lib/user';
 
 // TODO - set prisma as singleton to prevent so many clients being created
 const prisma = new PrismaClient();
 
 // POST: modifies task in database with matching id
 export default async (req, res) => {
+    const userId = await getUserId(req, res);
+    if (!userId) { return; }
+
     let body = JSON.parse(req.body);
-
-    let [userId, token] = await verifyToken(body.token);
-
-    if (!userId || !token) {
-        res.status(401);
-        res.json({ message: 'Bad token' });
-        return;
-    }
 
     let editedTask = await prisma.task.update({
         data: body.task,
         where: { id: body.task.id }
     })
 
-    res.status(200);
-    res.json({
-        task: editedTask,
-        token: token
-    })
+    if (!editedTask) {
+        res.status(400).json({ text: 'Error editing task' });
+        return;
+    }
+
+    res.status(200).json({ task: editedTask });
 }
