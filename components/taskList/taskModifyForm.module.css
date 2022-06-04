@@ -1,7 +1,7 @@
 .taskModifyForm {
     background-color: var(--dark);
     height: calc(100vh - 30px); /* factor in padding as well */
-    width: 25vw;
+    min-width: 25vw;
     padding: 15px;
 
     position: sticky;

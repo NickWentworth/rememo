@@ -62,6 +62,7 @@ export function Sidebar() {
                         width={iconSize}
                         height={iconSize}
                         onClick={setExtend.bind(this, !extend)}
+                        layout='fixed'
                     />
                 </div>
             </div>
@@ -74,7 +75,7 @@ function SidebarPanel({ name, link, icon, extend, focused }) {
         <Link href={link}>
             <a>
                 <div className={styles.sidebarPanel + ' interactableHighlight'}>
-                    <Image src={focused ? icon.replace('.svg', 'A.svg') : icon} width={iconSize} height={iconSize} priority />
+                    <Image src={focused ? icon.replace('.svg', 'A.svg') : icon} width={iconSize} height={iconSize} layout='fixed' priority />
 
                     <h3 className={styles.sidebarPanelText + (focused ? ' accentColor' : '')} hidden={!extend}>{name}</h3>
                 </div>

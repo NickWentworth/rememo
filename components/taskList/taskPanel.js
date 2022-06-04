@@ -21,7 +21,7 @@ export function TaskPanel({ task, focused, editTask, deleteTask, setProgress }) 
                 border: focused ? '3px solid var(--white)' : '3px solid transparent',
                 opacity: (task.progress == 100) ? '50%' : '100%'
             }}
-            onMouseEnter={setShowIcons.bind(this, true)}
+            onMouseOver={setShowIcons.bind(this, true)}
             onMouseLeave={setShowIcons.bind(this, false)}
         >
             <div className={styles.taskPanelColorTab} style={{ backgroundColor: task.color }}>
