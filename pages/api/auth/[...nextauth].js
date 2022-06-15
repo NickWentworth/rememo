@@ -7,6 +7,10 @@ const prisma = new PrismaClient();
 
 export default NextAuth({
     adapter: PrismaAdapter(prisma),
+    theme: {
+        colorScheme: 'dark',
+        logo: '/images/logos/rememoAccent.svg'
+    },
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_ID,

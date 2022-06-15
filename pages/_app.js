@@ -1,14 +1,22 @@
+import Head from 'next/head';
 import { SessionProvider, useSession } from 'next-auth/react';
 import '../styles/global.css';
 import '../styles/classes.css';
 
 export default function App({ Component, pageProps }) {
     return (
-        <SessionProvider>
-            <Auth>
-                <Component {...pageProps} />
-            </Auth>
-        </SessionProvider>
+        <>
+            <Head>
+                <meta charSet='utf-8' />
+                <link rel='icon' href='/images/favicon.ico' />
+            </Head>
+            
+            <SessionProvider>
+                <Auth>
+                    <Component {...pageProps} />
+                </Auth>
+            </SessionProvider>
+        </>
     )
 }
 
