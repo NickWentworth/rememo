@@ -19,6 +19,7 @@ export function UserPanel({ extend }) {
                     src={data.user.image}
                     width={50}
                     height={50}
+                    referrerPolicy='no-referrer' // google was sometimes giving 403 errors without this
                 />
 
                 <h4 hidden={!extend}>
