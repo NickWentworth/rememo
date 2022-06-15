@@ -56,12 +56,11 @@ export function Sidebar() {
                 
                 <hr />
 
-                <div className={styles.expandButtonWrapper + ' interactableHighlight'}>
+                <div className={styles.expandButtonWrapper + ' interactableHighlight'} onClick={setExtend.bind(this, !extend)}>
                     <Image
                         src='/images/icons/hamburger.svg'
                         width={iconSize}
                         height={iconSize}
-                        onClick={setExtend.bind(this, !extend)}
                         layout='fixed'
                     />
                 </div>

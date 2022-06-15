@@ -32,12 +32,9 @@
     margin-right: 5px;
 }
 
-/* .sidebarBottom {
-    display: flex;
-    flex-direction: column;
-} */
 .expandButtonWrapper {
     padding: 5px;
     border-radius: 10px;
-    display: flex; /* fixes next.js adding space under image */
+    display: flex;
+    justify-content: flex-end;
 }
