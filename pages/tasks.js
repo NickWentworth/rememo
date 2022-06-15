@@ -1,11 +1,18 @@
+import Head from 'next/head';
 import Sidebar from '../components/sidebar';
 import TaskList from '../components/taskList';
 
 export default function Tasks() {
     return (
-        <div className='page'>
-            <Sidebar currentTab='Tasks' />
-            <TaskList />
-        </div>
+        <>
+            <Head>
+                <title>Tasks - Rememo</title>
+            </Head>
+            
+            <div className='page'>
+                <Sidebar />
+                <TaskList />
+            </div>
+        </>
     )
 }

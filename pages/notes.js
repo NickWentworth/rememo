@@ -1,10 +1,17 @@
+import Head from 'next/head';
 import Sidebar from '../components/sidebar';
 
 export default function Notes() {
     return (
-        <div className='page'>
-            <Sidebar currentTab='Notes' />
-            <p>Notes</p>
-        </div>
+        <>
+            <Head>
+                <title>Notes - Rememo</title>
+            </Head>
+
+            <div className='page'>
+                <Sidebar />
+                <p>Notes</p>
+            </div>
+        </>
     )
 }
