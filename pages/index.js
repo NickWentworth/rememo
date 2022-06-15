@@ -5,7 +5,7 @@ export default function Index() {
     return (
         <>
             <Head>
-                <title>Index - Rememo</title>
+                <title>Index • Rememo</title>
             </Head>
 
             <div className='page'>

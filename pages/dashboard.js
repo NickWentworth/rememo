@@ -5,7 +5,7 @@ export default function Dashboard() {
     return (
         <>
             <Head>
-                <title>Dashboard - Rememo</title>
+                <title>Dashboard • Rememo</title>
             </Head>
 
             <div className='page'>

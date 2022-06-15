@@ -6,9 +6,9 @@ export default function Tasks() {
     return (
         <>
             <Head>
-                <title>Tasks - Rememo</title>
+                <title>Tasks • Rememo</title>
             </Head>
-            
+
             <div className='page'>
                 <Sidebar />
                 <TaskList />

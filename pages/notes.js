@@ -5,7 +5,7 @@ export default function Notes() {
     return (
         <>
             <Head>
-                <title>Notes - Rememo</title>
+                <title>Notes • Rememo</title>
             </Head>
 
             <div className='page'>
