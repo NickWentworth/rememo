@@ -1,16 +1,16 @@
 import Head from 'next/head';
 import Sidebar from '../components/sidebar';
 
-export default function Notes() {
+export default function Classes() {
     return (
         <>
             <Head>
-                <title>Notes • Rememo</title>
+                <title>Classes • Rememo</title>
             </Head>
 
             <div className='page'>
                 <Sidebar />
-                <p>Notes</p>
+                <p>Classes</p>
             </div>
         </>
     )

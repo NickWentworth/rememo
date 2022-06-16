@@ -21,7 +21,7 @@ export function Sidebar() {
                 <SidebarPanel
                     name={'Dashboard'}
                     link={'/dashboard'}
-                    icon={`${iconPath}dashboard.svg`}
+                    iconPath={'/images/icons/dashboard.png'}
                     extend={extend}
                     focused={router.asPath === '/dashboard'}
                 />
@@ -31,7 +31,7 @@ export function Sidebar() {
                 <SidebarPanel
                     name={'Tasks'}
                     link={'/tasks'}
-                    icon={`${iconPath}tasks.svg`}
+                    iconPath={'/images/icons/tasks.png'}
                     extend={extend}
                     focused={router.asPath === '/tasks'}
                 />
@@ -39,11 +39,11 @@ export function Sidebar() {
                 <hr />
 
                 <SidebarPanel
-                    name={'Notes'}
-                    link={'/notes'}
-                    icon={`${iconPath}notes.svg`}
+                    name={'Classes'}
+                    link={'/classes'}
+                    iconPath={'/images/icons/classes.png'}
                     extend={extend}
-                    focused={router.asPath === '/notes'}
+                    focused={router.asPath === '/classes'}
                 />
 
                 <hr />
@@ -58,7 +58,7 @@ export function Sidebar() {
 
                 <div className={styles.expandButtonWrapper + ' interactableHighlight'} onClick={setExtend.bind(this, !extend)}>
                     <Image
-                        src='/images/icons/hamburger.svg'
+                        src='/images/icons/menuWhite.png'
                         width={iconSize}
                         height={iconSize}
                         layout='fixed'
@@ -69,12 +69,12 @@ export function Sidebar() {
     )
 }
 
-function SidebarPanel({ name, link, icon, extend, focused }) {
+function SidebarPanel({ name, link, iconPath, extend, focused }) {
     return (
         <Link href={link}>
             <a>
                 <div className={styles.sidebarPanel + ' interactableHighlight'}>
-                    <Image src={focused ? icon.replace('.svg', 'A.svg') : icon} width={iconSize} height={iconSize} layout='fixed' priority />
+                    <Image src={iconPath.replace('.png', focused ? 'Accent.png' : 'White.png')} width={iconSize} height={iconSize} layout='fixed' priority />
 
                     <h3 className={styles.sidebarPanelText + (focused ? ' accentColor' : '')} hidden={!extend}>{name}</h3>
                 </div>

@@ -28,7 +28,7 @@ export function TaskPanel({ task, focused, editTask, deleteTask, setProgress }) 
                 <div className={styles.taskPanelColorTabButtonWrapper} hidden={!showIcons}>
                     <Image
                         className='interactableHighlight50'
-                        src='/images/icons/edit.svg'
+                        src='/images/icons/editDark.png'
                         width={iconSize}
                         height={iconSize}
                         onClick={editTask.bind(this, task)}
@@ -36,7 +36,7 @@ export function TaskPanel({ task, focused, editTask, deleteTask, setProgress }) 
 
                     <Image
                         className='interactableHighlight50'
-                        src='/images/icons/delete.svg'
+                        src='/images/icons/deleteDark.png'
                         width={iconSize}
                         height={iconSize}
                         onClick={deleteTask.bind(this, task)}

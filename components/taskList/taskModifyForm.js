@@ -31,7 +31,7 @@ export function TaskModifyForm({ viewInfo, closeView, collectData }) {
         <div className={styles.taskModifyForm + ' boxShadowDark'} hidden={viewInfo.mode == taskModifyMode.closed}>
             <div className={styles.closeButtonWrapper + ' interactableHighlight'}>
                 <Image
-                    src='/images/icons/close.svg'
+                    src='/images/icons/closeWhite.png'
                     width={40}
                     height={40}
                     onClick={closeView.bind(this)}
