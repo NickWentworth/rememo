@@ -18,30 +18,54 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  tasks Task[]
+  terms   Term[]
+  classes Class[]
+  tasks   Task[]
 }
 
-model Task {
-  id          String  @id @default(cuid())
-  name        String  @default("Unnamed Task")
-  class       String?
-  description String?
-  dueDate     String
-  dueTime     String?
-  progress    Int     @default(0)
+model Term {
+  id        String   @id @default(cuid())
+  name      String   @default("Unnamed Term")
+  startDate DateTime
+  endDate   DateTime
+
+  classes Class[]
 
   user   User   @relation(fields: [userId], references: [id])
   userId String
 }
 
-// model Class {
-//   id    String @id @default(cuid())
-//   name  String
-//   color String
+// TODO - add class times
+model Class {
+  id         String  @id @default(cuid())
+  name       String
+  color      String
+  instructor String?
+  location   String?
 
-//   user   User   @relation(fields: [userId], references: [id])
-//   userId String
-// }
+  tasks Task[]
+
+  term   Term   @relation(fields: [termId], references: [id])
+  termId String
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+}
+
+model Task {
+  id          String  @id @default(cuid())
+  name        String  @default("Unnamed Task")
+  description String?
+  dueDate     String
+  dueTime     String?
+  progress    Int     @default(0)
+
+  class   Class?  @relation(fields: [classId], references: [id])
+  classId String?
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+}
 
 // next-auth managed table, represents a provided account (google, github, etc)
 model Account {
