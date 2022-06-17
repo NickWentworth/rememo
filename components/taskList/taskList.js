@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useTasks } from '../hooks/useTasks';
+import { useObjectList } from '../hooks/useObjectList';
 import { TaskPanel } from './taskPanel';
 import { TaskModifyForm } from './taskModifyForm';
 import { emptyTask, getISO, getTimeDivider } from '../../lib/taskUtility';
@@ -20,7 +20,7 @@ const initialViewInfo = {
 }
 
 export function TaskList() {
-    const [tasks, baseTaskFunctions] = useTasks();
+    const [tasks, baseTaskFunctions] = useObjectList('task');
     const [viewInfo, setViewInfo] = useState(initialViewInfo);
 
     // need to close task modify form on delete and edit

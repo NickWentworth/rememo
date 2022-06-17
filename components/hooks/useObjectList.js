@@ -1,12 +1,16 @@
 import { useState, useEffect } from 'react';
 
+const baseApiRoute = '/api/data/';
+
 // Generic hook for using a list of objects as a state
 // Mostly shared logic between tasks, classes, etc.
-export function useObjectList(apiRoute) {
+// Type is given as a string ('task', 'class') that must exist in prisma schema
+export function useObjectList(type) {
     const [state, setState] = useState(null);
+    const apiRoute = baseApiRoute + type;
 
     useEffect(async () => {
-        let response = await fetch(`${apiRoute}`);
+        let response = await fetch(apiRoute);
         let data = await response.json();
 
         if (!response.ok) {
@@ -19,8 +23,8 @@ export function useObjectList(apiRoute) {
 
     const stateFunctions = {
         add: async (addedObject) => {
-            let response = await fetch(`${apiRoute}add`, {
-                method: 'POST',
+            let response = await fetch(apiRoute, {
+                method: 'ADD',
                 body: JSON.stringify({ data: addedObject })
             })
             let data = await response.json();
@@ -33,8 +37,8 @@ export function useObjectList(apiRoute) {
             setState(state.concat(data.data));
         },
         delete: async (deletedObject) => {
-            let response = await fetch(`${apiRoute}delete`, {
-                method: 'POST',
+            let response = await fetch(apiRoute, {
+                method: 'DELETE',
                 body: JSON.stringify({ data: deletedObject })
             })
             let data = await response.json();
@@ -47,8 +51,8 @@ export function useObjectList(apiRoute) {
             setState(state.filter((object) => (object.id != deletedObject.id)));
         },
         edit: async (editedObject) => {
-            let response = await fetch(`${apiRoute}edit`, {
-                method: 'POST',
+            let response = await fetch(apiRoute, {
+                method: 'EDIT',
                 body: JSON.stringify({ data: editedObject })
             })
             let data = await response.json();
