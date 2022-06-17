@@ -12,7 +12,7 @@ export default async (req, res) => {
     let body = JSON.parse(req.body);
 
     let deletedTask = await prisma.task.delete({
-        where: { id: body.task.id }
+        where: { id: body.data.id }
     })
 
     if (!deletedTask) {
@@ -20,5 +20,5 @@ export default async (req, res) => {
         return;
     }
 
-    res.status(200).json({ task: deletedTask });
+    res.status(200).json({ data: deletedTask });
 }

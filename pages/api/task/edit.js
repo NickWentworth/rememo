@@ -12,8 +12,8 @@ export default async (req, res) => {
     let body = JSON.parse(req.body);
 
     let editedTask = await prisma.task.update({
-        data: body.task,
-        where: { id: body.task.id }
+        data: body.data,
+        where: { id: body.data.id }
     })
 
     if (!editedTask) {
@@ -21,5 +21,5 @@ export default async (req, res) => {
         return;
     }
 
-    res.status(200).json({ task: editedTask });
+    res.status(200).json({ data: editedTask });
 }

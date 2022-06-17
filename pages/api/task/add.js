@@ -12,7 +12,7 @@ export default async (req, res) => {
     let body = JSON.parse(req.body);
 
     let addedTask = await prisma.task.create({
-        data: { ...body.task, userId: userId }
+        data: { ...body.data, userId: userId }
     })
 
     if (!addedTask) {
@@ -20,5 +20,5 @@ export default async (req, res) => {
         return;
     }
 
-    res.status(200).json({ task: addedTask });
+    res.status(200).json({ data: addedTask });
 }

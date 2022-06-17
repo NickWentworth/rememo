@@ -13,5 +13,5 @@ export default async (req, res) => {
         where: { userId: userId }
     })
 
-    res.status(200).json({ tasks: tasks });
+    res.status(200).json({ data: tasks });
 }
