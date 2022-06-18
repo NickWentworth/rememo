@@ -29,7 +29,7 @@ export default async (req, res) => {
         res.status(400).json({ error: `Invalid data type: ${type}` });
         return;
     }
-    const prismaTable = typeToTable['task'];
+    const prismaTable = typeToTable[type];
     
     const body = JSON.parse(req.body || '{}');
     let data = null;

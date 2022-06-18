@@ -1,0 +1,42 @@
+.content {
+    flex-grow: 1;
+    display:contents;
+}
+
+.termSection {
+    width: 30%
+}
+.classSection {
+    width: 70%;
+}
+
+.termSection,
+.classSection {
+    padding: 30px;
+}
+
+.termSection > *,
+.classSection > * {
+    margin-top: 10px;
+}
+
+.termPanel,
+.classPanel {
+    background-color: var(--dark);
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.classPanelLine {
+    display: flex;
+}
+.classPanelLine > * {
+    margin-left: 5px;
+}
+
+.verticalLine {
+    background-color: var(--light);
+    opacity: 50%;
+    width: 1px;
+    margin: 30px 0px;
+}
