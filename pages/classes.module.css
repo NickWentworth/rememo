@@ -1,10 +1,15 @@
 .content {
     flex-grow: 1;
-    display:contents;
+    display: contents;
+}
+.content hr {
+    background-color: var(--light);
+    opacity: 50%;
+    margin: 0px 15px;
 }
 
 .termSection {
-    width: 30%
+    width: 30%;
 }
 .classSection {
     width: 70%;
@@ -20,11 +25,37 @@
     margin-top: 10px;
 }
 
+.header {
+    display: flex;
+    align-items: center;
+}
+.header hr {
+    flex-grow: 1;
+}
+.addButtonImage {
+    border-radius: 100%;
+    transform: scale(0.9);
+}
+.addButtonImage:hover {
+    transform: scale(1);
+}
+
 .termPanel,
 .classPanel {
     background-color: var(--dark);
     padding: 10px 20px;
     border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.panelIcons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.panelIcons > * {
+    border-radius: 10px;
 }
 
 .classPanelLine {
