@@ -1,0 +1,33 @@
+/* Card.jsx */
+.card {
+    /* ignore changed button settings */
+    text-align: initial;
+    font-size: initial;
+
+    background-color: var(--dark);
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: 3px solid;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.icons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    row-gap: 3px;
+}
+.icons > img {
+    border-radius: 25%;
+}
+
+/* Course.jsx */
+.courseInfoLine {
+    display: flex;
+}
+.courseInfoLine > * {
+    margin-right: 5px;
+}

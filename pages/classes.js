@@ -3,7 +3,7 @@ import { useObjectList } from '../components/hooks/useObjectList';
 import Head from 'next/head';
 import Image from 'next/image';
 import Sidebar from '../components/sidebar';
-import { getTermFormattedDate } from '../lib/dateUtility';
+import { Term, Course } from '../components/cards';
 import styles from './classes.module.css';
 
 // TODO - separate class and term panels into separate components
@@ -38,22 +38,11 @@ export default function Classes() {
                         </div>
 
                         {terms.map((term) => (
-                            <div
-                                key={term.id}
-                                className={styles.termPanel + ' boxShadowDark interactableHighlight'}
-                                onClick={() => setFocusedTerm(term)}
-                                style={{ border: (focusedTerm == term) ? '3px solid var(--white)' : '3px solid transparent' }}
-                            >
-                                <div>
-                                    <h2>{term.name}</h2>
-
-                                    <p>{getTermFormattedDate(term.startDate) + ' - ' + getTermFormattedDate(term.endDate)}</p>
-                                </div>
-
-                                <div className={styles.panelIcons}>
-                                    <Image className='interactableHighlight50' src='/images/icons/editWhite.png' width={30} height={30} layout='fixed' />
-                                    <Image className='interactableHighlight50' src='/images/icons/deleteWhite.png' width={30} height={30} layout='fixed' />
-                                </div>
+                            <div key={term.id} onClick={() => setFocusedTerm(term)}>
+                                <Term
+                                    term={term}
+                                    focused={focusedTerm == term}
+                                />
                             </div>
                         ))}
                     </div>
@@ -73,26 +62,7 @@ export default function Classes() {
 
                         {focusedTerm && classes.filter((c) => (c.termId == focusedTerm.id))
                             .map((_class) => (
-                                <div key={_class.id} className={styles.classPanel + ' boxShadowDark'}>
-                                    <div>
-                                        <h2 style={{ color: _class.color }}>{_class.name}</h2>
-
-                                        {_class.instructor && <div className={styles.classPanelLine}>
-                                            <Image src='/images/icons/personWhite.png' width={23} height={23} layout='fixed' priority />
-                                            <p>{_class.instructor}</p>
-                                        </div>}
-
-                                        {_class.location && <div className={styles.classPanelLine}>
-                                            <Image src='/images/icons/locationWhite.png' width={23} height={23} layout='fixed' priority />
-                                            <p>{_class.location}</p>
-                                        </div>}
-                                    </div>
-
-                                    <div className={styles.panelIcons}>
-                                        <Image className='interactableHighlight50' src='/images/icons/editWhite.png' width={30} height={30} layout='fixed' />
-                                        <Image className='interactableHighlight50' src='/images/icons/deleteWhite.png' width={30} height={30} layout='fixed' />
-                                    </div>
-                                </div>
+                                <Course key={_class.id} course={_class} />
                             ))
                         }
 

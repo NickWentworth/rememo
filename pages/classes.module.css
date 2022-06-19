@@ -40,31 +40,6 @@
     transform: scale(1);
 }
 
-.termPanel,
-.classPanel {
-    background-color: var(--dark);
-    padding: 10px 20px;
-    border-radius: 5px;
-    display: flex;
-    justify-content: space-between;
-}
-
-.panelIcons {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-.panelIcons > * {
-    border-radius: 10px;
-}
-
-.classPanelLine {
-    display: flex;
-}
-.classPanelLine > * {
-    margin-left: 5px;
-}
-
 .verticalLine {
     background-color: var(--light);
     opacity: 50%;
