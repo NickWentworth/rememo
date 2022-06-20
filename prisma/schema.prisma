@@ -24,10 +24,10 @@ model User {
 }
 
 model Term {
-  id        String   @id @default(cuid())
-  name      String   @default("Unnamed Term")
-  startDate DateTime
-  endDate   DateTime
+  id        String @id @default(cuid())
+  name      String @default("Unnamed Term")
+  startDate String
+  endDate   String
 
   classes Class[]
 

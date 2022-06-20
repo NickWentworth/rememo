@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Sidebar from '../components/sidebar';
 import { Term, Course } from '../components/cards';
 import styles from './classes.module.css';
+import { TermForm } from '../components/forms/TermForm';
 
 // TODO - separate class and term panels into separate components
 
@@ -12,10 +13,16 @@ export default function Classes() {
     const [terms, termFunctions] = useObjectList('term');
     const [classes, classFunctions] = useObjectList('class');
     const [focusedTerm, setFocusedTerm] = useState(null);
+    const [editingTerm, setEditingTerm] = useState(null);
     
     // TODO - add loading component
     if (terms == null || classes == null) {
         return 'Loading...'
+    }
+
+    function log(data) {
+        console.log('Submitted data: ');
+        console.log(data);
     }
 
     return (
@@ -27,6 +34,8 @@ export default function Classes() {
             <div className='page'>
                 <Sidebar />
                 
+                <TermForm editingTerm={focusedTerm} onSubmit={(d) => log(d)} nullEditingTerm={() => setFocusedTerm(null)} />
+                
                 <div className={styles.content}>
                     <div className={styles.termSection}>
                         <div className={styles.header}>
@@ -34,7 +43,7 @@ export default function Classes() {
 
                             <hr />
 
-                            <Image className={styles.addButtonImage + ' interactableHighlight'} src='/images/icons/addWhite.png' width={40} height={40}/>
+                            <Image className={styles.addButtonImage + ' interactableHighlight'} src='/images/icons/addWhite.png' width={40} height={40} onClick={() => setFocusedTerm({})}/>
                         </div>
 
                         {terms.map((term) => (
