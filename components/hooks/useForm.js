@@ -1,22 +1,22 @@
 import { useEffect, useState } from 'react';
 
-// data is the object currently being edited or null if adding
-// emptyData is an empty representation of the object for adding
-export function useForm({ editingTerm, onSubmit, nullEditingTerm }) {
-    const [formData, setFormData] = useState(editingTerm);
+// takes in same args as parent props
+// returns:
+// formData to send to child input element's value prop
+// close to send to <Form> prop
+// handleSubmit to send to <Form> prop
+// handleInputChange to send to child input element's onChange prop
+export function useForm({ editingData, onSubmit, nullEditingData }) {
+    const [formData, setFormData] = useState(editingData);
 
     useEffect(() => {
-        if (editingTerm == {}) {
-            setFormData(emptyTerm);
-        } else {
-            setFormData(editingTerm);
-        }
-    }, [editingTerm])
+        setFormData(editingData);
+    }, [editingData])
 
     // close form
     function close() {
         setFormData(null);
-        nullEditingTerm();
+        nullEditingData();
     }
 
     async function handleSubmit(event) {
