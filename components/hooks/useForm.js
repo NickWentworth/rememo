@@ -2,17 +2,27 @@ import { useEffect, useState } from 'react';
 
 // data is the object currently being edited or null if adding
 // emptyData is an empty representation of the object for adding
-export function useForm(data, emptyData, submitCallback) {
-    const [formData, setFormData] = useState(data);
+export function useForm({ editingTerm, onSubmit, nullEditingTerm }) {
+    const [formData, setFormData] = useState(editingTerm);
 
     useEffect(() => {
-        setFormData(data || emptyData);
-        console.log(data);
-    }, [data])
+        if (editingTerm == {}) {
+            setFormData(emptyTerm);
+        } else {
+            setFormData(editingTerm);
+        }
+    }, [editingTerm])
+
+    // close form
+    function close() {
+        setFormData(null);
+        nullEditingTerm();
+    }
 
     async function handleSubmit(event) {
         event.preventDefault();
-        await submitCallback();
+        await onSubmit(formData);
+        close();
     }
 
     function handleInputChange(event) {
@@ -22,5 +32,5 @@ export function useForm(data, emptyData, submitCallback) {
         })
     }
 
-    return { formData, setFormData, handleSubmit, handleInputChange };
+    return { formData, close, handleSubmit, handleInputChange };
 }
