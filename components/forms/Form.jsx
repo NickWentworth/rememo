@@ -5,7 +5,7 @@ export function Form({ title, onSubmit, close, children }) {
         <div className={styles.page}>
             <div className={styles.background} />
 
-            <form className={styles.form + ' boxShadowDark'} onSubmit={onSubmit}>
+            <form className={styles.form} onSubmit={onSubmit}>
                 <div className={styles.header}>
                     <h1>{title}</h1>
                     <img
@@ -16,7 +16,13 @@ export function Form({ title, onSubmit, close, children }) {
                     />
                 </div>
 
-                {children}
+                <hr />
+
+                <div className={styles.content}>
+                    {children}
+                </div>
+
+                <hr />
 
                 <button className={styles.submit} type='submit'>Submit</button>
             </form>
