@@ -24,7 +24,7 @@ export function useObjectList(type) {
     const stateFunctions = {
         add: async (addedObject) => {
             let response = await fetch(apiRoute, {
-                method: 'ADD',
+                method: 'POST',
                 body: JSON.stringify({ data: addedObject })
             })
             let data = await response.json();
@@ -52,7 +52,7 @@ export function useObjectList(type) {
         },
         edit: async (editedObject) => {
             let response = await fetch(apiRoute, {
-                method: 'EDIT',
+                method: 'PUT',
                 body: JSON.stringify({ data: editedObject })
             })
             let data = await response.json();

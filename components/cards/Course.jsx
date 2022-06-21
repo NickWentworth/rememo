@@ -1,9 +1,9 @@
 import { Card, iconSize } from './Card';
 import styles from './cards.module.css';
 
-export function Course({ course }) {
+export function Course({ course, onEditClick, onDeleteClick }) {
     return (
-        <Card focused={false}>
+        <Card focused={false} onEditClick={onEditClick} onDeleteClick={onDeleteClick}>
             <div>
                 <h2 style={{ color: course.color }}>{course.name}</h2>
 

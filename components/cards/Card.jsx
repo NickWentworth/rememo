@@ -3,7 +3,7 @@ import styles from './cards.module.css';
 
 export const iconSize = 25;
 
-export function Card({ focused, children }) {
+export function Card({ focused, onEditClick, onDeleteClick, children }) {
     const [showIcons, setShowIcons] = useState(false);
 
     return (
@@ -16,8 +16,21 @@ export function Card({ focused, children }) {
             {children}
 
             <div className={styles.icons}>
-                <img className='interactableHighlight50' src='/images/icons/editWhite.png' height={iconSize} width={iconSize} hidden={!showIcons && !focused} />
-                <img className='interactableHighlight50' src='/images/icons/deleteWhite.png' height={iconSize} width={iconSize} hidden={!showIcons && !focused} />
+                <img
+                    className='interactableHighlight50'
+                    src='/images/icons/editWhite.png'
+                    height={iconSize} width={iconSize}
+                    style={{ opacity: (showIcons || focused) ? '100%' : '0%' }}
+                    onClick={() => onEditClick()}
+                />
+
+                <img
+                    className='interactableHighlight50'
+                    src='/images/icons/deleteWhite.png'
+                    height={iconSize} width={iconSize}
+                    style={{ opacity: (showIcons || focused) ? '100%' : '0%' }}
+                    onClick={() => onDeleteClick()}
+                />
             </div>
         </button>
     )

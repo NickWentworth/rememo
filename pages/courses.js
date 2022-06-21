@@ -6,12 +6,15 @@ import Sidebar from '../components/sidebar';
 import { Term, Course } from '../components/cards';
 import styles from './courses.module.css';
 import { TermForm } from '../components/forms/TermForm';
+import { CourseForm } from '../components/forms/CourseForm';
 
 export default function Courses() {
     const [terms, termFunctions] = useObjectList('term');
-    const [courses, courseFunctions] = useObjectList('course');
     const [focusedTerm, setFocusedTerm] = useState(null);
     const [editingTerm, setEditingTerm] = useState(null);
+
+    const [courses, courseFunctions] = useObjectList('course');
+    const [editingCourse, setEditingCourse] = useState(null);
     
     // TODO - add loading component
     if (terms == null || courses == null) {
@@ -32,7 +35,20 @@ export default function Courses() {
             <div className='page'>
                 <Sidebar />
                 
-                <TermForm editingTerm={focusedTerm} onSubmit={(d) => log(d)} nullEditingTerm={() => setFocusedTerm(null)} />
+                <TermForm
+                    editingData={editingTerm}
+                    add={termFunctions.add}
+                    edit={termFunctions.edit}
+                    nullEditingData={() => setEditingTerm(null)}
+                />
+
+                <CourseForm
+                    editingData={editingCourse}
+                    add={courseFunctions.add}
+                    edit={courseFunctions.edit}
+                    nullEditingData={() => setEditingCourse(null)}
+                    termId={focusedTerm?.id || ''}
+                />
                 
                 <div className={styles.content}>
                     <div className={styles.termSection}>
@@ -41,7 +57,12 @@ export default function Courses() {
 
                             <hr />
 
-                            <Image className={styles.addButtonImage + ' interactableHighlight'} src='/images/icons/addWhite.png' width={40} height={40} onClick={() => setFocusedTerm({})}/>
+                            <Image
+                                className={styles.addButtonImage + ' interactableHighlight'}
+                                src='/images/icons/addWhite.png'
+                                width={40} height={40}
+                                onClick={() => setEditingTerm({})}
+                            />
                         </div>
 
                         {terms.map((term) => (
@@ -49,6 +70,8 @@ export default function Courses() {
                                 <Term
                                     term={term}
                                     focused={focusedTerm == term}
+                                    onEditClick={() => setEditingTerm(term)}
+                                    onDeleteClick={() => termFunctions.delete(term)}
                                 />
                             </div>
                         ))}
@@ -62,14 +85,24 @@ export default function Courses() {
 
                             <hr />
 
-                            <Image className={styles.addButtonImage + ' interactableHighlight'} src='/images/icons/addWhite.png' width={45} height={45}/>
+                            <Image
+                                className={styles.addButtonImage + ' interactableHighlight'}
+                                src='/images/icons/addWhite.png'
+                                width={45} height={45}
+                                onClick={() => setEditingCourse({})}
+                            />
                         </div>
 
                         {focusedTerm == null && <p>Select a term to view its courses</p>}
 
                         {focusedTerm && courses.filter((c) => (c.termId == focusedTerm.id))
                             .map((course) => (
-                                <Course key={course.id} course={course} />
+                                <Course
+                                    key={course.id}
+                                    course={course}
+                                    onEditClick={() => setEditingCourse(course)}
+                                    onDeleteClick={() => courseFunctions.delete(course)}
+                                />
                             ))
                         }
 

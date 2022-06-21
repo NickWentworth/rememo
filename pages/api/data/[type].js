@@ -40,17 +40,18 @@ export default async (req, res) => {
                 where: { userId: userId }
             })
             break;
-        case 'ADD':
+        case 'POST':
             data = await prismaTable.create({
                 data: { ...body.data, userId }
             })
             break;
         case 'DELETE':
+            // TODO - handle recursive deleting of dependent entries (ex: deleting all courses of a term)
             data = await prismaTable.delete({
                 where: { id: body.data.id }
             })
             break;
-        case 'EDIT':
+        case 'PUT':
             data = await prismaTable.update({
                 data: body.data,
                 where: { id: body.data.id }
