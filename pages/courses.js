@@ -5,8 +5,7 @@ import Image from 'next/image';
 import Sidebar from '../components/sidebar';
 import { Term, Course } from '../components/cards';
 import styles from './courses.module.css';
-import { TermForm } from '../components/forms/TermForm';
-import { CourseForm } from '../components/forms/CourseForm';
+import { TermForm, CourseForm } from '../components/forms';
 
 export default function Courses() {
     const [terms, termFunctions] = useObjectList('term');
