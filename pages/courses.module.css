@@ -11,17 +11,17 @@
 .termSection {
     width: 30%;
 }
-.classSection {
+.courseSection {
     width: 70%;
 }
 
 .termSection,
-.classSection {
+.courseSection {
     padding: 30px;
 }
 
 .termSection > *,
-.classSection > * {
+.courseSection > * {
     margin-top: 10px;
 }
 

@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 // matches a type string to the table it represents
 const typeToTable = {
     'term': prisma.term,
-    'class': prisma.class,
+    'course': prisma.course,
     'task': prisma.task
 }
 

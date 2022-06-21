@@ -4,19 +4,17 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Sidebar from '../components/sidebar';
 import { Term, Course } from '../components/cards';
-import styles from './classes.module.css';
+import styles from './courses.module.css';
 import { TermForm } from '../components/forms/TermForm';
 
-// TODO - separate class and term panels into separate components
-
-export default function Classes() {
+export default function Courses() {
     const [terms, termFunctions] = useObjectList('term');
-    const [classes, classFunctions] = useObjectList('class');
+    const [courses, courseFunctions] = useObjectList('course');
     const [focusedTerm, setFocusedTerm] = useState(null);
     const [editingTerm, setEditingTerm] = useState(null);
     
     // TODO - add loading component
-    if (terms == null || classes == null) {
+    if (terms == null || courses == null) {
         return 'Loading...'
     }
 
@@ -28,7 +26,7 @@ export default function Classes() {
     return (
         <>
             <Head>
-                <title>Classes • Rememo</title>
+                <title>Courses • Rememo</title>
             </Head>
 
             <div className='page'>
@@ -58,24 +56,24 @@ export default function Classes() {
                     
                     <div className={styles.verticalLine} />
 
-                    <div className={styles.classSection}>
+                    <div className={styles.courseSection}>
                         <div className={styles.header}>
-                            <h1>Classes</h1>
+                            <h1>Courses</h1>
 
                             <hr />
 
                             <Image className={styles.addButtonImage + ' interactableHighlight'} src='/images/icons/addWhite.png' width={45} height={45}/>
                         </div>
 
-                        {focusedTerm == null && <p>Select a term to view its classes</p>}
+                        {focusedTerm == null && <p>Select a term to view its courses</p>}
 
-                        {focusedTerm && classes.filter((c) => (c.termId == focusedTerm.id))
-                            .map((_class) => (
-                                <Course key={_class.id} course={_class} />
+                        {focusedTerm && courses.filter((c) => (c.termId == focusedTerm.id))
+                            .map((course) => (
+                                <Course key={course.id} course={course} />
                             ))
                         }
 
-                        {focusedTerm && classes.filter((c) => (c.termId == focusedTerm.id)).length == 0 && <p>No classes for this term yet</p>}
+                        {focusedTerm && courses.filter((c) => (c.termId == focusedTerm.id)).length == 0 && <p>No courses for this term yet</p>}
                     </div>
                 </div>
             </div>

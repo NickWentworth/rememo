@@ -9,7 +9,7 @@ Rememo is an in-progress planner website for students, built with the Next.js fr
 ## Features (in progress)
 ### Pages
 - [x] Tasks
-- [ ] Classes
+- [ ] Courses
 - [ ] Calendar
 - [ ] Dashboard
 

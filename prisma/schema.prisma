@@ -19,7 +19,7 @@ model User {
   sessions      Session[]
 
   terms   Term[]
-  classes Class[]
+  courses Course[]
   tasks   Task[]
 }
 
@@ -29,14 +29,14 @@ model Term {
   startDate String
   endDate   String
 
-  classes Class[]
+  courses Course[]
 
   user   User   @relation(fields: [userId], references: [id])
   userId String
 }
 
-// TODO - add class times
-model Class {
+// TODO - add course times
+model Course {
   id         String  @id @default(cuid())
   name       String
   color      String
@@ -60,8 +60,8 @@ model Task {
   dueTime     String?
   progress    Int     @default(0)
 
-  class   Class?  @relation(fields: [classId], references: [id])
-  classId String?
+  course   Course? @relation(fields: [courseId], references: [id])
+  courseId String?
 
   user   User   @relation(fields: [userId], references: [id])
   userId String

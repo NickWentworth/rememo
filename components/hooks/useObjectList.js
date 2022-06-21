@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react';
 const baseApiRoute = '/api/data/';
 
 // Generic hook for using a list of objects as a state
-// Mostly shared logic between tasks, classes, etc.
-// Type is given as a string ('task', 'class') that must exist in prisma schema
+// Mostly shared logic between tasks, courses, etc.
+// Type is given as a string ('task', 'course') that must exist in prisma schema
 export function useObjectList(type) {
     const [state, setState] = useState(null);
     const apiRoute = baseApiRoute + type;

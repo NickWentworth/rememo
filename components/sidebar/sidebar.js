@@ -39,11 +39,11 @@ export function Sidebar() {
                 <hr />
 
                 <SidebarPanel
-                    name={'Classes'}
-                    link={'/classes'}
-                    iconPath={'/images/icons/classes.png'}
+                    name={'Courses'}
+                    link={'/courses'}
+                    iconPath={'/images/icons/courses.png'}
                     extend={extend}
-                    focused={router.asPath === '/classes'}
+                    focused={router.asPath === '/courses'}
                 />
 
                 <hr />
