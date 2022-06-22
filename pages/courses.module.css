@@ -2,11 +2,6 @@
     flex-grow: 1;
     display: contents;
 }
-.content hr {
-    background-color: var(--light);
-    opacity: 50%;
-    margin: 0px 15px;
-}
 
 .termSection {
     width: 30%;
@@ -23,21 +18,6 @@
 .termSection > *,
 .courseSection > * {
     margin-top: 10px;
-}
-
-.header {
-    display: flex;
-    align-items: center;
-}
-.header hr {
-    flex-grow: 1;
-}
-.addButtonImage {
-    border-radius: 100%;
-    transform: scale(0.9);
-}
-.addButtonImage:hover {
-    transform: scale(1);
 }
 
 .verticalLine {

@@ -4,8 +4,9 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Sidebar from '../components/sidebar';
 import { Term, Course } from '../components/cards';
-import styles from './courses.module.css';
 import { TermForm, CourseForm } from '../components/forms';
+import { SectionHeader } from '../components/SectionHeader';
+import styles from './courses.module.css';
 
 export default function Courses() {
     const [terms, termFunctions] = useObjectList('term');
@@ -51,18 +52,7 @@ export default function Courses() {
                 
                 <div className={styles.content}>
                     <div className={styles.termSection}>
-                        <div className={styles.header}>
-                            <h1>Terms</h1>
-
-                            <hr />
-
-                            <Image
-                                className={styles.addButtonImage + ' interactableHighlight'}
-                                src='/images/icons/addWhite.png'
-                                width={40} height={40}
-                                onClick={() => setEditingTerm({})}
-                            />
-                        </div>
+                        <SectionHeader title='Terms' onAddClicked={() => setEditingTerm({})} />
 
                         {terms.map((term) => (
                             <div key={term.id} onClick={() => setFocusedTerm(term)}>
@@ -79,18 +69,7 @@ export default function Courses() {
                     <div className={styles.verticalLine} />
 
                     <div className={styles.courseSection}>
-                        <div className={styles.header}>
-                            <h1>Courses</h1>
-
-                            <hr />
-
-                            <Image
-                                className={styles.addButtonImage + ' interactableHighlight'}
-                                src='/images/icons/addWhite.png'
-                                width={45} height={45}
-                                onClick={() => setEditingCourse({})}
-                            />
-                        </div>
+                        <SectionHeader title='Courses' onAddClicked={() => setEditingCourse({})} />
 
                         {focusedTerm == null && <p>Select a term to view its courses</p>}
 

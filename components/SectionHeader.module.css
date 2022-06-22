@@ -1,0 +1,20 @@
+.header {
+    display: flex;
+    align-items: center;
+}
+
+.header hr {
+    flex-grow: 1;
+    background-color: var(--light);
+    opacity: 50%;
+    margin: 0px 15px;
+}
+
+.addButtonImage {
+    border-radius: 50%;
+    transform: scale(0.9);
+}
+
+.addButtonImage:hover {
+    transform: scale(1);
+}
