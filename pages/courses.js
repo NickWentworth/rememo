@@ -6,7 +6,7 @@ import Sidebar from '../components/sidebar';
 import { Term, Course } from '../components/cards';
 import { TermForm, CourseForm } from '../components/forms';
 import { SectionHeader } from '../components/SectionHeader';
-import styles from './courses.module.css';
+import styles from './pages.module.css';
 
 export default function Courses() {
     const [terms, termFunctions] = useObjectList('term');
@@ -51,7 +51,7 @@ export default function Courses() {
                 />
                 
                 <div className={styles.content}>
-                    <div className={styles.termSection}>
+                    <div className={styles.section + ' ' + styles.terms}>
                         <SectionHeader title='Terms' onAddClicked={() => setEditingTerm({})} />
 
                         {terms.map((term) => (
@@ -68,7 +68,7 @@ export default function Courses() {
                     
                     <div className={styles.verticalLine} />
 
-                    <div className={styles.courseSection}>
+                    <div className={styles.section + ' ' + styles.courses}>
                         <SectionHeader title='Courses' onAddClicked={() => setEditingCourse({})} />
 
                         {focusedTerm == null && <p>Select a term to view its courses</p>}

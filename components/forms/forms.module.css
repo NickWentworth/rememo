@@ -53,9 +53,9 @@
     align-items: center;
     margin: 5px;
 }
-.content label > *:not(input, textarea, select) {
+.content label > h3 {
     margin-right: 10px;
-    width: 30%;
+    width: 35%;
 }
 
 .close {
