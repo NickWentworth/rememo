@@ -3,12 +3,12 @@ import { useForm } from '../hooks/useForm';
 import { Form } from './Form';
 
 export function TaskForm({ editingData, add, edit, nullEditingData, courses }) {
-    const [selectedCourseId, setSelectedCourseId] = useState(''); // for select element
+    const [selectedCourseId, setSelectedCourseId] = useState(null); // for select element
     const { formData, close, handleSubmit, handleInputChange } = useForm({ editingData, add, edit, nullEditingData, courseId: selectedCourseId });
 
     // default to editing task's course id when it is changed
     useEffect(() => {
-        setSelectedCourseId(editingData?.courseId || '');
+        setSelectedCourseId(editingData?.courseId || null);
     }, [editingData])
 
     // returns either the color of the selectedCourse
