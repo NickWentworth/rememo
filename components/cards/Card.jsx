@@ -32,6 +32,7 @@ export function Card({ focused, onEditClick, onDeleteClick, children }) {
                     src='/images/icons/deleteWhite.png'
                     height={iconSize} width={iconSize}
                     style={{ opacity: (showIcons || focused) ? '100%' : '0%' }}
+                    // TODO - add 'are you sure?' popup before deleting
                     onClick={() => onDeleteClick()}
                 />
             </div>

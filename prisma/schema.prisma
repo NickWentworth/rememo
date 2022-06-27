@@ -45,7 +45,7 @@ model Course {
 
   tasks Task[]
 
-  term   Term   @relation(fields: [termId], references: [id])
+  term   Term   @relation(fields: [termId], references: [id], onDelete: Cascade)
   termId String
 
   user   User   @relation(fields: [userId], references: [id])
@@ -60,7 +60,7 @@ model Task {
   dueTime     String?
   progress    Int     @default(0)
 
-  course   Course? @relation(fields: [courseId], references: [id])
+  course   Course? @relation(fields: [courseId], references: [id], onDelete: Cascade)
   courseId String?
 
   user   User   @relation(fields: [userId], references: [id])
