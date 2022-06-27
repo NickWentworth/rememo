@@ -36,13 +36,17 @@ p, h1, h2, h3, h4, h5, h6, a, input, label, textarea, button {
     color: var(--white);
 }
 
-input, textarea, button {
+input, textarea, button, select {
     padding: 8px;
     font-size: larger;
     background-color: var(--medium);
     border-radius: 3px;
     border: 0px;
     width: 100%;
+}
+
+input[type=date]:hover, input[type=time]:hover, select:hover {
+    cursor: pointer;
 }
 
 input:required:invalid {

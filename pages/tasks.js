@@ -32,6 +32,7 @@ export default function Tasks() {
                     add={taskFunctions.add}
                     edit={taskFunctions.edit}
                     nullEditingData={() => setEditingTask(null)}
+                    courses={courses}
                 />
                 
                 <div className={styles.content}>

@@ -1,15 +1,25 @@
-import { Form } from './Form';
+import { useEffect, useState } from 'react';
 import { useForm } from '../hooks/useForm';
+import { Form } from './Form';
 
-export function TaskForm({ editingData, add, edit, nullEditingData, classes }) {
-    const { formData, close, handleSubmit, handleInputChange } = useForm({ editingData, add, edit, nullEditingData });
+export function TaskForm({ editingData, add, edit, nullEditingData, courses }) {
+    const [selectedCourseId, setSelectedCourseId] = useState(''); // for select element
+    const { formData, close, handleSubmit, handleInputChange } = useForm({ editingData, add, edit, nullEditingData, courseId: selectedCourseId });
+
+    // default to editing task's course id when it is changed
+    useEffect(() => {
+        setSelectedCourseId(editingData?.courseId || '');
+    }, [editingData])
+
+    // returns either the color of the selectedCourse
+    const getSelectedColor = courses.find((course) => course.id == selectedCourseId)?.color || 'var(--white)';
 
     if (!formData) {
         return null;
     }
     
     return (
-        <Form title={(formData.id ? 'Edit' : 'Add') + ' Term'} onSubmit={handleSubmit} close={close}>
+        <Form title={(formData.id ? 'Edit' : 'Add') + ' Task'} onSubmit={handleSubmit} close={close}>
             <label>
                 <h3>Name</h3>
                 <input name='name' type='text' value={formData?.name || ''} onChange={handleInputChange} required />
@@ -17,7 +27,15 @@ export function TaskForm({ editingData, add, edit, nullEditingData, classes }) {
 
             <label>
                 <h3>Course</h3>
-                <input name='course' type='text' value={formData?.courseId || ''} onChange={handleInputChange} />
+                <select onChange={(e) => setSelectedCourseId(e.target.value)} defaultValue={formData?.courseId} style={{ color: getSelectedColor }}>
+                    <option value='' style={{ color: 'var(--white)' }}>None</option>
+
+                    {courses.map((course) => (
+                        <option key={course.id} value={course.id} style={{ color: course.color }}>
+                            {course.name}
+                        </option>
+                    ))}
+                </select>
             </label>
 
             <label>
