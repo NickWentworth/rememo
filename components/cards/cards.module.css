@@ -14,7 +14,12 @@
     justify-content: space-between;
 }
 
+.content {
+    flex-grow: 1;
+}
+
 .icons {
+    margin-left: 15px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -30,4 +35,15 @@
 }
 .courseInfoLine > * {
     margin-right: 5px;
+}
+
+/* Task.jsx */
+.taskHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.taskProgress {
+    display: flex;
+    align-items: center;
 }

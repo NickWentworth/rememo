@@ -11,8 +11,10 @@ export default function Tasks() {
     const [tasks, taskFunctions] = useObjectList('task');
     const [editingTask, setEditingTask] = useState(null);
 
+    const [courses, courseFunctions] = useObjectList('course');
+
     // TODO - add loading component
-    if (tasks == null) {
+    if (tasks == null || courses == null) {
         return 'Loading...'
     }
 
@@ -36,7 +38,18 @@ export default function Tasks() {
                     <div className={styles.section}>
                         <SectionHeader title='Tasks' onAddClicked={() => setEditingTask({})} />
 
-                        {tasks.map((task) => <p key={task.id}>{JSON.stringify(task)}</p>)}
+                        {tasks.length == 0
+                            ? <p>No remaining tasks</p>
+                            : tasks.map((task) => (
+                                <Task
+                                    key={task.id}
+                                    task={task}
+                                    onEditClick={() => setEditingTask(task)}
+                                    onDeleteClick={() => taskFunctions.delete(task)}
+                                    course={courses.find((course) => task.courseId == course.id)}
+                                />
+                            ))
+                        }
                     </div>
                 </div>
             </div>

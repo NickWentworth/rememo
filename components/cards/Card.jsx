@@ -10,10 +10,12 @@ export function Card({ focused, onEditClick, onDeleteClick, children }) {
         <button
             className={styles.card + ' interactableHighlight'}
             style={{ borderColor: focused ? 'var(--white)' : 'transparent' }}
-            onMouseEnter={() => setShowIcons(true)}
+            onMouseOver={() => setShowIcons(true)}
             onMouseLeave={() => setShowIcons(false)}
         >
-            {children}
+            <div className={styles.content}>
+                {children}
+            </div>
 
             <div className={styles.icons}>
                 <img
