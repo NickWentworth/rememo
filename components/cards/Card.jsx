@@ -3,12 +3,13 @@ import styles from './cards.module.css';
 
 export const iconSize = 25;
 
+// set focused={null} for no interactability
 export function Card({ focused, onEditClick, onDeleteClick, children }) {
     const [showIcons, setShowIcons] = useState(false);
 
     return (
-        <button
-            className={styles.card + ' interactableHighlight'}
+        <div
+            className={styles.card + (focused != null ? ' interactableHighlight' : '')}
             style={{ borderColor: focused ? 'var(--white)' : 'transparent' }}
             onMouseOver={() => setShowIcons(true)}
             onMouseLeave={() => setShowIcons(false)}
@@ -34,6 +35,6 @@ export function Card({ focused, onEditClick, onDeleteClick, children }) {
                     onClick={() => onDeleteClick()}
                 />
             </div>
-        </button>
+        </div>
     )
 }

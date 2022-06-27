@@ -6,7 +6,7 @@ export function Task({ task, onEditClick, onDeleteClick, course }) {
     const [formattedDate, formattedDateColor] = getTaskFormattedDate(task.dueDate, task.dueTime);
     
     return (
-        <Card focused={false} onEditClick={onEditClick} onDeleteClick={onDeleteClick}>
+        <Card focused={null} onEditClick={onEditClick} onDeleteClick={onDeleteClick}>
             <div className={styles.taskHeader}>
                 <h2>{task.name}</h2>
 

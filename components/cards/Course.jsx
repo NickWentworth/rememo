@@ -3,7 +3,7 @@ import styles from './cards.module.css';
 
 export function Course({ course, onEditClick, onDeleteClick }) {
     return (
-        <Card focused={false} onEditClick={onEditClick} onDeleteClick={onDeleteClick}>
+        <Card focused={null} onEditClick={onEditClick} onDeleteClick={onDeleteClick}>
             <h2 style={{ color: course.color }}>{course.name}</h2>
 
             {course.instructor && 
