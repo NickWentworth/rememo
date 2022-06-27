@@ -27,7 +27,7 @@ export function TaskForm({ editingData, add, edit, nullEditingData, courses }) {
 
             <label>
                 <h3>Course</h3>
-                <select onChange={(e) => setSelectedCourseId(e.target.value)} defaultValue={formData?.courseId} style={{ color: getSelectedColor }}>
+                <select onChange={(e) => setSelectedCourseId(e.target.value || null)} defaultValue={formData?.courseId} style={{ color: getSelectedColor }}>
                     <option value='' style={{ color: 'var(--white)' }}>None</option>
 
                     {courses.map((course) => (
