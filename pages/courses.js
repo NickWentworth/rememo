@@ -60,7 +60,11 @@ export default function Courses() {
                                     term={term}
                                     focused={focusedTerm == term}
                                     onEditClick={() => setEditingTerm(term)}
-                                    onDeleteClick={() => termFunctions.delete(term)}
+                                    onDeleteClick={async () => {
+                                        // wait to delete term to allow for container div setFocusedTerm() call to finish before nulling it again
+                                        await termFunctions.delete(term);
+                                        setFocusedTerm(null);
+                                    }}
                                 />
                             </div>
                         ))}
