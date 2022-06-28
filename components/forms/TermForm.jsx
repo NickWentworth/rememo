@@ -1,5 +1,5 @@
 import { Form } from './Form';
-import { useForm } from '../hooks/useForm';
+import { useForm } from '../../lib/hooks/useForm';
 
 export function TermForm({ editingData, add, edit, nullEditingData }) {
     const { formData, close, handleSubmit, handleInputChange } = useForm({ editingData, add, edit, nullEditingData });

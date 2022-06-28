@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useObjectList } from '../components/hooks/useObjectList';
+import { useObjectList } from '../lib/hooks/useObjectList';
 import Head from 'next/head';
 import Sidebar from '../components/sidebar';
 import { Loading } from '../components';

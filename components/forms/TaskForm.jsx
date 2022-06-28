@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useForm } from '../hooks/useForm';
+import { useForm } from '../../lib/hooks/useForm';
 import { Form } from './Form';
 
 export function TaskForm({ editingData, add, edit, nullEditingData, courses }) {
