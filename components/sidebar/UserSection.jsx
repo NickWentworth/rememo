@@ -1,8 +1,9 @@
 import { useRouter } from 'next/router';
 import { useSession, signOut } from 'next-auth/react';
-import styles from './userPanel.module.css';
+import { iconSize } from './Sidebar';
+import styles from './sidebar.module.css';
 
-export function UserPanel({ extend }) {
+export function UserSection({ extend }) {
     const router = useRouter();
     const { data, status } = useSession();
 
@@ -11,14 +12,13 @@ export function UserPanel({ extend }) {
     }
 
     return (
-        <div className={styles.userPanel}>
+        <div className={styles.userSection}>
             {/* TODO - convert img to next Image */}
-            <div className={styles.userImageContainer}>
+            <div className={styles.user}>
                 <img
-                    className={styles.userImage}
                     src={data.user.image}
-                    width={50}
-                    height={50}
+                    width={iconSize}
+                    height={iconSize}
                     referrerPolicy='no-referrer' // google was sometimes giving 403 errors without this
                 />
 
@@ -28,12 +28,12 @@ export function UserPanel({ extend }) {
                 </h4>
             </div>
 
-            <div className={styles.userOptionsList}>
-                <a className='interactableHighlight' onClick={() => router.push('/settings')} hidden={!extend}>
+            <div className={styles.links} style={{display: extend ? '' : 'none'}}>
+                <a className={styles.section + ' interactableHighlight'} onClick={() => router.push('/settings')}>
                     Settings
                 </a>
 
-                <a className='interactableHighlight' onClick={() => signOut()} hidden={!extend}>
+                <a className={styles.section + ' interactableHighlight'} onClick={() => signOut()}>
                     Sign Out
                 </a>
             </div>

@@ -1,6 +1,5 @@
 .sidebar {
     background-color: var(--dark);
-    width: fit-content;
     height: 100vh;
 
     position: sticky;
@@ -9,32 +8,67 @@
 
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
 }
+
 .sidebar > * {
     padding: 10px;
 }
 
 .sidebar hr {
-    margin: 5px 0px 5px 0px;
     background-color: var(--medium);
+    margin: 5px 0px;
 }
 
-.sidebarPanel {
+.logo {
+    display: flex;
+    justify-content: center;
+    background-color: var(--accent);
+    padding: 15px;
+}
+
+.grow {
+    flex-grow: 1;
+}
+
+.menuIcon {
+    justify-content: flex-end;
+}
+
+.panel {
     padding: 5px;
     border-radius: 10px;
-
     display: flex;
     align-items: center;
+    gap: 10px;
 }
-.sidebarPanelText {
-    margin-left: 15px;
+
+.panelText {
     margin-right: 5px;
 }
 
-.expandButtonWrapper {
-    padding: 5px;
-    border-radius: 10px;
+/* UserSection.jsx */
+.userSection {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
+}
+
+.user {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.user > img {
+    border-radius: 50%;
+}
+
+.links {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.links > * {
+    padding: 3px;
+    border-radius: 5px;
 }
