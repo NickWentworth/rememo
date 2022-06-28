@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useObjectList } from '../components/hooks/useObjectList';
 import Head from 'next/head';
 import Sidebar from '../components/sidebar';
+import { Loading } from '../components';
 import { Task } from '../components/cards';
 import { TaskForm } from '../components/forms/TaskForm';
 import { SectionHeader } from '../components/SectionHeader';
@@ -13,11 +14,6 @@ export default function Tasks() {
 
     const [courses, courseFunctions] = useObjectList('course');
 
-    // TODO - add loading component
-    if (tasks == null || courses == null) {
-        return 'Loading...'
-    }
-
     return (
         <>
             <Head>
@@ -27,32 +23,37 @@ export default function Tasks() {
             <div className='page'>
                 <Sidebar />
 
-                <TaskForm
-                    editingData={editingTask}
-                    add={taskFunctions.add}
-                    edit={taskFunctions.edit}
-                    nullEditingData={() => setEditingTask(null)}
-                    courses={courses}
-                />
-                
-                <div className={styles.content}>
-                    <div className={styles.section}>
-                        <SectionHeader title='Tasks' onAddClicked={() => setEditingTask({})} />
+                {tasks == null || courses == null
+                    ? <Loading />
+                    : <>
+                        <TaskForm
+                            editingData={editingTask}
+                            add={taskFunctions.add}
+                            edit={taskFunctions.edit}
+                            nullEditingData={() => setEditingTask(null)}
+                            courses={courses}
+                        />
+                        
+                        <div className={styles.content}>
+                            <div className={styles.section}>
+                                <SectionHeader title='Tasks' onAddClicked={() => setEditingTask({})} />
 
-                        {tasks.length == 0
-                            ? <p>No remaining tasks</p>
-                            : tasks.map((task) => (
-                                <Task
-                                    key={task.id}
-                                    task={task}
-                                    onEditClick={() => setEditingTask(task)}
-                                    onDeleteClick={() => taskFunctions.delete(task)}
-                                    course={courses.find((course) => task.courseId == course.id)}
-                                />
-                            ))
-                        }
-                    </div>
-                </div>
+                                {tasks.length == 0
+                                    ? <p>No remaining tasks</p>
+                                    : tasks.map((task) => (
+                                        <Task
+                                            key={task.id}
+                                            task={task}
+                                            onEditClick={() => setEditingTask(task)}
+                                            onDeleteClick={() => taskFunctions.delete(task)}
+                                            course={courses.find((course) => task.courseId == course.id)}
+                                        />
+                                    ))
+                                }
+                            </div>
+                        </div>
+                    </>
+                }
             </div>
         </>
     )

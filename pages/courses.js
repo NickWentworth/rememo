@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useObjectList } from '../components/hooks/useObjectList';
 import Head from 'next/head';
-import Image from 'next/image';
 import Sidebar from '../components/sidebar';
+import { Loading } from '../components';
 import { Term, Course } from '../components/cards';
 import { TermForm, CourseForm } from '../components/forms';
 import { SectionHeader } from '../components/SectionHeader';
@@ -15,16 +15,6 @@ export default function Courses() {
 
     const [courses, courseFunctions] = useObjectList('course');
     const [editingCourse, setEditingCourse] = useState(null);
-    
-    // TODO - add loading component
-    if (terms == null || courses == null) {
-        return 'Loading...'
-    }
-
-    function log(data) {
-        console.log('Submitted data: ');
-        console.log(data);
-    }
 
     return (
         <>
@@ -35,62 +25,68 @@ export default function Courses() {
             <div className='page'>
                 <Sidebar />
                 
-                <TermForm
-                    editingData={editingTerm}
-                    add={termFunctions.add}
-                    edit={termFunctions.edit}
-                    nullEditingData={() => setEditingTerm(null)}
-                />
+                {/* TODO - make loading wrapper component */}
+                {terms == null || courses == null
+                    ? <Loading />
+                    : <>
+                        <TermForm
+                            editingData={editingTerm}
+                            add={termFunctions.add}
+                            edit={termFunctions.edit}
+                            nullEditingData={() => setEditingTerm(null)}
+                        />
+        
+                        <CourseForm
+                            editingData={editingCourse}
+                            add={courseFunctions.add}
+                            edit={courseFunctions.edit}
+                            nullEditingData={() => setEditingCourse(null)}
+                            termId={focusedTerm?.id || ''}
+                        />
 
-                <CourseForm
-                    editingData={editingCourse}
-                    add={courseFunctions.add}
-                    edit={courseFunctions.edit}
-                    nullEditingData={() => setEditingCourse(null)}
-                    termId={focusedTerm?.id || ''}
-                />
-                
-                <div className={styles.content}>
-                    <div className={styles.section + ' ' + styles.terms}>
-                        <SectionHeader title='Terms' onAddClicked={() => setEditingTerm({})} />
+                        <div className={styles.content}>
+                            <div className={styles.section + ' ' + styles.terms}>
+                                <SectionHeader title='Terms' onAddClicked={() => setEditingTerm({})} />
 
-                        {terms.map((term) => (
-                            <div key={term.id} onClick={() => setFocusedTerm(term)}>
-                                <Term
-                                    term={term}
-                                    focused={focusedTerm == term}
-                                    onEditClick={() => setEditingTerm(term)}
-                                    onDeleteClick={async () => {
-                                        // wait to delete term to allow for container div setFocusedTerm() call to finish before nulling it again
-                                        await termFunctions.delete(term);
-                                        setFocusedTerm(null);
-                                    }}
-                                />
+                                {terms.map((term) => (
+                                    <div key={term.id} onClick={() => setFocusedTerm(term)}>
+                                        <Term
+                                            term={term}
+                                            focused={focusedTerm == term}
+                                            onEditClick={() => setEditingTerm(term)}
+                                            onDeleteClick={async () => {
+                                                // wait to delete term to allow for container div setFocusedTerm() call to finish before nulling it again
+                                                await termFunctions.delete(term);
+                                                setFocusedTerm(null);
+                                            }}
+                                        />
+                                    </div>
+                                ))}
                             </div>
-                        ))}
-                    </div>
-                    
-                    <div className={styles.verticalLine} />
+                            
+                            <div className={styles.verticalLine} />
 
-                    <div className={styles.section + ' ' + styles.courses}>
-                        <SectionHeader title='Courses' onAddClicked={() => setEditingCourse({})} />
+                            <div className={styles.section + ' ' + styles.courses}>
+                                <SectionHeader title='Courses' onAddClicked={() => setEditingCourse({})} />
 
-                        {focusedTerm == null && <p>Select a term to view its courses</p>}
+                                {focusedTerm == null && <p>Select a term to view its courses</p>}
 
-                        {focusedTerm && courses.filter((c) => (c.termId == focusedTerm.id))
-                            .map((course) => (
-                                <Course
-                                    key={course.id}
-                                    course={course}
-                                    onEditClick={() => setEditingCourse(course)}
-                                    onDeleteClick={() => courseFunctions.delete(course)}
-                                />
-                            ))
-                        }
+                                {focusedTerm && courses.filter((c) => (c.termId == focusedTerm.id))
+                                    .map((course) => (
+                                        <Course
+                                            key={course.id}
+                                            course={course}
+                                            onEditClick={() => setEditingCourse(course)}
+                                            onDeleteClick={() => courseFunctions.delete(course)}
+                                        />
+                                    ))
+                                }
 
-                        {focusedTerm && courses.filter((c) => (c.termId == focusedTerm.id)).length == 0 && <p>No courses for this term yet</p>}
-                    </div>
-                </div>
+                                {focusedTerm && courses.filter((c) => (c.termId == focusedTerm.id)).length == 0 && <p>No courses for this term yet</p>}
+                            </div>
+                        </div>
+                    </>
+                }
             </div>
         </>
     )
