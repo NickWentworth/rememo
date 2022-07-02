@@ -1,4 +1,4 @@
-import { getTaskFormattedDate } from '../../lib/dateUtility';
+import { getTaskFormattedDate } from '../../lib/utility/date';
 import { Card } from './Card';
 import styles from './cards.module.css';
 

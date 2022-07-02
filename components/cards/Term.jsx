@@ -1,5 +1,5 @@
 import { Card } from './Card';
-import { getTermFormattedDate } from '../../lib/dateUtility';
+import { getTermFormattedDate } from '../../lib/utility/date';
 
 export function Term({ term, focused, onEditClick, onDeleteClick }) {
     return (

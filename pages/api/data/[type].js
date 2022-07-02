@@ -12,9 +12,9 @@ const typeToTable = {
 }
 
 // GET: gets all [type] belonging to a user
-// ADD: adds the [type] to its respective table
+// POST: adds the [type] to its respective table
 // DELETE: deletes the [type] from its table
-// EDIT: edits the [type] with matching id
+// PUT: edits the [type] with matching id
 // [type] is specified in route query
 export default async (req, res) => {
     const userId = await getUserId(req);
@@ -72,6 +72,7 @@ export default async (req, res) => {
     res.status(200).json({ data });
 }
 
+// TODO - add this to lib if future api routes are created
 // takes in request and response object and returns the user's id
 // if error, sets up the response correctly, can just return in calling api function
 async function getUserId(req) {
