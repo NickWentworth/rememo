@@ -12,13 +12,6 @@
     row-gap: 10px;
 }
 
-.verticalLine {
-    background-color: var(--light);
-    opacity: 50%;
-    width: 1px;
-    margin: 30px 0px;
-}
-
 /* courses.js */
 .terms { 
     width: 35%;

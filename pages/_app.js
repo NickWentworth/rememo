@@ -1,5 +1,6 @@
 import Head from 'next/head';
-import { SessionProvider, useSession } from 'next-auth/react';
+import { SessionProvider } from 'next-auth/react';
+import { AuthHandler } from '../components/auth';
 import '../styles/global.css';
 import '../styles/classes.css';
 
@@ -12,18 +13,10 @@ export default function App({ Component, pageProps }) {
             </Head>
             
             <SessionProvider>
-                <Auth>
+                <AuthHandler>
                     <Component {...pageProps} />
-                </Auth>
+                </AuthHandler>
             </SessionProvider>
         </>
     )
-}
-
-function Auth({ children }) {
-    useSession({
-        required: true
-    });
-    
-    return children;
 }

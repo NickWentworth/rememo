@@ -42,6 +42,8 @@ input, textarea, button, select {
     background-color: var(--medium);
     border-radius: 3px;
     border: 0px;
+}
+input, textarea, select {
     width: 100%;
 }
 
@@ -63,6 +65,12 @@ button {
     border-radius: 5px;
     border: 1px solid var(--white);
     padding: 10px;
+}
+button:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: scale(1.05);
+    transition: transform 0.1s;
 }
 
 a {

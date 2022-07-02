@@ -31,3 +31,11 @@
 .whiteColor {
     color: var(--white);
 }
+
+/* vertical rule */
+.verticalRuleLight {
+    background-color: var(--light);
+    opacity: 50%;
+    width: 1px;
+    margin: 30px 0px;
+}
