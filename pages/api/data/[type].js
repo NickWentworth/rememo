@@ -46,7 +46,6 @@ export default async (req, res) => {
             })
             break;
         case 'DELETE':
-            // TODO - handle recursive deleting of dependent entries (ex: deleting all courses of a term)
             data = await prismaTable.delete({
                 where: { id: body.data.id }
             })

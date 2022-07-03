@@ -25,7 +25,6 @@ export default function Courses() {
             <div className='page'>
                 <Sidebar />
                 
-                {/* TODO - make loading wrapper component */}
                 {terms == null || courses == null
                     ? <Loading />
                     : <>

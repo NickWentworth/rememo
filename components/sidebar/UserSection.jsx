@@ -13,7 +13,6 @@ export function UserSection({ extend }) {
 
     return (
         <div className={styles.userSection}>
-            {/* TODO - convert img to next Image */}
             <div className={styles.user}>
                 <img
                     src={data.user.image}
