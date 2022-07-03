@@ -1,6 +1,5 @@
 import { TermForm } from './TermForm';
 import { CourseForm } from './CourseForm';
-// import TaskForm from './TaskForm';
+import { TaskForm } from './TaskForm';
 
-// export { TermForm, CourseForm, TaskForm };
-export { TermForm, CourseForm };
+export { TermForm, CourseForm, TaskForm };

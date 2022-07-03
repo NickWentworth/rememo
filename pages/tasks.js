@@ -4,7 +4,7 @@ import Head from 'next/head';
 import Sidebar from '../components/sidebar';
 import { Loading } from '../components';
 import { Task } from '../components/cards';
-import { TaskForm } from '../components/forms/TaskForm';
+import { TaskForm } from '../components/forms';
 import { SectionHeader } from '../components/SectionHeader';
 import styles from './pages.module.css';
 

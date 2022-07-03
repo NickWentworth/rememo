@@ -1,9 +1,9 @@
-import { getProviders, signIn } from 'next-auth/react';
-import Head from 'next/head';
 import { useEffect, useState } from 'react';
+import { getProviders } from 'next-auth/react';
+import Head from 'next/head';
 import { Loading } from '../Loading';
-import styles from './auth.module.css'
 import { ProviderButton } from './ProviderButton';
+import styles from './auth.module.css'
 
 export function Login() {
     const [providers, setProviders] = useState(null);
