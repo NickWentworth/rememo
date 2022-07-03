@@ -23,7 +23,7 @@ export function Login() {
                 <title>Login • Rememo</title>
             </Head>
 
-            <div className={styles.page}>
+            <div className='fill'>
                 <div className={styles.content + ' boxShadowDark'}>
                     <img src='/images/logos/rememoFullAccent.svg' height={100} />
 

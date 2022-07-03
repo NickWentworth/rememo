@@ -3,6 +3,16 @@
     display: flex;
 }
 
+/* fills the entire viewport, centers children */
+.fill {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 /* used for elements not initially interactable, such as next/image */
 .interactable:hover,
 .interactableHighlight:hover,

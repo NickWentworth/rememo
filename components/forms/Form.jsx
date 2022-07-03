@@ -2,7 +2,7 @@ import styles from './forms.module.css';
 
 export function Form({ title, onSubmit, close, children }) {
     return (
-        <div className={styles.page}>
+        <div className='fill'>
             <div className={styles.background} />
 
             <form className={styles.form} onSubmit={onSubmit}>
