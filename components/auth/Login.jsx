@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
-import { getProviders } from 'next-auth/react';
+import { getProviders, signIn } from 'next-auth/react';
 import Head from 'next/head';
 import { Loading } from '../Loading';
-import { ProviderButton } from './ProviderButton';
 import styles from './auth.module.css'
 
 export function Login() {
@@ -31,20 +30,14 @@ export function Login() {
                     <hr />
                     <p>Please sign in to access Rememo</p>
                     <hr />
-
-                    {Object.values(providers).map((provider) => (
-                        <ProviderButton key={provider.id} provider={provider} image={`/images/logos/${provider.name}[color].png`} />
-                    ))}
                     
-                    {/* TEMP */}
                     {Object.values(providers).map((provider) => (
-                        <ProviderButton key={provider.id} provider={provider} image={`/images/logos/${provider.name}[color].png`} />
+                        <button onClick={() => signIn(provider.id)}>
+                            <img src={`/images/logos/${provider.name}.png`} height={30} />
+                
+                            Sign in with {provider.name}
+                        </button>
                     ))}
-                    {Object.values(providers).map((provider) => (
-                        <ProviderButton key={provider.id} provider={provider} image={`/images/logos/${provider.name}[color].png`} />
-                    ))}
-                    
-                    {/* ---- */}
                 </div>
             </div>
         </>
