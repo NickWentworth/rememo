@@ -12,6 +12,13 @@
     row-gap: 10px;
 }
 
+/* 404.js */
+.custom404 {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
 /* courses.js */
 .terms { 
     width: 35%;
