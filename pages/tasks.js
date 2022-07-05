@@ -6,7 +6,7 @@ import { Loading } from '../components';
 import { Task } from '../components/cards';
 import { TaskForm } from '../components/forms';
 import { SectionHeader } from '../components/SectionHeader';
-import styles from './pages.module.css';
+import styles from '../styles/pages.module.css';
 
 export default function Tasks() {
     const [tasks, taskFunctions] = useObjectList('task');

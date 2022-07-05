@@ -6,7 +6,7 @@ import { Loading } from '../components';
 import { Term, Course } from '../components/cards';
 import { TermForm, CourseForm } from '../components/forms';
 import { SectionHeader } from '../components/SectionHeader';
-import styles from './pages.module.css';
+import styles from '../styles/pages.module.css';
 
 export default function Courses() {
     const [terms, termFunctions] = useObjectList('term');

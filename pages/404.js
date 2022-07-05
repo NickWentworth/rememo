@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
-import styles from './pages.module.css'
+import styles from '../styles/pages.module.css';
 
 export default function Custom404() {
     const router = useRouter();
