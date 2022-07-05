@@ -5,7 +5,7 @@ export function Colors({ colors, value, onChange }) {
     const [selected, setSelected] = useState(value || colors[0]); // default to first color
 
     useEffect(() => {
-        setSelected(value || colors[0]);
+        handleChange(value || colors[0]);
     }, [value])
 
     function handleChange(color) {
