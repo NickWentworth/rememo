@@ -20,7 +20,6 @@ export function Colors({ colors, value, onChange }) {
 
     return (
         <div className={styles.colorsContainer}>
-            
             {colors.map((color) => (
                 <div
                     key={color}

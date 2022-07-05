@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useObjectList } from '../lib/hooks/useObjectList';
 import Head from 'next/head';
-import Sidebar from '../components/sidebar';
+import { Sidebar } from '../components/sidebar';
 import { Loading } from '../components';
 import { Task } from '../components/cards';
 import { TaskForm } from '../components/forms';

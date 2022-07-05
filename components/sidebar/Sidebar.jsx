@@ -9,7 +9,7 @@ import styles from './sidebar.module.css';
 export const iconSize = 50;
 
 export function Sidebar() {
-    const [extend, setExtend] = useState(false);
+    const [extend, setExtend] = useState(true);
     const router = useRouter();
 
     return (
