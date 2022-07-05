@@ -31,7 +31,7 @@ html, body, p, h1, h2, h3, h4, h5, h6, a {
 }
 
 /* apply font */
-p, h1, h2, h3, h4, h5, h6, a, input, label, textarea, button {
+p, h1, h2, h3, h4, h5, h6, a, input, label, textarea, button, select {
     font-family: 'Manrope', sans-serif;
     color: var(--white);
 }

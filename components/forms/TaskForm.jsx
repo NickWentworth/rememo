@@ -1,18 +1,11 @@
-import { useEffect, useState } from 'react';
 import { useForm } from '../../lib/hooks/useForm';
 import { Form } from './Form';
 
 export function TaskForm({ editingData, add, edit, nullEditingData, courses }) {
-    const [selectedCourseId, setSelectedCourseId] = useState(null); // for select element
-    const { formData, close, handleSubmit, handleInputChange } = useForm({ editingData, add, edit, nullEditingData, courseId: selectedCourseId });
-
-    // default to editing task's course id when it is changed
-    useEffect(() => {
-        setSelectedCourseId(editingData?.courseId || null);
-    }, [editingData])
-
-    // returns either the color of the selectedCourse
-    const getSelectedColor = courses.find((course) => course.id == selectedCourseId)?.color || 'var(--white)';
+    const { formData, close, handleSubmit, handleInputChange } = useForm({ editingData, add, edit, nullEditingData });
+    
+    // returns either the selected color for a course or white if none are selected
+    const getSelectedColor = courses.find((course) => course.id == formData?.courseId)?.color || 'var(--white)';
 
     if (!formData) {
         return null;
@@ -27,7 +20,7 @@ export function TaskForm({ editingData, add, edit, nullEditingData, courses }) {
 
             <label>
                 <h3>Course</h3>
-                <select onChange={(e) => setSelectedCourseId(e.target.value || null)} defaultValue={formData?.courseId} style={{ color: getSelectedColor }}>
+                <select name='courseId' onChange={handleInputChange} defaultValue={editingData?.courseId || ''} style={{ color: getSelectedColor}}>
                     <option value='' style={{ color: 'var(--white)' }}>None</option>
 
                     {courses.map((course) => (

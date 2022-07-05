@@ -31,8 +31,15 @@ export default async (req, res) => {
     }
     const prismaTable = typeToTable[type];
     
-    const body = JSON.parse(req.body || '{}');
+    let body = JSON.parse(req.body || '{}');
     let data = null;
+
+    // if any empty strings as values, set them to null to prevent foreign key errors
+    for (let key in body.data) {
+        if (body.data[key] === '') {
+            body.data[key] = null;
+        }
+    }
     
     switch (req.method) {
         case 'GET':
