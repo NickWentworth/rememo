@@ -56,3 +56,26 @@
     margin-top: 30px;
     width: max(20%, 100px);
 }
+
+/* Colors.jsx */
+.colorsContainer {
+    width: 100%;
+    
+    display: grid;
+    grid-template-columns: repeat(5, min(20%, 50px));
+    justify-content: space-between;
+}
+
+.colorOption {
+    border-radius: 50%;
+    padding: 4px;
+    /* overflow: hidden; */
+    border: 4px solid;
+    aspect-ratio: 1;
+}
+
+.colorOptionInner {
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+}
