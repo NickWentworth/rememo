@@ -40,7 +40,8 @@ export default function Courses() {
                             add={courseFunctions.add}
                             edit={courseFunctions.edit}
                             nullEditingData={() => setEditingCourse(null)}
-                            termId={focusedTerm?.id || ''}
+                            focusedTermId={focusedTerm?.id || ''}
+                            terms={terms}
                         />
 
                         <div className={styles.content}>

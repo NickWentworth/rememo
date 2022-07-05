@@ -51,7 +51,8 @@ input[type=date]:hover, input[type=time]:hover, select:hover {
     cursor: pointer;
 }
 
-input:required:invalid {
+input:required:invalid,
+select:required:invalid {
     border: 1px solid red;
 }
 
