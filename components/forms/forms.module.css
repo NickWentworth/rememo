@@ -47,6 +47,24 @@
     width: max(20%, 100px);
 }
 
+/* UserForm.jsx */
+.userFormBackground {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.deleteUser {
+    border-color: red;
+    margin: 50px 0px;
+}
+.deleteUser:hover {
+    color: red;
+    border-color: red;
+}
+
 /* Colors.jsx */
 .colorsContainer {
     width: 100%;
