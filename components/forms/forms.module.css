@@ -1,14 +1,4 @@
-.background {
-    z-index: 1;    
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-color: black;
-    opacity: 80%;
-}
-
 .form {
-    z-index: 2;
     background-color: var(--dark);
     padding: 50px;
     width: 40%;
