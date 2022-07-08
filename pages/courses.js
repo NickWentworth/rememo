@@ -13,6 +13,9 @@ export default function Courses() {
     const [focusedTerm, setFocusedTerm] = useState(null);
     const [editingTerm, setEditingTerm] = useState(null);
 
+    // sort terms from newest to oldest
+    const sortedTerms = terms?.slice().sort((a, b) => new Date(b.endDate) - new Date(a.endDate));
+
     const [courses, courseFunctions] = useObjectList('course');
     const [editingCourse, setEditingCourse] = useState(null);
 
@@ -50,9 +53,9 @@ export default function Courses() {
                             <div className={styles.section + ' ' + styles.terms}>
                                 <SectionHeader title='Terms' onAddClicked={() => setEditingTerm({})} />
 
-                                {terms.length == 0
+                                {sortedTerms.length == 0
                                     ? <p>Click above to add a term</p>
-                                    : terms.map((term) => (
+                                    : sortedTerms.map((term) => (
                                         <div key={term.id} onClick={() => setFocusedTerm(term)}>
                                             <Term
                                                 term={term}

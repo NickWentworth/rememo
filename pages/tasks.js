@@ -14,6 +14,21 @@ export default function Tasks() {
 
     const [courses, courseFunctions] = useObjectList('course');
 
+    // final array of tasks for displaying
+    const displayTasks = tasks?.slice().sort((a, b) => {
+        const aDate = new Date(`${a.dueDate}T${a.dueTime || '23:59'}:00`);
+        const bDate = new Date(`${b.dueDate}T${b.dueTime || '23:59'}:00`);
+        return aDate - bDate;
+    }).map((task) => (
+        <Task
+            key={task.id}
+            task={task}
+            onEditClick={() => setEditingTask(task)}
+            onDeleteClick={() => taskFunctions.delete(task)}
+            course={courses?.find((course) => task.courseId == course.id) || null}
+        />
+    ))
+    
     return (
         <>
             <Head>
@@ -38,17 +53,9 @@ export default function Tasks() {
                             <div className={styles.section}>
                                 <SectionHeader title='Tasks' onAddClicked={() => setEditingTask({})} />
 
-                                {tasks.length == 0
+                                {displayTasks.length == 0
                                     ? <p>No remaining tasks</p>
-                                    : tasks.map((task) => (
-                                        <Task
-                                            key={task.id}
-                                            task={task}
-                                            onEditClick={() => setEditingTask(task)}
-                                            onDeleteClick={() => taskFunctions.delete(task)}
-                                            course={courses.find((course) => task.courseId == course.id)}
-                                        />
-                                    ))
+                                    : displayTasks
                                 }
                             </div>
                         </div>
