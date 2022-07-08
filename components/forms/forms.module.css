@@ -57,12 +57,13 @@
 }
 
 .deleteUser {
-    border-color: red;
+    border-color: #a71414;
     margin: 50px 0px;
 }
 .deleteUser:hover {
-    color: red;
-    border-color: red;
+    background-color: #a71414;
+    color: initial;
+    border-color: #a71414;
 }
 
 /* Colors.jsx */

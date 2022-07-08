@@ -7,6 +7,7 @@
     --light: #96959E;
     --accent: #00B4D8;
     --white: #EDFAFD;
+    --warning: #e71b1b;
     color-scheme: dark;
 }
 
@@ -53,7 +54,7 @@ input[type=date]:hover, input[type=time]:hover, select:hover {
 
 input:required:invalid,
 select:required:invalid {
-    border: 1px solid red;
+    border: 1px solid var(--warning);
 }
 
 input[type=checkbox] {

@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useUser } from '../lib/hooks/useUser';
 import Head from 'next/head';
 import { UserForm } from '../components/forms';
 import { Sidebar } from '../components/sidebar';
+import { Loading } from '../components/Loading';
 
 export default function Settings() {
-    const [user, setUser] = useState({ name: 'Nick', id: 'abcdef' });
+    const [user, userFunctions] = useUser();
 
     return (
         <>
@@ -14,7 +15,11 @@ export default function Settings() {
 
             <div className='page'>
                 <Sidebar />
-                <UserForm editingData={user} edit={setUser} del={() => console.log('deleting user')} />
+
+                {user == null
+                    ? <Loading />
+                    : <UserForm editingData={user} edit={userFunctions.edit} del={userFunctions.delete} />
+                }
             </div>
         </>
     )

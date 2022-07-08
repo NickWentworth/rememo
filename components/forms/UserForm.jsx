@@ -1,17 +1,18 @@
 import { useForm } from '../../lib/hooks/useForm';
-import { signOut } from 'next-auth/react';
 import styles from './forms.module.css';
 
 export function UserForm({ editingData, edit, del }) {
-    const { formData, handleSubmit, handleInputChange } = useForm({ editingData, edit });
+    const { formData, handleSubmit: baseHandleSubmit, handleInputChange } = useForm({ editingData, edit });
+
+    function handleSubmit(event) {
+        baseHandleSubmit(event);
+        location.reload();
+    }
 
     function handleDelete() {
-        if (!window.confirm('Are you sure you want to permanently delete your Rememo account?')) {
-            return;
+        if (window.confirm('Are you sure you want to permanently delete your Rememo account?')) {
+            del();
         }
-
-        del();
-        signOut();
     }
 
     if (!formData) {

@@ -6,6 +6,7 @@ const prisma = new PrismaClient();
 
 // matches a type string to the table it represents
 const typeToTable = {
+    'user': prisma.user,
     'term': prisma.term,
     'course': prisma.course,
     'task': prisma.task
@@ -43,6 +44,15 @@ export default async (req, res) => {
     
     switch (req.method) {
         case 'GET':
+            // user model should look for matching id, selecting just one entry
+            if (type === 'user') {
+                data = await prisma.user.findUnique({
+                    where: { id: userId }
+                })
+                break;
+            }
+
+            // default in case of no user
             data = await prismaTable.findMany({
                 where: { userId: userId }
             })
