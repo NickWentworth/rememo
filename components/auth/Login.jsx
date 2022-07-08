@@ -9,8 +9,6 @@ export function Login() {
 
     useEffect(async () => {
         await setProviders(await getProviders());
-        
-        console.log(providers);
     }, [])
     
     if (providers == null) {

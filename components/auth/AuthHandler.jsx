@@ -13,7 +13,6 @@ export function AuthHandler({ children }) {
         case 'authenticated':
             return children;
         default:
-            console.log('next-auth status not recognized');
             return null;
     }
 }
