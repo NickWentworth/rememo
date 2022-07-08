@@ -48,20 +48,23 @@ export default function Courses() {
                             <div className={styles.section + ' ' + styles.terms}>
                                 <SectionHeader title='Terms' onAddClicked={() => setEditingTerm({})} />
 
-                                {terms.map((term) => (
-                                    <div key={term.id} onClick={() => setFocusedTerm(term)}>
-                                        <Term
-                                            term={term}
-                                            focused={focusedTerm == term}
-                                            onEditClick={() => setEditingTerm(term)}
-                                            onDeleteClick={async () => {
-                                                // wait to delete term to allow for container div setFocusedTerm() call to finish before nulling it again
-                                                await termFunctions.delete(term);
-                                                setFocusedTerm(null);
-                                            }}
-                                        />
-                                    </div>
-                                ))}
+                                {terms.length == 0
+                                    ? <p>Click above to add a term</p>
+                                    : terms.map((term) => (
+                                        <div key={term.id} onClick={() => setFocusedTerm(term)}>
+                                            <Term
+                                                term={term}
+                                                focused={focusedTerm == term}
+                                                onEditClick={() => setEditingTerm(term)}
+                                                onDeleteClick={async () => {
+                                                    // wait to delete term to allow for container div setFocusedTerm() call to finish before nulling it again
+                                                    await termFunctions.delete(term);
+                                                    setFocusedTerm(null);
+                                                }}
+                                            />
+                                        </div>
+                                    ))
+                                }
                             </div>
                             
                             <div className='verticalRuleLight' />
