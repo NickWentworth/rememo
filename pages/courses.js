@@ -16,6 +16,8 @@ export default function Courses() {
     const [courses, courseFunctions] = useObjectList('course');
     const [editingCourse, setEditingCourse] = useState(null);
 
+    const focusedCourses = courses?.filter((course) => course.termId == focusedTerm?.id) || [];
+
     return (
         <>
             <Head>
@@ -72,20 +74,19 @@ export default function Courses() {
                             <div className={styles.section + ' ' + styles.courses}>
                                 <SectionHeader title='Courses' onAddClicked={() => setEditingCourse({})} />
 
-                                {focusedTerm == null && <p>Select a term to view its courses</p>}
-
-                                {focusedTerm && courses.filter((c) => (c.termId == focusedTerm.id))
-                                    .map((course) => (
-                                        <Course
-                                            key={course.id}
-                                            course={course}
-                                            onEditClick={() => setEditingCourse(course)}
-                                            onDeleteClick={() => courseFunctions.delete(course)}
-                                        />
-                                    ))
+                                {focusedTerm == null
+                                    ? <p>Select a term to view its courses</p>
+                                    : focusedCourses.length == 0
+                                        ? <p>No courses for {focusedTerm.name} yet</p>
+                                        : focusedCourses.map((course) => (
+                                            <Course
+                                                key={course.id}
+                                                course={course}
+                                                onEditClick={() => setEditingCourse(course)}
+                                                onDeleteClick={() => courseFunctions.delete(course)}
+                                            />
+                                        ))
                                 }
-
-                                {focusedTerm && courses.filter((c) => (c.termId == focusedTerm.id)).length == 0 && <p>No courses for this term yet</p>}
                             </div>
                         </div>
                     </>
