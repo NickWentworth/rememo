@@ -32,7 +32,7 @@ export function Login() {
                     <hr />
                     
                     {Object.values(providers).map((provider) => (
-                        <button onClick={() => signIn(provider.id)}>
+                        <button key={provider.id} onClick={() => signIn(provider.id)}>
                             <img src={`/images/logos/${provider.name}.png`} height={30} />
                 
                             Sign in with {provider.name}
