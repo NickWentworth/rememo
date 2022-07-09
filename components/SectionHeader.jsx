@@ -9,6 +9,7 @@ export function SectionHeader({ title, onAddClicked }) {
 
             <img
                 className={styles.addButtonImage + ' interactableHighlight'}
+                alt='Add'
                 src='/images/icons/addWhite.png'
                 width={45} height={45}
                 onClick={() => onAddClicked()}

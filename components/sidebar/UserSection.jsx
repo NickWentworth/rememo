@@ -15,6 +15,7 @@ export function UserSection({ extend }) {
         <div className={styles.userSection}>
             <div className={styles.user}>
                 <img
+                    alt=''
                     src={data.user.image}
                     width={iconSize}
                     height={iconSize}

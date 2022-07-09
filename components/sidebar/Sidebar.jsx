@@ -15,7 +15,7 @@ export function Sidebar() {
     return (
         <nav className={styles.sidebar + ' boxShadowDark'}>
             <div className={styles.logo}>
-                <img src='/images/logos/rememoWhite.svg' height={iconSize} />
+                <img alt='Rememo Logo' src='/images/logos/rememoWhite.svg' width={iconSize} height={iconSize} />
             </div>
 
             <div>
@@ -50,7 +50,7 @@ export function Sidebar() {
                 <hr />
 
                 <div className={styles.panel + ' ' + styles.menuIcon + ' interactableHighlight'} onClick={() => setExtend(!extend)}>
-                    <img src='/images/icons/menuWhite.png' height={iconSize} />
+                    <img alt='Expand' src='/images/icons/menuWhite.png' width={iconSize} height={iconSize} layout='fixed' />
                 </div>
             </div>
         </nav>

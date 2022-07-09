@@ -21,6 +21,7 @@ export function Card({ focused, onEditClick, onDeleteClick, children }) {
             <div className={styles.icons}>
                 <img
                     className='interactableHighlight50'
+                    alt='Edit'
                     src='/images/icons/editWhite.png'
                     height={iconSize} width={iconSize}
                     style={{ opacity: (showIcons || focused) ? '100%' : '0%' }}
@@ -29,6 +30,7 @@ export function Card({ focused, onEditClick, onDeleteClick, children }) {
 
                 <img
                     className='interactableHighlight50'
+                    alt='Delete'
                     src='/images/icons/deleteWhite.png'
                     height={iconSize} width={iconSize}
                     style={{ opacity: (showIcons || focused) ? '100%' : '0%' }}

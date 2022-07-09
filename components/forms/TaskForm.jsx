@@ -19,6 +19,7 @@ export function TaskForm({ editingData, add, edit, nullEditingData, courses }) {
                     <h1>{(formData.id ? 'Edit' : 'Add') + ' Task'}</h1>
                     <img
                         className={styles.close + ' interactableHighlight'}
+                        alt='Close'
                         src='/images/icons/closeWhite.png'
                         width={50} height={50}
                         onClick={() => close()}

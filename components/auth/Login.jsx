@@ -23,7 +23,7 @@ export function Login() {
 
             <div className={styles.fill}>
                 <div className={styles.content + ' boxShadowDark'}>
-                    <img src='/images/logos/rememoFullAccent.svg' height={100} />
+                    <img alt='Rememo Logo' src='/images/logos/rememoFullAccent.svg' height={100} />
 
                     <hr />
                     <p>Please sign in to access Rememo</p>
@@ -31,7 +31,7 @@ export function Login() {
                     
                     {Object.values(providers).map((provider) => (
                         <button key={provider.id} onClick={() => signIn(provider.id)}>
-                            <img src={`/images/logos/${provider.name}.png`} height={30} />
+                            <img alt='' src={`/images/logos/${provider.name}.png`} height={30} />
                 
                             Sign in with {provider.name}
                         </button>
