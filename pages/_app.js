@@ -9,7 +9,7 @@ export default function App({ Component, pageProps }) {
         <>
             <Head>
                 <meta charSet='utf-8' />
-                <link rel='icon' href='/images/favicon.ico' />
+                <link rel='icon' href='/images/logos/rememoAccent.svg' />
             </Head>
             
             <SessionProvider>
