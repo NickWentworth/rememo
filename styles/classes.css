@@ -1,6 +1,7 @@
 /* given to the root div of a page */
 .page {
     display: flex;
+    height: 100vh;
 }
 
 /* used for elements not initially interactable, such as next/image */

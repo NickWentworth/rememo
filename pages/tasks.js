@@ -53,10 +53,12 @@ export default function Tasks() {
                             <div className={styles.section}>
                                 <SectionHeader title='Tasks' onAddClicked={() => setEditingTask({})} />
 
-                                {displayTasks.length == 0
-                                    ? <p>No remaining tasks</p>
-                                    : displayTasks
-                                }
+                                <div className={styles.list}>
+                                    {displayTasks.length == 0
+                                        ? <p>No remaining tasks</p>
+                                        : displayTasks
+                                    }
+                                </div>
                             </div>
                         </div>
                     </>

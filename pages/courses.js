@@ -53,23 +53,25 @@ export default function Courses() {
                             <div className={styles.section + ' ' + styles.terms}>
                                 <SectionHeader title='Terms' onAddClicked={() => setEditingTerm({})} />
 
-                                {sortedTerms.length == 0
-                                    ? <p>Click above to add a term</p>
-                                    : sortedTerms.map((term) => (
-                                        <div key={term.id} onClick={() => setFocusedTerm(term)}>
-                                            <Term
-                                                term={term}
-                                                focused={focusedTerm == term}
-                                                onEditClick={() => setEditingTerm(term)}
-                                                onDeleteClick={async () => {
-                                                    // wait to delete term to allow for container div setFocusedTerm() call to finish before nulling it again
-                                                    await termFunctions.delete(term);
-                                                    setFocusedTerm(null);
-                                                }}
-                                            />
-                                        </div>
-                                    ))
-                                }
+                                <div className={styles.list}>
+                                    {sortedTerms.length == 0
+                                        ? <p>Click above to add a term</p>
+                                        : sortedTerms.map((term) => (
+                                            <div key={term.id} onClick={() => setFocusedTerm(term)}>
+                                                <Term
+                                                    term={term}
+                                                    focused={focusedTerm == term}
+                                                    onEditClick={() => setEditingTerm(term)}
+                                                    onDeleteClick={async () => {
+                                                        // wait to delete term to allow for container div setFocusedTerm() call to finish before nulling it again
+                                                        await termFunctions.delete(term);
+                                                        setFocusedTerm(null);
+                                                    }}
+                                                />
+                                            </div>
+                                        ))
+                                    }
+                                </div>
                             </div>
                             
                             <div className='verticalRuleLight' />
@@ -77,19 +79,21 @@ export default function Courses() {
                             <div className={styles.section + ' ' + styles.courses}>
                                 <SectionHeader title='Courses' onAddClicked={() => setEditingCourse({})} />
 
-                                {focusedTerm == null
-                                    ? <p>Select a term to view its courses</p>
-                                    : focusedCourses.length == 0
-                                        ? <p>No courses for {focusedTerm.name} yet</p>
-                                        : focusedCourses.map((course) => (
-                                            <Course
-                                                key={course.id}
-                                                course={course}
-                                                onEditClick={() => setEditingCourse(course)}
-                                                onDeleteClick={() => courseFunctions.delete(course)}
-                                            />
-                                        ))
-                                }
+                                <div className={styles.list}>
+                                    {focusedTerm == null
+                                        ? <p>Select a term to view its courses</p>
+                                        : focusedCourses.length == 0
+                                            ? <p>No courses for {focusedTerm.name} yet</p>
+                                            : focusedCourses.map((course) => (
+                                                <Course
+                                                    key={course.id}
+                                                    course={course}
+                                                    onEditClick={() => setEditingCourse(course)}
+                                                    onDeleteClick={() => courseFunctions.delete(course)}
+                                                />
+                                            ))
+                                    }
+                                </div>
                             </div>
                         </div>
                     </>
