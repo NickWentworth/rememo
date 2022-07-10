@@ -6,6 +6,7 @@ import { Loading } from '../components';
 import { Task } from '../components/cards';
 import { TaskForm } from '../components/forms';
 import { SectionHeader } from '../components/SectionHeader';
+import { getTaskTimeDivider } from '../lib/utility/date';
 import styles from '../styles/pages.module.css';
 
 export default function Tasks() {
@@ -19,15 +20,29 @@ export default function Tasks() {
         const aDate = new Date(`${a.dueDate}T${a.dueTime || '23:59'}:00`);
         const bDate = new Date(`${b.dueDate}T${b.dueTime || '23:59'}:00`);
         return aDate - bDate;
-    }).map((task) => (
-        <Task
+    }).flatMap((task, index, currentList) => {
+        const divider = getTaskTimeDivider(task.dueDate, task.dueTime);
+        const previous = currentList[index - 1];
+
+        const dividerElement = <div key={divider} className={styles.divider}>
+            <p>{divider}</p>
+            <hr />
+        </div>
+
+        const taskElement = <Task
             key={task.id}
             task={task}
             onEditClick={() => setEditingTask(task)}
             onDeleteClick={() => taskFunctions.delete(task)}
             course={courses?.find((course) => task.courseId == course.id) || null}
         />
-    ))
+
+        const showDivider = (index == 0) || (divider !== getTaskTimeDivider(previous.dueDate, previous.dueTime));
+
+        return showDivider
+            ? [dividerElement, taskElement]
+            : [taskElement]
+    })
     
     return (
         <>

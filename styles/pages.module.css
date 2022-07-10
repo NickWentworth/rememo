@@ -18,6 +18,22 @@
     overflow-y: auto;
 }
 
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.divider:not(:first-child) {
+    margin-top: 20px;
+}
+.divider hr {
+    flex-grow: 1;
+    background-color: var(--light);
+}
+.divider p {
+    color: var(--light);
+}
+
 /* 404.js */
 .custom404 {
     display: flex;
