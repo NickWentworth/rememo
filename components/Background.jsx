@@ -5,7 +5,7 @@ import styles from './Background.module.css';
 // fills the entire viewport and centers children
 export function Background({ color, children }) {
     return (
-        <div className={styles.fill}>
+        <div className={'fill'}>
             <div className={styles.background} style={{ backgroundColor: color || '' }} />
             {children}
         </div>
