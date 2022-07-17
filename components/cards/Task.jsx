@@ -1,8 +1,9 @@
 import { getTaskFormattedDate } from '../../lib/utility/date';
 import { Card } from './Card';
+import { TaskProgressBar } from './TaskProgressBar';
 import styles from './cards.module.css';
 
-export function Task({ task, onEditClick, onDeleteClick, course }) {
+export function Task({ task, onEditClick, onDeleteClick, course, onProgressChange }) {
     const [formattedDate, formattedDateColor] = getTaskFormattedDate(task.dueDate, task.dueTime);
     
     return (
@@ -15,17 +16,7 @@ export function Task({ task, onEditClick, onDeleteClick, course }) {
 
             <p style={{ color: formattedDateColor }}>{formattedDate}</p>
 
-            <div className={styles.taskProgress}>
-                {/* TODO - get progress bar working */}
-                <input
-                    type='range'
-                    value={task.progress}
-                    min={0} max={100} step={5}
-                    disabled
-                />
-
-                <p>{task.progress}%</p>
-            </div>
+            <TaskProgressBar value={task.progress} onProgressChange={onProgressChange} />
 
             <hr hidden={!task.description} />
             <p>{task.description}</p>

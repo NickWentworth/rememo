@@ -35,6 +35,7 @@ export default function Tasks() {
             onEditClick={() => setEditingTask(task)}
             onDeleteClick={() => taskFunctions.delete(task)}
             course={courses?.find((course) => task.courseId == course.id) || null}
+            onProgressChange={(amount) => taskFunctions.edit({ ...task, progress: amount })}
         />
 
         const showDivider = (index == 0) || (divider !== getTaskTimeDivider(previous.dueDate, previous.dueTime));
