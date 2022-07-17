@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styles from './cards.module.css';
 
+// TODO - add course's color to progress bar
 export function TaskProgressBar({ value, onProgressChange }) {
     const [current, setCurrent] = useState(value);
 
@@ -13,7 +14,7 @@ export function TaskProgressBar({ value, onProgressChange }) {
                 onMouseUp={() => onProgressChange(Number.parseInt(current))}
                 min={0} max={100} step={5}
             />
-            <p>{current}%</p>
+            <p className={styles.taskProgressLabel}>{current}%</p>
         </div>
     )
 }

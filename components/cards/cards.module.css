@@ -54,3 +54,7 @@
     display: flex;
     align-items: center;
 }
+.taskProgressLabel {
+    width: 3em;
+    margin-left: 0.5em;
+}
