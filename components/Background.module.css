@@ -8,6 +8,6 @@
 }
 
 /* display children in front of background */
-.fill > *:not(.background) {
+.container *:not(.background) {
     z-index: 2;
 }
