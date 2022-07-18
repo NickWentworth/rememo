@@ -38,6 +38,7 @@ p, h1, h2, h3, h4, h5, h6, a, input, label, textarea, button, select {
 }
 
 input, textarea, button, select {
+    cursor: pointer;
     padding: 8px;
     font-size: larger;
     background-color: var(--medium);
@@ -48,7 +49,12 @@ input, textarea, select {
     width: 100%;
 }
 
-input[type=date]:hover, input[type=time]:hover, select:hover {
+input[type=text], input[type=date], input[type=time], textarea {
+    cursor: text;
+}
+
+::-webkit-calendar-picker-indicator,
+::-webkit-time-picker-indicator {
     cursor: pointer;
 }
 
@@ -63,7 +69,6 @@ input[type=checkbox] {
 }
 
 button {
-    cursor: pointer;
     border-radius: 5px;
     border: 1px solid var(--white);
     padding: 10px;
