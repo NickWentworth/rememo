@@ -50,7 +50,7 @@ export default function Courses() {
                         />
 
                         <div className={styles.content}>
-                            <div className={styles.section + ' ' + styles.terms}>
+                            <div className={styles.terms}>
                                 <SectionHeader title='Terms' onAddClicked={() => setEditingTerm({})} />
 
                                 <div className={styles.list}>
@@ -76,7 +76,7 @@ export default function Courses() {
                             
                             <div className='verticalRuleLight' />
 
-                            <div className={styles.section + ' ' + styles.courses}>
+                            <div className={styles.courses}>
                                 <SectionHeader title='Courses' onAddClicked={() => setEditingCourse({})} />
 
                                 <div className={styles.list}>

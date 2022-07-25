@@ -1,6 +1,7 @@
 .content {
     flex-grow: 1;
     display: flex;
+    justify-content: center;
 }
 
 .section, .list {
@@ -19,6 +20,7 @@
 }
 
 .divider {
+    margin: 0 2em;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -59,7 +61,15 @@
 /* courses.js */
 .terms { 
     width: 35%;
+    composes: section;
 }
 .courses {
     width: 65%;
+    composes: section;
+}
+
+/* tasks.js */
+.tasks {
+    max-width: 70em;
+    composes: section;
 }

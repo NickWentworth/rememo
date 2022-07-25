@@ -25,6 +25,7 @@ export default function Tasks() {
         const previous = currentList[index - 1];
 
         const dividerElement = <div key={divider} className={styles.divider}>
+            <hr />
             <p>{divider}</p>
             <hr />
         </div>
@@ -66,7 +67,7 @@ export default function Tasks() {
                         />
                         
                         <div className={styles.content}>
-                            <div className={styles.section}>
+                            <div className={styles.tasks}>
                                 <SectionHeader title='Tasks' onAddClicked={() => setEditingTask({})} />
 
                                 <div className={styles.list}>
