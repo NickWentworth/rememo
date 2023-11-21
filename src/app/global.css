@@ -1,0 +1,47 @@
+:root {
+    /* color variables */
+    --dark: #1c1e1e;
+    --medium: #2a302f;
+    --light: #afc7c2;
+    --white: #efffff;
+    --accent: #27c69b;
+}
+
+body {
+    background-color: var(--medium);
+    color: var(--white);
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+}
+
+/* global text styles */
+h1 {
+    margin: 0;
+    font-size: 32px;
+}
+h2 {
+    margin: 0;
+    font-size: 24px;
+}
+h3 {
+    margin: 0;
+    font-size: 20px;
+}
+h4 {
+    margin: 0;
+    font-size: 16px;
+}
+p {
+    margin: 0;
+    font-size: 14px;
+}
+
+/* horizontal rule fills container and defaults to the light color */
+hr {
+    background-color: var(--light);
+    margin: 0;
+    height: 2px;
+    border: 0;
+}

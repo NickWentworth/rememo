@@ -1,3 +1,6 @@
+import Sidebar from '@/components/Sidebar';
+import './global.css';
+
 type LayoutProps = {
     children: React.ReactNode;
 };
@@ -5,7 +8,10 @@ type LayoutProps = {
 export default function Layout(props: LayoutProps) {
     return (
         <html>
-            <body>{props.children}</body>
+            <body>
+                <Sidebar />
+                {props.children}
+            </body>
         </html>
     );
 }
