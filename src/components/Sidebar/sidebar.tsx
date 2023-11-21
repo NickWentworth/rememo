@@ -2,7 +2,7 @@
 
 import { useReducer } from 'react';
 import styles from './sidebar.module.css';
-import { Icon, SVG } from '../icons';
+import { Calendar, Courses, Dashboard, Hamburger, Logo, Tasks } from '../icons';
 
 const ICON_SIZE = 32;
 const LOGO_SIZE = ICON_SIZE + 16;
@@ -14,7 +14,7 @@ export function Sidebar() {
         <div className={styles.sidebar}>
             {/* Logo */}
             <div className={styles.logo}>
-                <SVG icon='test' color='accent' size={LOGO_SIZE} />
+                <Logo color='accent' size={LOGO_SIZE} />
                 {expanded && <h1 className={styles.logoText}>Rememo</h1>}
             </div>
 
@@ -22,10 +22,26 @@ export function Sidebar() {
 
             {/* Links */}
             <div className={styles.links}>
-                <PageLink name='Dashboard' icon='test' expanded={expanded} />
-                <PageLink name='Tasks' icon='test' expanded={expanded} />
-                <PageLink name='Courses' icon='test' expanded={expanded} />
-                <PageLink name='Calendar' icon='test' expanded={expanded} />
+                <PageLink
+                    name='Dashboard'
+                    icon={<Dashboard color='white' size={ICON_SIZE} />}
+                    expanded={expanded}
+                />
+                <PageLink
+                    name='Tasks'
+                    icon={<Tasks color='white' size={ICON_SIZE} />}
+                    expanded={expanded}
+                />
+                <PageLink
+                    name='Courses'
+                    icon={<Courses color='white' size={ICON_SIZE} />}
+                    expanded={expanded}
+                />
+                <PageLink
+                    name='Calendar'
+                    icon={<Calendar color='white' size={ICON_SIZE} />}
+                    expanded={expanded}
+                />
             </div>
 
             {/* Hamburger */}
@@ -34,7 +50,7 @@ export function Sidebar() {
                     className={`${styles.hamburgerButton} ${styles.button}`}
                     onClick={toggleExpanded}
                 >
-                    <SVG icon='test' color='white' size={ICON_SIZE} />
+                    <Hamburger color='white' size={ICON_SIZE} />
                 </button>
             </div>
         </div>
@@ -43,7 +59,7 @@ export function Sidebar() {
 
 type PageLinkProps = {
     name: string;
-    icon: Icon;
+    icon: React.ReactNode;
     // TODO: redirect to a page
     // to: string;
     expanded: boolean;
@@ -52,7 +68,7 @@ type PageLinkProps = {
 function PageLink(props: PageLinkProps) {
     return (
         <button className={`${styles.pageLink} ${styles.button}`}>
-            <SVG icon={props.icon} color='white' size={ICON_SIZE} />
+            {props.icon}
             {props.expanded && <h4>{props.name}</h4>}
         </button>
     );
