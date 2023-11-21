@@ -5,6 +5,7 @@ import styles from './sidebar.module.css';
 import { Icon, SVG } from '../icons';
 
 const ICON_SIZE = 32;
+const LOGO_SIZE = ICON_SIZE + 16;
 
 export function Sidebar() {
     const [expanded, toggleExpanded] = useReducer((curr) => !curr, true);
@@ -12,7 +13,10 @@ export function Sidebar() {
     return (
         <div className={styles.sidebar}>
             {/* Logo */}
-            <div className={styles.logo}>Rememo</div>
+            <div className={styles.logo}>
+                <SVG icon='test' color='accent' size={LOGO_SIZE} />
+                {expanded && <h1 className={styles.logoText}>Rememo</h1>}
+            </div>
 
             <hr />
 
@@ -24,15 +28,13 @@ export function Sidebar() {
                 <PageLink name='Calendar' icon='test' expanded={expanded} />
             </div>
 
-            <hr />
-
             {/* Hamburger */}
             <div className={styles.hamburger}>
                 <button
-                    className={styles.hamburgerButton}
+                    className={`${styles.hamburgerButton} ${styles.button}`}
                     onClick={toggleExpanded}
                 >
-                    <SVG icon='test' color='light' size={ICON_SIZE} />
+                    <SVG icon='test' color='white' size={ICON_SIZE} />
                 </button>
             </div>
         </div>
@@ -49,10 +51,9 @@ type PageLinkProps = {
 
 function PageLink(props: PageLinkProps) {
     return (
-        // TODO: make reusable button component
-        <button className={styles.pageLink}>
-            <SVG icon={props.icon} color='light' size={ICON_SIZE} />
-            <h4>{props.expanded && props.name}</h4>
+        <button className={`${styles.pageLink} ${styles.button}`}>
+            <SVG icon={props.icon} color='white' size={ICON_SIZE} />
+            {props.expanded && <h4>{props.name}</h4>}
         </button>
     );
 }
