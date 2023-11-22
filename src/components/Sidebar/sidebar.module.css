@@ -17,6 +17,8 @@
 
 .logoText {
     color: var(--accent);
+    font-family: 'Logo';
+    font-size: 38px;
 }
 
 .links {

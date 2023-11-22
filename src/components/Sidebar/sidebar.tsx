@@ -1,9 +1,11 @@
 'use client';
 
-import { useReducer } from 'react';
-import styles from './sidebar.module.css';
 import { Calendar, Courses, Dashboard, Hamburger, Logo, Tasks } from '../icons';
+import { SVGComponent } from '../icons/props';
+import { useReducer } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import styles from './sidebar.module.css';
 
 const ICON_SIZE = 32;
 const LOGO_SIZE = ICON_SIZE + 16;
@@ -28,25 +30,25 @@ export function Sidebar() {
                 <PageLink
                     name='Dashboard'
                     to='/dashboard'
-                    icon={<Dashboard color='white' size={ICON_SIZE} />}
+                    icon={Dashboard}
                     expanded={expanded}
                 />
                 <PageLink
                     name='Tasks'
                     to='/tasks'
-                    icon={<Tasks color='white' size={ICON_SIZE} />}
+                    icon={Tasks}
                     expanded={expanded}
                 />
                 <PageLink
                     name='Courses'
                     to='/courses'
-                    icon={<Courses color='white' size={ICON_SIZE} />}
+                    icon={Courses}
                     expanded={expanded}
                 />
                 <PageLink
                     name='Calendar'
                     to='/calendar'
-                    icon={<Calendar color='white' size={ICON_SIZE} />}
+                    icon={Calendar}
                     expanded={expanded}
                 />
             </div>
@@ -70,17 +72,29 @@ type PageLinkProps = {
     // routing location of link
     to: string;
     // icon to display
-    icon: React.ReactNode;
+    icon: SVGComponent;
     // is the sidebar expanded?
     expanded: boolean;
 };
 
 function PageLink(props: PageLinkProps) {
+    // is this page link the active one?
+    const active = usePathname() === props.to;
+
+    // styling for the link's display name, if shown
+    const textStyle = { color: `var(--${active ? 'accent' : 'white'})` };
+
+    // icon to render
+    let icon = props.icon({
+        color: active ? 'accent' : 'white',
+        size: ICON_SIZE,
+    });
+
     return (
         <Link className={styles.pageLink} href={props.to}>
             <button className={`${styles.pageLinkButton} ${styles.button}`}>
-                {props.icon}
-                {props.expanded && <h3>{props.name}</h3>}
+                {icon}
+                {props.expanded && <h3 style={textStyle}>{props.name}</h3>}
             </button>
         </Link>
     );
