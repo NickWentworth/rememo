@@ -38,6 +38,10 @@ p {
     font-size: 14px;
 }
 
+a {
+    text-decoration: none;
+}
+
 /* horizontal rule fills container and defaults to the light color */
 hr {
     background-color: var(--light);
