@@ -1,0 +1,50 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "sqlite"
+    url      = "file:./dev.db"
+}
+
+model User {
+    id String @id @default(uuid())
+
+    tasks Task[] // directly store tasks as they may not always reference a course
+}
+
+model Term {
+    id String @id @default(uuid())
+    // TODO: create term model
+}
+
+model Course {
+    id String @id @default(uuid())
+    // TODO: create course model
+}
+
+model Task {
+    id          String   @id @default(uuid())
+    name        String
+    completed   Boolean  @default(false)
+    due         DateTime
+    description String
+
+    // TODO: properly reference a course
+    course String
+
+    subtasks Subtask[]
+
+    User   User?   @relation(fields: [userId], references: [id])
+    userId String?
+}
+
+model Subtask {
+    id        String   @id @default(uuid())
+    name      String
+    completed Boolean  @default(false)
+    due       DateTime
+
+    Task   Task?   @relation(fields: [taskId], references: [id])
+    taskId String?
+}
