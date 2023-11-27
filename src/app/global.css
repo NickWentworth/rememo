@@ -63,6 +63,7 @@ p {
     margin: 0;
     font-size: 14px;
     font-family: 'Body';
+    color: var(--light);
 }
 
 a {
@@ -75,4 +76,9 @@ hr {
     margin: 0;
     height: 2px;
     border: 0;
+}
+
+/* remove margin from default inputs */
+input {
+    margin: 0;
 }
