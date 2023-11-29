@@ -7,3 +7,6 @@ export { Tasks } from './tasks';
 export { Courses } from './courses';
 export { Calendar } from './calendar';
 export { Hamburger } from './hamburger';
+
+// general icons
+export { Search } from './search';
