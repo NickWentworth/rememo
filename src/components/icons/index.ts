@@ -10,3 +10,5 @@ export { Hamburger } from './hamburger';
 
 // general icons
 export { Search } from './search';
+export { Edit } from './edit';
+export { Trash } from './trash';

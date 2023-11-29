@@ -1,7 +1,7 @@
-export const STROKE_WIDTH = 2;
+export const STROKE_WIDTH = 1;
 
 type SVGProps = {
-    color: 'dark' | 'medium' | 'light' | 'white' | 'accent';
+    color: 'dark' | 'medium' | 'light' | 'white' | 'accent' | 'transparent';
     size: number;
 };
 
@@ -10,5 +10,10 @@ export interface SVGComponent {
 }
 
 export function color(props: SVGProps): string {
-    return `var(--${props.color})`;
+    switch (props.color) {
+        case 'transparent':
+            return 'transparent';
+        default:
+            return `var(--${props.color})`;
+    }
 }
