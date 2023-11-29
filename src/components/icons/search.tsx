@@ -1,4 +1,4 @@
-import { STROKE_WIDTH, SVGComponent, color } from './props';
+import { DEFAULT_STROKE_WIDTH, SVGComponent, color } from './props';
 
 export const Search: SVGComponent = (props) => {
     return (
@@ -9,7 +9,7 @@ export const Search: SVGComponent = (props) => {
             viewBox='0 0 24 24'
             fill='none'
             stroke={color(props)}
-            strokeWidth={STROKE_WIDTH}
+            strokeWidth={props.stroke ?? DEFAULT_STROKE_WIDTH}
             strokeLinecap='round'
             strokeLinejoin='round'
         >

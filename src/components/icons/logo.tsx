@@ -1,4 +1,4 @@
-import { STROKE_WIDTH, SVGComponent, color } from './props';
+import { DEFAULT_STROKE_WIDTH, SVGComponent, color } from './props';
 
 export const Logo: SVGComponent = (props) => {
     return (
@@ -9,7 +9,7 @@ export const Logo: SVGComponent = (props) => {
             viewBox='0 0 118 118'
             fill='none'
             stroke={color(props)}
-            strokeWidth={STROKE_WIDTH * 5}
+            strokeWidth={(props.stroke ?? DEFAULT_STROKE_WIDTH) * 5}
             strokeLinecap='round'
         >
             <g>

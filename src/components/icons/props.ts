@@ -1,8 +1,9 @@
-export const STROKE_WIDTH = 1;
+export const DEFAULT_STROKE_WIDTH = 2;
 
 type SVGProps = {
     color: 'dark' | 'medium' | 'light' | 'white' | 'accent' | 'transparent';
     size: number;
+    stroke?: number;
 };
 
 export interface SVGComponent {
