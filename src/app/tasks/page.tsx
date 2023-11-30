@@ -1,6 +1,7 @@
 import { Search } from '@/components/icons';
 import TaskCard from '@/components/TaskCard';
 import { PrismaClient } from '@prisma/client';
+import { testAddTask } from '@/lib/actions/tasks';
 import { CSSProperties } from 'react';
 import styles from './page.module.css';
 
@@ -18,9 +19,16 @@ export default async function Tasks() {
 
                     <h3 className={styles.numberFill}>{tasks.length}</h3>
 
-                    <button className={styles.addButton}>
-                        <h3>+</h3>
-                    </button>
+                    <form>
+                        {/* TODO: plus sign is slightly off-center, either fix or add new svg */}
+                        <button
+                            className={styles.addButton}
+                            // TODO: open up task form to add a task
+                            formAction={testAddTask}
+                        >
+                            <h3>+</h3>
+                        </button>
+                    </form>
                 </div>
 
                 <div className={styles.filters}>
@@ -30,7 +38,6 @@ export default async function Tasks() {
                 </div>
 
                 <div className={styles.search}>
-                    {/* TODO: plus sign is slightly off-center, either fix or add new svg */}
                     <div className={styles.searchBox}>
                         <p>Search</p>
                         <Search size={16} color='light' />

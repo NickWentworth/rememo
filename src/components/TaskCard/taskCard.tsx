@@ -3,6 +3,11 @@
 import { Task } from '@prisma/client';
 import { Edit, Trash } from '../icons';
 import { formatTaskDate } from '@/lib/date';
+import {
+    deleteTask,
+    setTaskCompletion,
+    testModifyTask,
+} from '@/lib/actions/tasks';
 import { useState } from 'react';
 import styles from './card.module.css';
 
@@ -30,14 +35,30 @@ export function TaskCard(props: TaskCardProps) {
                 className={styles.banner}
                 style={{ backgroundColor: COURSE_COLOR }}
             >
-                <button className={styles.bannerButton}>
+                <button
+                    className={styles.bannerButton}
+                    // TODO: open up task form to edit a task
+                    onClick={() => testModifyTask(props.task.id)}
+                >
                     <Edit
                         size={BANNER_ICON_SIZE}
                         color={hovering ? 'dark' : 'transparent'}
                     />
                 </button>
 
-                <button className={styles.bannerButton}>
+                <button
+                    className={styles.bannerButton}
+                    onClick={() => {
+                        // TODO: add custom confirmation popup component
+                        let confirmation = window.confirm(
+                            `Are you sure you want to delete this task?\nname: ${props.task.name}\nid: ${props.task.id}`
+                        );
+
+                        if (confirmation) {
+                            deleteTask(props.task.id);
+                        }
+                    }}
+                >
                     <Trash
                         size={BANNER_ICON_SIZE}
                         color={hovering ? 'dark' : 'transparent'}
@@ -53,6 +74,12 @@ export function TaskCard(props: TaskCardProps) {
                         <input
                             type='checkbox'
                             checked={props.task.completed}
+                            onChange={() =>
+                                setTaskCompletion(
+                                    props.task.id,
+                                    !props.task.completed
+                                )
+                            }
                             readOnly
                         />
 
