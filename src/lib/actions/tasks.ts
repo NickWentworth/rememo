@@ -16,7 +16,6 @@ export async function testAddTask() {
             name: 'New Task',
             due: new Date('2023-12-01T00:00:00Z'),
             description: '',
-            course: 'Science',
             userId: TEST_USER,
         },
     });

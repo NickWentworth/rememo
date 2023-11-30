@@ -89,7 +89,7 @@ export function TaskCard(props: TaskCardProps) {
                             className={styles.headerCourse}
                             style={{ color: COURSE_COLOR }}
                         >
-                            {props.task.course}
+                            {props.task.courseId ?? '(no course)'}
                         </h4>
                     </div>
 
