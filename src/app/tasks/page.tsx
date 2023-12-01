@@ -15,9 +15,9 @@ export default async function Tasks() {
         <div className={styles.page}>
             <div className={styles.header}>
                 <div className={styles.count}>
-                    <h3>Tasks</h3>
+                    <h1>Tasks</h1>
 
-                    <h3 className={styles.numberFill}>{tasks.length}</h3>
+                    <h1 className={styles.numberFill}>{tasks.length}</h1>
 
                     <form>
                         {/* TODO: plus sign is slightly off-center, either fix or add new svg */}
@@ -26,7 +26,7 @@ export default async function Tasks() {
                             // TODO: open up task form to add a task
                             formAction={testAddTask}
                         >
-                            <h3>+</h3>
+                            <h1>+</h1>
                         </button>
                     </form>
                 </div>
@@ -67,19 +67,21 @@ function FilterButton(props: FilterButtonProps) {
         marginTop: props.active ? '2px' : '4px',
     } satisfies CSSProperties;
 
-    // conditionally bold a given child element
-    function CondBold(active: boolean, children: React.ReactNode) {
-        return active ? <b>{children}</b> : children;
-    }
+    const activeNumberStyle = {
+        backgroundColor: props.active ? 'var(--accent)' : '',
+        color: props.active ? 'var(--dark)' : '',
+        fontWeight: props.active ? '500' : '',
+    } satisfies CSSProperties;
 
     return (
         <div className={styles.filterButton}>
-            {CondBold(props.active, <p>{props.name}</p>)}
+            <p style={{ fontWeight: props.active ? '500' : '' }}>
+                {props.name}
+            </p>
 
-            {CondBold(
-                props.active,
-                <p className={styles.numberFill}>{props.count}</p>
-            )}
+            <h4 className={`${styles.numberFill}`} style={activeNumberStyle}>
+                {props.count}
+            </h4>
 
             <div
                 className={styles.filterButtonActiveBar}

@@ -1,23 +1,14 @@
 /* fonts */
 @font-face {
-    /* regular-use body font */
-    font-family: 'Body';
+    /* body font */
+    font-family: 'Inter';
     src: url('/fonts/Inter.ttf');
-    font-weight: 300;
 }
 
 @font-face {
-    /* bold body font */
-    font-family: 'Bold';
-    src: url('/fonts/Inter.ttf');
-    font-weight: 500;
-}
-
-@font-face {
-    /* font for use with logo */
-    font-family: 'Logo';
+    /* logo font */
+    font-family: 'Quicksand';
     src: url('/fonts/Quicksand.ttf');
-    font-weight: 500;
 }
 
 :root {
@@ -38,31 +29,36 @@ body {
     display: flex;
 }
 
-/* global text styles */
-h1 {
-    margin: 0;
-    font-size: 32px;
-    font-family: 'Bold';
-}
-h2 {
-    margin: 0;
-    font-size: 24px;
-    font-family: 'Bold';
-}
-h3 {
-    margin: 0;
-    font-size: 20px;
-    font-family: 'Body';
-}
-h4 {
-    margin: 0;
-    font-size: 16px;
-    font-family: 'Body';
-}
+h1,
+h2,
+h3,
+h4,
 p {
     margin: 0;
+    font-family: 'Inter';
+}
+
+/* global text styles */
+h1 {
+    font-size: 20px;
+    font-weight: 500;
+}
+h2 {
+    font-size: 20px;
+    font-weight: 400;
+}
+h3 {
+    font-size: 16px;
+    font-weight: 400;
+}
+h4 {
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--light);
+}
+p {
     font-size: 14px;
-    font-family: 'Body';
+    font-weight: 300;
     color: var(--light);
 }
 

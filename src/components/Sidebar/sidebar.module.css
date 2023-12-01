@@ -17,7 +17,8 @@
 
 .logoText {
     color: var(--accent);
-    font-family: 'Logo';
+    font-family: 'Quicksand';
+    font-weight: 600;
     font-size: 38px;
 }
 

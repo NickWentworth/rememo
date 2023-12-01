@@ -18,9 +18,7 @@ export function Sidebar() {
             {/* Logo */}
             <div className={styles.logo}>
                 <Logo color='accent' size={LOGO_SIZE} />
-                {expanded && (
-                    <h1 className={`${styles.logoText} logoFont`}>Rememo</h1>
-                )}
+                {expanded && <h1 className={styles.logoText}>Rememo</h1>}
             </div>
 
             <hr />
@@ -94,7 +92,7 @@ function PageLink(props: PageLinkProps) {
         <Link className={styles.pageLink} href={props.to}>
             <button className={`${styles.pageLinkButton} ${styles.button}`}>
                 {icon}
-                {props.expanded && <h3 style={textStyle}>{props.name}</h3>}
+                {props.expanded && <h1 style={textStyle}>{props.name}</h1>}
             </button>
         </Link>
     );

@@ -83,14 +83,14 @@ export function TaskCard(props: TaskCardProps) {
                             readOnly
                         />
 
-                        <h3 className={styles.headerTask}>{props.task.name}</h3>
+                        <h1 className={styles.headerTask}>{props.task.name}</h1>
 
-                        <h4
+                        <h3
                             className={styles.headerCourse}
                             style={{ color: COURSE_COLOR }}
                         >
                             {props.task.courseId ?? '(no course)'}
-                        </h4>
+                        </h3>
                     </div>
 
                     <p>{formatTaskDate(props.task.due)}</p>
