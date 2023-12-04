@@ -70,7 +70,7 @@ a {
 hr {
     background-color: var(--light);
     margin: 0;
-    height: 2px;
+    height: 1px;
     border: 0;
 }
 

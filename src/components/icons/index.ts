@@ -12,3 +12,4 @@ export { Hamburger } from './hamburger';
 export { Search } from './search';
 export { Edit } from './edit';
 export { Trash } from './trash';
+export { Close } from './close';
