@@ -11,6 +11,8 @@
 }
 
 .banner {
+    /* default background color, overwritten by course color */
+    background-color: var(--light);
     display: flex;
     flex-direction: column;
     align-items: center;

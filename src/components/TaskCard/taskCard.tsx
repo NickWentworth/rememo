@@ -8,6 +8,7 @@ import {
     setTaskCompletion,
     testModifyTask,
 } from '@/lib/actions/tasks';
+import { useCourseData } from '../providers';
 import { useState } from 'react';
 import styles from './card.module.css';
 
@@ -22,6 +23,8 @@ type TaskCardProps = {
 };
 
 export function TaskCard(props: TaskCardProps) {
+    const course = useCourseData().get(props.task.courseId ?? '');
+
     // is the mouse currently hovering over the task card?
     const [hovering, setHovering] = useState(false);
 
@@ -33,7 +36,7 @@ export function TaskCard(props: TaskCardProps) {
         >
             <div
                 className={styles.banner}
-                style={{ backgroundColor: COURSE_COLOR }}
+                style={{ backgroundColor: course?.color }}
             >
                 <button
                     className={styles.bannerButton}
@@ -87,9 +90,9 @@ export function TaskCard(props: TaskCardProps) {
 
                         <h3
                             className={styles.headerCourse}
-                            style={{ color: COURSE_COLOR }}
+                            style={{ color: course?.color }}
                         >
-                            {props.task.courseId ?? '(no course)'}
+                            {course?.name}
                         </h3>
                     </div>
 

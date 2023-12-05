@@ -1,16 +1,15 @@
+'use client';
+
 import { Search } from '@/components/icons';
 import TaskCard from '@/components/TaskCard';
 import TaskForm from '@/components/forms/TaskForm';
-import { PrismaClient } from '@prisma/client';
 import { testAddTask } from '@/lib/actions/tasks';
+import { useTaskData } from '@/components/providers';
 import { CSSProperties } from 'react';
 import styles from './page.module.css';
 
-const prisma = new PrismaClient();
-const TEST_USER = '0';
-
-export default async function Tasks() {
-    const tasks = await prisma.task.findMany({ where: { userId: TEST_USER } });
+export default function Tasks() {
+    const { data: tasks } = useTaskData();
 
     return (
         <>
@@ -62,7 +61,7 @@ export default async function Tasks() {
                 </div>
             </div>
 
-            <TaskForm mode='create' />
+            {/* <TaskForm mode='create' /> */}
         </>
     );
 }
