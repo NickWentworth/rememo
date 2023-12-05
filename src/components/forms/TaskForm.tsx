@@ -1,13 +1,13 @@
 'use client';
 
 import { Close } from '../icons';
-import { Task } from '@prisma/client';
+import { TaskPayload } from '@/lib/types';
 import { FormState } from '@/lib/hooks/useFormState';
 import { useReducer } from 'react';
 import styles from './form.module.css';
 
 type TaskFormProps = {
-    state: FormState<Task>;
+    state: FormState<TaskPayload>;
     onCloseClick?: () => void;
 };
 

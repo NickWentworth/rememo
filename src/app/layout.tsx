@@ -4,6 +4,7 @@ import {
     TaskProvider,
     TermProvider,
 } from '@/components/providers';
+import { TERM_ARGS, COURSE_ARGS, TASK_ARGS } from '@/lib/types';
 import { PrismaClient } from '@prisma/client';
 import './global.css';
 
@@ -15,13 +16,20 @@ type LayoutProps = {
 };
 
 export default async function Layout(props: LayoutProps) {
-    const terms = await prisma.term.findMany({ where: { userId: TEST_USER } });
+    const terms = await prisma.term.findMany({
+        where: { userId: TEST_USER },
+        ...TERM_ARGS,
+    });
 
     const courses = await prisma.course.findMany({
         where: { term: { userId: TEST_USER } },
+        ...COURSE_ARGS,
     });
 
-    const tasks = await prisma.task.findMany({ where: { userId: TEST_USER } });
+    const tasks = await prisma.task.findMany({
+        where: { userId: TEST_USER },
+        ...TASK_ARGS,
+    });
 
     return (
         <html>

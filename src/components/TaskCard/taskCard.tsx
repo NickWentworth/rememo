@@ -1,6 +1,6 @@
 'use client';
 
-import { Task } from '@prisma/client';
+import { TaskPayload } from '@/lib/types';
 import { Edit, Trash } from '../icons';
 import { formatTaskDate } from '@/lib/date';
 import { setTaskCompletion } from '@/lib/actions/tasks';
@@ -11,7 +11,7 @@ import styles from './card.module.css';
 const BANNER_ICON_SIZE = 20;
 
 type TaskCardProps = {
-    task: Task;
+    task: TaskPayload;
     onEditClick?: () => void;
     onDeleteClick?: () => void;
 };

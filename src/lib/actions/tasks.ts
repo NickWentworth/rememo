@@ -1,6 +1,7 @@
 'use server';
 
-import { PrismaClient, Task } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
+import { TaskPayload, payloadToTask } from '../types';
 import { revalidatePath } from 'next/cache';
 
 const prisma = new PrismaClient();
@@ -9,13 +10,9 @@ const TEST_USER = '0';
 /**
  * Write a new task into the database
  */
-export async function createTask(task: Task) {
+export async function createTask(task: TaskPayload) {
     await prisma.task.create({
-        data: {
-            ...task,
-            id: undefined,
-            userId: TEST_USER,
-        },
+        data: payloadToTask(task),
     });
 
     revalidatePath('/tasks');
@@ -24,10 +21,10 @@ export async function createTask(task: Task) {
 /**
  * Update a task already existing in the database, matched by id
  */
-export async function updateTask(task: Task) {
+export async function updateTask(task: TaskPayload) {
     await prisma.task.update({
         where: { id: task.id },
-        data: task,
+        data: payloadToTask(task),
     });
 
     revalidatePath('/tasks');

@@ -1,6 +1,6 @@
 'use client';
 
-import { Course, Task, Term } from '@prisma/client';
+import { CoursePayload, TaskPayload, TermPayload } from '@/lib/types';
 import { ReactNode, createContext, useContext } from 'react';
 
 type ProviderData<T> = {
@@ -18,11 +18,11 @@ type ProviderProps<T> = {
 
 //  ------------------------------ term context ------------------------------ //
 
-const TermDataContext = createContext<ProviderData<Term> | undefined>(
+const TermDataContext = createContext<ProviderData<TermPayload> | undefined>(
     undefined
 );
 
-export function useTermData(): ProviderData<Term> {
+export function useTermData(): ProviderData<TermPayload> {
     const context = useContext(TermDataContext);
     if (context === undefined) {
         throw new Error('Term data is not available to this component!');
@@ -30,11 +30,11 @@ export function useTermData(): ProviderData<Term> {
     return context;
 }
 
-export function TermProvider(props: ProviderProps<Term>) {
+export function TermProvider(props: ProviderProps<TermPayload>) {
     const data = {
         data: props.data,
         get: (id) => props.data.find((term) => term.id == id),
-    } satisfies ProviderData<Term>;
+    } satisfies ProviderData<TermPayload>;
 
     return (
         <TermDataContext.Provider value={data}>
@@ -45,11 +45,11 @@ export function TermProvider(props: ProviderProps<Term>) {
 
 //  ------------------------------ course context ------------------------------ //
 
-const CourseDataContext = createContext<ProviderData<Course> | undefined>(
-    undefined
-);
+const CourseDataContext = createContext<
+    ProviderData<CoursePayload> | undefined
+>(undefined);
 
-export function useCourseData(): ProviderData<Course> {
+export function useCourseData(): ProviderData<CoursePayload> {
     const context = useContext(CourseDataContext);
     if (context === undefined) {
         throw new Error('Course data is not available to this component!');
@@ -57,11 +57,11 @@ export function useCourseData(): ProviderData<Course> {
     return context;
 }
 
-export function CourseProvider(props: ProviderProps<Course>) {
+export function CourseProvider(props: ProviderProps<CoursePayload>) {
     const data = {
         data: props.data,
         get: (id) => props.data.find((course) => course.id == id),
-    } satisfies ProviderData<Course>;
+    } satisfies ProviderData<CoursePayload>;
 
     return (
         <CourseDataContext.Provider value={data}>
@@ -72,11 +72,11 @@ export function CourseProvider(props: ProviderProps<Course>) {
 
 //  ------------------------------ task context ------------------------------ //
 
-const TaskDataContext = createContext<ProviderData<Task> | undefined>(
+const TaskDataContext = createContext<ProviderData<TaskPayload> | undefined>(
     undefined
 );
 
-export function useTaskData(): ProviderData<Task> {
+export function useTaskData(): ProviderData<TaskPayload> {
     const context = useContext(TaskDataContext);
     if (context === undefined) {
         throw new Error('Task data is not available to this component!');
@@ -84,11 +84,11 @@ export function useTaskData(): ProviderData<Task> {
     return context;
 }
 
-export function TaskProvider(props: ProviderProps<Task>) {
+export function TaskProvider(props: ProviderProps<TaskPayload>) {
     const data = {
         data: props.data,
         get: (id) => props.data.find((task) => task.id == id),
-    } satisfies ProviderData<Task>;
+    } satisfies ProviderData<TaskPayload>;
 
     return (
         <TaskDataContext.Provider value={data}>

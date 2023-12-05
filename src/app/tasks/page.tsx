@@ -1,7 +1,7 @@
 'use client';
 
 import { Search } from '@/components/icons';
-import { Task } from '@prisma/client';
+import { TaskPayload } from '@/lib/types';
 import TaskCard from '@/components/TaskCard';
 import TaskForm from '@/components/forms/TaskForm';
 import { deleteTask } from '@/lib/actions/tasks';
@@ -18,7 +18,7 @@ export default function Tasks() {
         close: setTaskFormClose,
         create: setTaskFormCreate,
         update: setTaskFormUpdate,
-    } = useFormState<Task>();
+    } = useFormState<TaskPayload>();
 
     return (
         <>
