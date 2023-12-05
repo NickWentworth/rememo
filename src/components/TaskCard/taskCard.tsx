@@ -3,26 +3,21 @@
 import { Task } from '@prisma/client';
 import { Edit, Trash } from '../icons';
 import { formatTaskDate } from '@/lib/date';
-import {
-    deleteTask,
-    setTaskCompletion,
-    testModifyTask,
-} from '@/lib/actions/tasks';
+import { setTaskCompletion } from '@/lib/actions/tasks';
 import { useCourseData } from '../providers';
 import { useState } from 'react';
 import styles from './card.module.css';
-
-// TEMP
-const COURSE_COLOR = '#EF7E7E';
-// ----
 
 const BANNER_ICON_SIZE = 20;
 
 type TaskCardProps = {
     task: Task;
+    onEditClick?: () => void;
+    onDeleteClick?: () => void;
 };
 
 export function TaskCard(props: TaskCardProps) {
+    // use course data to get referenced course's name and color
     const course = useCourseData().get(props.task.courseId ?? '');
 
     // is the mouse currently hovering over the task card?
@@ -40,8 +35,7 @@ export function TaskCard(props: TaskCardProps) {
             >
                 <button
                     className={styles.bannerButton}
-                    // TODO: open up task form to edit a task
-                    onClick={() => testModifyTask(props.task.id)}
+                    onClick={props.onEditClick}
                 >
                     <Edit
                         size={BANNER_ICON_SIZE}
@@ -51,16 +45,7 @@ export function TaskCard(props: TaskCardProps) {
 
                 <button
                     className={styles.bannerButton}
-                    onClick={() => {
-                        // TODO: add custom confirmation popup component
-                        let confirmation = window.confirm(
-                            `Are you sure you want to delete this task?\nname: ${props.task.name}\nid: ${props.task.id}`
-                        );
-
-                        if (confirmation) {
-                            deleteTask(props.task.id);
-                        }
-                    }}
+                    onClick={props.onDeleteClick}
                 >
                     <Trash
                         size={BANNER_ICON_SIZE}

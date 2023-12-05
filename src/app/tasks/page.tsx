@@ -1,15 +1,24 @@
 'use client';
 
 import { Search } from '@/components/icons';
+import { Task } from '@prisma/client';
 import TaskCard from '@/components/TaskCard';
 import TaskForm from '@/components/forms/TaskForm';
-import { testAddTask } from '@/lib/actions/tasks';
+import { deleteTask } from '@/lib/actions/tasks';
+import { useFormState } from '@/lib/hooks/useFormState';
 import { useTaskData } from '@/components/providers';
 import { CSSProperties } from 'react';
 import styles from './page.module.css';
 
 export default function Tasks() {
     const { data: tasks } = useTaskData();
+
+    const {
+        formState,
+        close: setTaskFormClose,
+        create: setTaskFormCreate,
+        update: setTaskFormUpdate,
+    } = useFormState<Task>();
 
     return (
         <>
@@ -20,16 +29,13 @@ export default function Tasks() {
 
                         <h1 className={styles.numberFill}>{tasks.length}</h1>
 
-                        <form>
-                            {/* TODO: plus sign is slightly off-center, either fix or add new svg */}
-                            <button
-                                className={styles.addButton}
-                                // TODO: open up task form to add a task
-                                formAction={testAddTask}
-                            >
-                                <h1>+</h1>
-                            </button>
-                        </form>
+                        {/* TODO: plus sign is slightly off-center, either fix or add new svg */}
+                        <button
+                            className={styles.addButton}
+                            onClick={setTaskFormCreate}
+                        >
+                            <h1>+</h1>
+                        </button>
                     </div>
 
                     <div className={styles.filters}>
@@ -56,12 +62,17 @@ export default function Tasks() {
 
                 <div className={styles.list}>
                     {tasks.map((t) => (
-                        <TaskCard key={t.id} task={t} />
+                        <TaskCard
+                            key={t.id}
+                            task={t}
+                            onEditClick={() => setTaskFormUpdate(t)}
+                            onDeleteClick={() => deleteTask(t.id)}
+                        />
                     ))}
                 </div>
             </div>
 
-            {/* <TaskForm mode='create' /> */}
+            <TaskForm state={formState} onCloseClick={setTaskFormClose} />
         </>
     );
 }

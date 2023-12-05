@@ -6,40 +6,6 @@ import { revalidatePath } from 'next/cache';
 const prisma = new PrismaClient();
 const TEST_USER = '0';
 
-// TODO: remove after task form is created
-/**
- * Temporary function to add a test task
- */
-export async function testAddTask() {
-    await prisma.task.create({
-        data: {
-            name: 'New Task',
-            due: new Date('2023-12-01T00:00:00Z'),
-            description: '',
-            userId: TEST_USER,
-        },
-    });
-
-    revalidatePath('/tasks');
-}
-
-// TODO: remove after task form is created
-/**
- * Temporary function to modify an existing task
- */
-export async function testModifyTask(id: string) {
-    let task = await prisma.task.findFirst({ where: { id } });
-
-    if (task) {
-        await prisma.task.update({
-            where: { id },
-            data: { name: task.name + '!' },
-        });
-    }
-
-    revalidatePath('/tasks');
-}
-
 /**
  * Write a new task into the database
  */

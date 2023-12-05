@@ -2,30 +2,29 @@
 
 import { Close } from '../icons';
 import { Task } from '@prisma/client';
+import { FormState } from '@/lib/hooks/useFormState';
 import { useReducer } from 'react';
 import styles from './form.module.css';
 
-type TaskFormProps = CreateFormMode | UpdateFormMode;
-
-type CreateFormMode = {
-    mode: 'create';
-};
-
-type UpdateFormMode = {
-    mode: 'update';
-    data: Task;
+type TaskFormProps = {
+    state: FormState<Task>;
+    onCloseClick?: () => void;
 };
 
 export default function TaskForm(props: TaskFormProps) {
     const [includeTime, toggleIncludeTime] = useReducer((curr) => !curr, true);
 
     let title;
-    switch (props.mode) {
+    switch (props.state.mode) {
+        case 'closed':
+            // return early if closed, render nothing
+            return;
         case 'create':
             title = 'Add Task';
             break;
         case 'update':
             title = 'Modify Task';
+            // TODO: set form default values to props.state.data
             break;
     }
 
@@ -40,7 +39,11 @@ export default function TaskForm(props: TaskFormProps) {
                 <div className={styles.formHeader}>
                     <h1>{title}</h1>
 
-                    <button className={styles.closeButton} type='button'>
+                    <button
+                        className={styles.closeButton}
+                        type='button'
+                        onClick={props.onCloseClick}
+                    >
                         <Close size={30} color='white' />
                     </button>
                 </div>
