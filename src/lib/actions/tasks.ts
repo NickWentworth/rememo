@@ -50,3 +50,15 @@ export async function setTaskCompletion(id: string, completed: boolean) {
 
     revalidatePath('/tasks');
 }
+
+/**
+ * Update a subtask's (given by id) completion state
+ */
+export async function setSubtaskCompletion(id: string, completed: boolean) {
+    await prisma.subtask.update({
+        where: { id },
+        data: { completed },
+    });
+
+    revalidatePath('/tasks');
+}

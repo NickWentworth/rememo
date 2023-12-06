@@ -2,6 +2,7 @@
 
 import { TaskPayload } from '@/lib/types';
 import { Edit, Trash } from '../icons';
+import { Subtask } from './Subtask';
 import { formatTaskDate } from '@/lib/date';
 import { setTaskCompletion } from '@/lib/actions/tasks';
 import { useCourseData } from '../providers';
@@ -58,6 +59,7 @@ export function TaskCard(props: TaskCardProps) {
                 {/* Header */}
                 <div>
                     <div className={styles.headerTitle}>
+                        {/* TODO: checkbox might need to be hidden if subtasks exist, think more on what to do here */}
                         {/* TODO: style checkbox */}
                         <input
                             type='checkbox'
@@ -84,7 +86,11 @@ export function TaskCard(props: TaskCardProps) {
                     <p>{formatTaskDate(props.task.due)}</p>
                 </div>
 
-                {/* TODO: Subtasks */}
+                {/* Subtasks */}
+                {props.task.subtasks.length != 0 && <hr />}
+                {props.task.subtasks.map((s) => (
+                    <Subtask key={s.id} subtask={s} />
+                ))}
 
                 {/* Description */}
                 {props.task.description && (
