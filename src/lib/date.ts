@@ -1,3 +1,54 @@
+/**
+ * Returns a `Date` object after modifying a given one's date, leaving time untouched
+ *
+ * Expects given date to be in YYYY-MM-DD format
+ */
+export function updateDate(current: Date, date: string): Date {
+    const [year, month, day] = date.split('-').map((s) => Number.parseInt(s));
+
+    const copy = new Date(current);
+    // month is given as 0-indexed from 0=jan to 11=dec
+    copy.setUTCFullYear(year, month - 1, day);
+    return copy;
+}
+
+/**
+ * Returns a `Date` object after modifying a given one's time, leaving date untouched
+ *
+ * Expects given time to be in 24-hour HH:MM format
+ */
+export function updateTime(current: Date, time: string): Date {
+    const [hours, minutes] = time.split(':').map((s) => Number.parseInt(s));
+
+    const copy = new Date(current);
+    copy.setUTCHours(hours, minutes);
+    return copy;
+}
+
+// TODO: enable user to give custom default time
+/**
+ * Returns a `Date` object representing tonight at 11:59 PM
+ */
+export function tonightUTC(time?: string): Date {
+    const tonight = new Date().toISOString().split('T')[0];
+
+    return new Date(`${tonight}T${time ?? '23:59'}Z`);
+}
+
+/**
+ * Returns the date of the given `Date` in YYYY-MM-DD format
+ */
+export function dateISO(date: Date): string {
+    return date.toISOString().split('T')[0];
+}
+
+/**
+ * Returns the time of the given `Date` in 24-hour HH:MM format
+ */
+export function timeISO(date: Date): string {
+    return date.toISOString().split('T')[1].replace('Z', '');
+}
+
 // TODO: implement task date formatting
 export function formatTaskDate(due: Date): string {
     return 'Due ' + due.toUTCString();

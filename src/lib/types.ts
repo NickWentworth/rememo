@@ -21,17 +21,6 @@ export const TASK_ARGS = {
     },
 } satisfies Prisma.TaskDefaultArgs;
 
-export const DEFAULT_TASK = {
-    id: '',
-    name: '',
-    completed: false,
-    due: new Date(),
-    description: '',
-    subtasks: [],
-    courseId: null,
-    userId: '',
-} satisfies TaskPayload;
-
 /**
  * Converts a frontend `TaskPayload` object to a backend `Task` object
  */

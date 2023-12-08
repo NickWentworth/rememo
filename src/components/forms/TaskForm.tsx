@@ -1,17 +1,32 @@
 'use client';
 
 import { Close } from '../icons';
-import { DEFAULT_TASK, TaskPayload } from '@/lib/types';
+import { TaskPayload } from '@/lib/types';
+import {
+    dateISO,
+    timeISO,
+    tonightUTC,
+    updateDate,
+    updateTime,
+} from '@/lib/date';
 import { FormState } from '@/lib/hooks/useFormState';
 import { createTask, updateTask } from '@/lib/actions/tasks';
-import { useReducer } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useCourseData } from '../providers';
 import styles from './form.module.css';
 
 const TEST_USER = '0';
 
-// TODO: singular date doesn't seem like it will work with optional time requirement, probably store dueDate (required) and dueTime (optional)
+const DEFAULT_TASK = {
+    id: '',
+    name: '',
+    completed: false,
+    due: tonightUTC(),
+    description: '',
+    subtasks: [],
+    courseId: null,
+    userId: '',
+} satisfies TaskPayload;
 
 type TaskFormProps = {
     state: FormState<TaskPayload>;
@@ -20,12 +35,9 @@ type TaskFormProps = {
 
 export default function TaskForm(props: TaskFormProps) {
     // form data managed by useForm hook
-    const { register, handleSubmit } = useForm<TaskPayload>({
+    const { register, handleSubmit, control, setValue } = useForm<TaskPayload>({
         values: props.state.mode === 'update' ? props.state.data : DEFAULT_TASK,
     });
-
-    // should time be included for this task?
-    const [includeTime, toggleIncludeTime] = useReducer((curr) => !curr, true);
 
     // reference all courses to link a task to a course
     const courses = useCourseData().data;
@@ -135,31 +147,52 @@ export default function TaskForm(props: TaskFormProps) {
                             <p>Due</p>
                         </label>
 
-                        <input
-                            type='date'
-                            id='due'
-                            {...(register('due'), { required: true })}
+                        <Controller
+                            control={control}
+                            name='due'
+                            render={({ field }) => {
+                                // TODO: extract this into a component
+                                // to use a single Date object, parse it's ISO value and provide to inputs in correct format
+                                // then whenever they are changed, set form data's due property as a Date object
+                                const handleDateChange = (
+                                    e: React.ChangeEvent<HTMLInputElement>
+                                ) => {
+                                    setValue(
+                                        'due',
+                                        updateDate(field.value, e.target.value)
+                                    );
+                                };
+
+                                const handleTimeChange = (
+                                    e: React.ChangeEvent<HTMLInputElement>
+                                ) => {
+                                    setValue(
+                                        'due',
+                                        updateTime(field.value, e.target.value)
+                                    );
+                                };
+
+                                // for each input element, override the default value and onChange props
+                                return (
+                                    <>
+                                        <input
+                                            type='date'
+                                            id='due'
+                                            {...field}
+                                            value={dateISO(field.value)}
+                                            onChange={handleDateChange}
+                                        />
+
+                                        <input
+                                            type='time'
+                                            {...field}
+                                            value={timeISO(field.value)}
+                                            onChange={handleTimeChange}
+                                        />
+                                    </>
+                                );
+                            }}
                         />
-
-                        <div className={styles.timeContainer}>
-                            {/* TODO: fix layout shift when showing or hiding time */}
-                            <input
-                                type='checkbox'
-                                id='dueTime'
-                                checked={includeTime}
-                                onChange={toggleIncludeTime}
-                            />
-
-                            <label htmlFor='dueTime'>
-                                <p>Include Time </p>
-                            </label>
-
-                            <input
-                                type='time'
-                                defaultValue={'23:59'}
-                                hidden={!includeTime}
-                            />
-                        </div>
                     </div>
                 </div>
 
