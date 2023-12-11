@@ -2,27 +2,60 @@
  * Returns a `Date` object after modifying a given one's date, leaving time untouched
  *
  * Expects given date to be in YYYY-MM-DD format
+ *
+ * If given date is an invalid string, returns an unchanged date
  */
 export function updateDate(current: Date, date: string): Date {
     const [year, month, day] = date.split('-').map((s) => Number.parseInt(s));
 
-    const copy = new Date(current);
-    // month is given as 0-indexed from 0=jan to 11=dec
-    copy.setUTCFullYear(year, month - 1, day);
-    return copy;
+    const isValidDateString =
+        typeof year === 'number' &&
+        // choosing a wide range here, but year probably wont be out of this range
+        year >= 2000 &&
+        year <= 2100 &&
+        typeof month === 'number' &&
+        month >= 0 &&
+        month <= 11 &&
+        typeof day === 'number' &&
+        // TODO: not really checking for valid days per month here, ex: feb. 31st would be a valid date
+        day >= 0 &&
+        day <= 31;
+
+    if (isValidDateString) {
+        const copy = new Date(current);
+        // month is given as 0-indexed from 0=jan to 11=dec
+        copy.setUTCFullYear(year, month - 1, day);
+        return copy;
+    } else {
+        return current;
+    }
 }
 
 /**
  * Returns a `Date` object after modifying a given one's time, leaving date untouched
  *
  * Expects given time to be in 24-hour HH:MM format
+ *
+ * If given time is an invalid string, returns an unchanged date
  */
 export function updateTime(current: Date, time: string): Date {
     const [hours, minutes] = time.split(':').map((s) => Number.parseInt(s));
 
-    const copy = new Date(current);
-    copy.setUTCHours(hours, minutes);
-    return copy;
+    const isValidTimeString =
+        typeof hours === 'number' &&
+        hours >= 0 &&
+        hours <= 23 &&
+        typeof minutes === 'number' &&
+        minutes >= 0 &&
+        minutes <= 60;
+
+    if (isValidTimeString) {
+        const copy = new Date(current);
+        copy.setUTCHours(hours, minutes);
+        return copy;
+    } else {
+        return current;
+    }
 }
 
 // TODO: enable user to give custom default time

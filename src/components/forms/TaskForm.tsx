@@ -89,7 +89,7 @@ export default function TaskForm(props: TaskFormProps) {
         }
 
         // close the form after submitting
-        props.onCloseClick && props.onCloseClick();
+        props.onCloseClick?.();
     }
 
     return (
