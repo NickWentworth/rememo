@@ -1,6 +1,6 @@
 'use client';
 
-import { Close } from '../icons';
+import { Close, Trash } from '../icons';
 import { TaskPayload } from '@/lib/types';
 import {
     dateISO,
@@ -11,8 +11,9 @@ import {
 } from '@/lib/date';
 import { FormState } from '@/lib/hooks/useFormState';
 import { createTask, updateTask } from '@/lib/actions/tasks';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { useCourseData } from '../providers';
+import { Subtask } from '@prisma/client';
 import styles from './form.module.css';
 
 const TEST_USER = '0';
@@ -28,6 +29,14 @@ const DEFAULT_TASK = {
     userId: '',
 } satisfies TaskPayload;
 
+const DEFAULT_SUBTASK = {
+    id: '',
+    name: '',
+    completed: false,
+    due: tonightUTC(),
+    taskId: '',
+} satisfies Subtask;
+
 type TaskFormProps = {
     state: FormState<TaskPayload>;
     onCloseClick?: () => void;
@@ -35,8 +44,16 @@ type TaskFormProps = {
 
 export default function TaskForm(props: TaskFormProps) {
     // form data managed by useForm hook
-    const { register, handleSubmit, control, setValue } = useForm<TaskPayload>({
-        values: props.state.mode === 'update' ? props.state.data : DEFAULT_TASK,
+    const { register, handleSubmit, control, setValue, reset } =
+        useForm<TaskPayload>({
+            values:
+                props.state.mode === 'update' ? props.state.data : DEFAULT_TASK,
+        });
+
+    // dynamic subtasks section managed by useFieldArray hook
+    const subtasksField = useFieldArray({
+        control,
+        name: 'subtasks',
     });
 
     // reference all courses to link a task to a course
@@ -88,13 +105,15 @@ export default function TaskForm(props: TaskFormProps) {
                 break;
         }
 
-        // close the form after submitting
+        // close the form after submitting and reset fields
         props.onCloseClick?.();
+        reset();
     }
 
     return (
         <div className={styles.fillPage}>
             <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+                {/* header section */}
                 <div className={styles.formHeader}>
                     <h1>{title}</h1>
 
@@ -109,7 +128,9 @@ export default function TaskForm(props: TaskFormProps) {
 
                 <hr />
 
+                {/* main task data */}
                 <div className={styles.formSection}>
+                    {/* name */}
                     <div className={styles.fieldContainer}>
                         <label htmlFor='name'>
                             <p>Name</p>
@@ -121,6 +142,7 @@ export default function TaskForm(props: TaskFormProps) {
                         />
                     </div>
 
+                    {/* course */}
                     <div className={styles.fieldContainer}>
                         <label htmlFor='course'>
                             <p>Course</p>
@@ -142,6 +164,7 @@ export default function TaskForm(props: TaskFormProps) {
                         </select>
                     </div>
 
+                    {/* due date */}
                     <div className={styles.fieldContainer}>
                         <label htmlFor='due'>
                             <p>Due</p>
@@ -198,13 +221,98 @@ export default function TaskForm(props: TaskFormProps) {
 
                 <hr />
 
-                {/* TODO: subtasks */}
+                {/* subtasks */}
                 <div className={styles.formSection}>
-                    <p>=== Subtasks here ===</p>
+                    <div className={styles.fieldContainer}>
+                        <label>
+                            <p>Subtasks</p>
+                        </label>
+                        {subtasksField.fields.map((field, idx) => (
+                            <div key={field.id} className={styles.subtaskRow}>
+                                <input
+                                    type='text'
+                                    className={styles.subtaskRowName}
+                                    {...register(`subtasks.${idx}.name`, {
+                                        required: true,
+                                    })}
+                                />
+                                <Controller
+                                    control={control}
+                                    name={`subtasks.${idx}.due`}
+                                    render={({ field }) => {
+                                        // TODO: extract this into a component
+                                        // to use a single Date object, parse it's ISO value and provide to inputs in correct format
+                                        // then whenever they are changed, set form's property as a Date object
+                                        const handleDateChange = (
+                                            e: React.ChangeEvent<HTMLInputElement>
+                                        ) => {
+                                            setValue(
+                                                field.name,
+                                                updateDate(
+                                                    field.value,
+                                                    e.target.value
+                                                )
+                                            );
+                                        };
+
+                                        const handleTimeChange = (
+                                            e: React.ChangeEvent<HTMLInputElement>
+                                        ) => {
+                                            setValue(
+                                                field.name,
+                                                updateTime(
+                                                    field.value,
+                                                    e.target.value
+                                                )
+                                            );
+                                        };
+
+                                        // for each input element, override the default value and onChange props
+                                        return (
+                                            <>
+                                                <input
+                                                    type='date'
+                                                    {...field}
+                                                    value={dateISO(field.value)}
+                                                    onChange={handleDateChange}
+                                                />
+
+                                                <input
+                                                    type='time'
+                                                    {...field}
+                                                    value={timeISO(field.value)}
+                                                    onChange={handleTimeChange}
+                                                />
+                                            </>
+                                        );
+                                    }}
+                                />
+
+                                <button
+                                    type='button'
+                                    className={styles.closeButton}
+                                    onClick={() => subtasksField.remove(idx)}
+                                >
+                                    <Trash color='light' size={16} />
+                                </button>
+                            </div>
+                        ))}
+
+                        <button
+                            type='button'
+                            className={styles.submit}
+                            onClick={() =>
+                                subtasksField.append(DEFAULT_SUBTASK)
+                            }
+                        >
+                            +
+                        </button>
+                    </div>
                 </div>
 
                 <hr />
 
+                {/* description */}
                 <div className={styles.formSection}>
                     <div className={styles.fieldContainer}>
                         <label htmlFor='description'>
