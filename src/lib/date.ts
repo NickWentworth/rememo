@@ -10,15 +10,12 @@ export function updateDate(current: Date, date: string): Date {
 
     const isValidDateString =
         typeof year === 'number' &&
-        // choosing a wide range here, but year probably wont be out of this range
-        year >= 2000 &&
-        year <= 2100 &&
         typeof month === 'number' &&
-        month >= 0 &&
-        month <= 11 &&
+        month >= 1 &&
+        month <= 12 &&
         typeof day === 'number' &&
         // TODO: not really checking for valid days per month here, ex: feb. 31st would be a valid date
-        day >= 0 &&
+        day >= 1 &&
         day <= 31;
 
     if (isValidDateString) {
@@ -47,7 +44,7 @@ export function updateTime(current: Date, time: string): Date {
         hours <= 23 &&
         typeof minutes === 'number' &&
         minutes >= 0 &&
-        minutes <= 60;
+        minutes <= 59;
 
     if (isValidTimeString) {
         const copy = new Date(current);
