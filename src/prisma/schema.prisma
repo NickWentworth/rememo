@@ -65,6 +65,6 @@ model Subtask {
     completed Boolean  @default(false)
     due       DateTime
 
-    task   Task   @relation(fields: [taskId], references: [id])
+    task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
     taskId String
 }

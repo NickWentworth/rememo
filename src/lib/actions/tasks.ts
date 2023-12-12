@@ -6,29 +6,71 @@ import { revalidatePath } from 'next/cache';
 
 const prisma = new PrismaClient();
 
-// TODO: create or update subtasks as well as tasks
-
 /**
- * Write a new task into the database
+ * Write a new task into the database, creating new subtasks when needed
  */
 export async function createTask(task: TaskPayload) {
-    await prisma.task.create({
+    // create new task
+    const createdTask = await prisma.task.create({
         data: {
             ...payloadToTask(task),
             id: undefined, // generate task id
         },
     });
 
+    // and create new subtasks if needed
+    for (const subtask of task.subtasks) {
+        await prisma.subtask.create({
+            data: {
+                ...subtask,
+                id: undefined, // generate subtask id
+                taskId: createdTask.id, // link subtask to parent task
+            },
+        });
+    }
+
     revalidatePath('/tasks');
 }
 
 /**
  * Update a task already existing in the database, matched by id
+ *
+ * Handles creating, updating, and deleting any subtasks as needed
  */
 export async function updateTask(task: TaskPayload) {
-    await prisma.task.update({
+    // update the task
+    const updatedTask = await prisma.task.update({
         where: { id: task.id },
         data: payloadToTask(task),
+        include: {
+            subtasks: true,
+        },
+    });
+
+    // upsert any subtasks needing to be created or updated
+    for (const subtask of task.subtasks) {
+        await prisma.subtask.upsert({
+            create: {
+                ...subtask,
+                id: undefined,
+                taskId: task.id,
+            },
+            update: subtask,
+            where: { id: subtask.id },
+        });
+    }
+
+    // and finally delete any subtasks that are missing from received data
+    const missingSubtaskIds = updatedTask.subtasks
+        .map((subtask) => subtask.id)
+        .filter((id) => task.subtasks.every((subtask) => subtask.id !== id));
+
+    await prisma.subtask.deleteMany({
+        where: {
+            id: {
+                in: missingSubtaskIds,
+            },
+        },
     });
 
     revalidatePath('/tasks');
