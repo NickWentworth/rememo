@@ -171,7 +171,7 @@ export default function TaskForm(props: TaskFormProps) {
                             render={({ field }) => (
                                 <DateTimePicker
                                     set={(date) => setValue(field.name, date)}
-                                    {...field}
+                                    value={field.value}
                                 />
                             )}
                         />
@@ -203,7 +203,7 @@ export default function TaskForm(props: TaskFormProps) {
                                             set={(date) =>
                                                 setValue(field.name, date)
                                             }
-                                            {...field}
+                                            value={field.value}
                                         />
                                     )}
                                 />
