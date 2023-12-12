@@ -1,3 +1,3 @@
-import { TaskCard } from './taskCard';
+import { TaskCard } from './TaskCard';
 
 export default TaskCard;
