@@ -1,4 +1,9 @@
-import { Prisma, Task as TaskRaw } from '@prisma/client';
+import { Prisma } from '@prisma/client';
+import type {
+    Course as CourseRaw,
+    Task as TaskRaw,
+    Term as TermRaw,
+} from '@prisma/client';
 
 // built frontend types from prisma generated payloads
 
@@ -7,10 +12,24 @@ export type TermPayload = Prisma.TermGetPayload<typeof TERM_ARGS>;
 
 export const TERM_ARGS = {} satisfies Prisma.TermDefaultArgs;
 
+/**
+ * Converts a frontend `TermPayload` object to a backend `Term` object
+ */
+export function payloadToTerm(payload: TermPayload): TermRaw {
+    return payload;
+}
+
 // ------------------------------ courses ------------------------------ //
 export type CoursePayload = Prisma.CourseGetPayload<typeof COURSE_ARGS>;
 
 export const COURSE_ARGS = {} satisfies Prisma.CourseDefaultArgs;
+
+/**
+ * Converts a frontend `CoursePayload` object to a backend `Course` object
+ */
+export function payloadToCourse(payload: CoursePayload): CourseRaw {
+    return payload;
+}
 
 // ------------------------------ tasks ------------------------------ //
 export type TaskPayload = Prisma.TaskGetPayload<typeof TASK_ARGS>;
