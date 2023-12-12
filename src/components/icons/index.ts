@@ -9,7 +9,9 @@ export { Calendar } from './calendar';
 export { Hamburger } from './hamburger';
 
 // general icons
+export { User } from './user';
 export { Search } from './search';
 export { Edit } from './edit';
 export { Trash } from './trash';
 export { Close } from './close';
+export { Location } from './location';

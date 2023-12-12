@@ -79,6 +79,11 @@ export function timeISO(date: Date): string {
     return date.toISOString().split('T')[1].replace('Z', '');
 }
 
+// TODO: implement term date formatting
+export function formatTermDate(start: Date, end: Date): string {
+    return `${dateISO(start)} - ${dateISO(end)}`;
+}
+
 // TODO: implement task date formatting
 export function formatTaskDate(due: Date): string {
     return 'Due ' + due.toUTCString();

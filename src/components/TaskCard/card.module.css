@@ -10,12 +10,16 @@
     height: 1px;
 }
 
-.banner {
-    /* default background color, overwritten by course color */
-    background-color: var(--light);
+.banner,
+.buttons {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.banner {
+    /* default background color, overwritten by course color */
+    background-color: var(--light);
 }
 
 .bannerButton {
@@ -61,4 +65,15 @@
     border-radius: 1rem;
     background-color: var(--medium);
     padding: 0.125rem 0.5rem;
+}
+
+.iconField {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.courseDataSection {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
 }
