@@ -73,12 +73,6 @@
     gap: 1px;
 }
 
-.timeContainer {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
 .subtaskRow {
     display: flex;
 }
@@ -101,4 +95,12 @@
 .submit:hover {
     cursor: pointer;
     background-color: var(--medium);
+}
+
+.dateTimePicker {
+    display: flex;
+}
+
+.dateTimePicker input {
+    flex-grow: 1;
 }

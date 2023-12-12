@@ -1,14 +1,9 @@
 'use client';
 
 import { Close, Trash } from '../icons';
+import { DateTimePicker } from './DateTimePicker';
 import { TaskPayload } from '@/lib/types';
-import {
-    dateISO,
-    timeISO,
-    tonightUTC,
-    updateDate,
-    updateTime,
-} from '@/lib/date';
+import { tonightUTC } from '@/lib/date';
 import { FormState } from '@/lib/hooks/useFormState';
 import { createTask, updateTask } from '@/lib/actions/tasks';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
@@ -173,48 +168,12 @@ export default function TaskForm(props: TaskFormProps) {
                         <Controller
                             control={control}
                             name='due'
-                            render={({ field }) => {
-                                // TODO: extract this into a component
-                                // to use a single Date object, parse it's ISO value and provide to inputs in correct format
-                                // then whenever they are changed, set form data's due property as a Date object
-                                const handleDateChange = (
-                                    e: React.ChangeEvent<HTMLInputElement>
-                                ) => {
-                                    setValue(
-                                        'due',
-                                        updateDate(field.value, e.target.value)
-                                    );
-                                };
-
-                                const handleTimeChange = (
-                                    e: React.ChangeEvent<HTMLInputElement>
-                                ) => {
-                                    setValue(
-                                        'due',
-                                        updateTime(field.value, e.target.value)
-                                    );
-                                };
-
-                                // for each input element, override the default value and onChange props
-                                return (
-                                    <>
-                                        <input
-                                            type='date'
-                                            id='due'
-                                            {...field}
-                                            value={dateISO(field.value)}
-                                            onChange={handleDateChange}
-                                        />
-
-                                        <input
-                                            type='time'
-                                            {...field}
-                                            value={timeISO(field.value)}
-                                            onChange={handleTimeChange}
-                                        />
-                                    </>
-                                );
-                            }}
+                            render={({ field }) => (
+                                <DateTimePicker
+                                    set={(date) => setValue(field.name, date)}
+                                    {...field}
+                                />
+                            )}
                         />
                     </div>
                 </div>
@@ -239,53 +198,14 @@ export default function TaskForm(props: TaskFormProps) {
                                 <Controller
                                     control={control}
                                     name={`subtasks.${idx}.due`}
-                                    render={({ field }) => {
-                                        // TODO: extract this into a component
-                                        // to use a single Date object, parse it's ISO value and provide to inputs in correct format
-                                        // then whenever they are changed, set form's property as a Date object
-                                        const handleDateChange = (
-                                            e: React.ChangeEvent<HTMLInputElement>
-                                        ) => {
-                                            setValue(
-                                                field.name,
-                                                updateDate(
-                                                    field.value,
-                                                    e.target.value
-                                                )
-                                            );
-                                        };
-
-                                        const handleTimeChange = (
-                                            e: React.ChangeEvent<HTMLInputElement>
-                                        ) => {
-                                            setValue(
-                                                field.name,
-                                                updateTime(
-                                                    field.value,
-                                                    e.target.value
-                                                )
-                                            );
-                                        };
-
-                                        // for each input element, override the default value and onChange props
-                                        return (
-                                            <>
-                                                <input
-                                                    type='date'
-                                                    {...field}
-                                                    value={dateISO(field.value)}
-                                                    onChange={handleDateChange}
-                                                />
-
-                                                <input
-                                                    type='time'
-                                                    {...field}
-                                                    value={timeISO(field.value)}
-                                                    onChange={handleTimeChange}
-                                                />
-                                            </>
-                                        );
-                                    }}
+                                    render={({ field }) => (
+                                        <DateTimePicker
+                                            set={(date) =>
+                                                setValue(field.name, date)
+                                            }
+                                            {...field}
+                                        />
+                                    )}
                                 />
 
                                 <button
