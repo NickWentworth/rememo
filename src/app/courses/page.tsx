@@ -1,11 +1,13 @@
 'use client';
 
 import { CoursePayload, TermPayload } from '@/lib/types';
-import { useFormState } from '@/lib/hooks/useFormState';
-import styles from './page.module.css';
-import { useCourseData, useTermData } from '@/components/providers';
-import { TermCard } from '@/components/TaskCard/TermCard';
 import { CourseCard } from '@/components/TaskCard/CourseCard';
+import { TermCard } from '@/components/TaskCard/TermCard';
+import TermForm from '@/components/forms/TermForm';
+import { deleteTerm } from '@/lib/actions/terms';
+import { useFormState } from '@/lib/hooks/useFormState';
+import { useCourseData, useTermData } from '@/components/providers';
+import styles from './page.module.css';
 
 export default function Courses() {
     const terms = useTermData().data;
@@ -50,9 +52,7 @@ export default function Courses() {
                             key={t.id}
                             term={t}
                             onEditClick={() => termFormState.update(t)}
-                            onDeleteClick={() =>
-                                console.log(`TODO: delete ${t.name}`)
-                            }
+                            onDeleteClick={() => deleteTerm(t.id)}
                         />
                     ))}
                 </div>
@@ -74,7 +74,10 @@ export default function Courses() {
                 </div>
             </div>
 
-            {/* TODO: term form */}
+            <TermForm
+                state={termFormState.formState}
+                onCloseClick={termFormState.close}
+            />
 
             {/* TODO: course form */}
         </>

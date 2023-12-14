@@ -4,6 +4,9 @@ import styles from './form.module.css';
 type DateTimePickerProps = {
     value: Date;
     set: (date: Date) => void;
+    // optionally hide either date or time element
+    hideDate?: boolean;
+    hideTime?: boolean;
 };
 
 export function DateTimePicker(props: DateTimePickerProps) {
@@ -15,6 +18,7 @@ export function DateTimePicker(props: DateTimePickerProps) {
                 onChange={(e) =>
                     props.set(updateDate(props.value, e.target.value))
                 }
+                hidden={props.hideDate}
             />
             <input
                 type='time'
@@ -22,6 +26,7 @@ export function DateTimePicker(props: DateTimePickerProps) {
                 onChange={(e) =>
                     props.set(updateTime(props.value, e.target.value))
                 }
+                hidden={props.hideTime}
             />
         </div>
     );
