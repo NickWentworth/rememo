@@ -24,7 +24,7 @@ type TermFormProps = {
     onCloseClick?: () => void;
 };
 
-export default function TermForm(props: TermFormProps) {
+export function TermForm(props: TermFormProps) {
     // form data managed by useForm hook
     const { register, handleSubmit, control, setValue, reset } =
         useForm<TermPayload>({

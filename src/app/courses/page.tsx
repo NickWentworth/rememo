@@ -1,10 +1,8 @@
 'use client';
 
 import { CoursePayload, TermPayload } from '@/lib/types';
-import { CourseCard } from '@/components/TaskCard/CourseCard';
-import CourseForm from '@/components/forms/CourseForm';
-import { TermCard } from '@/components/TaskCard/TermCard';
-import TermForm from '@/components/forms/TermForm';
+import { TermCard, CourseCard } from '@/components/cards';
+import { TermForm, CourseForm } from '@/components/forms';
 import { deleteCourse } from '@/lib/actions/courses';
 import { deleteTerm } from '@/lib/actions/terms';
 import { useFormState } from '@/lib/hooks/useFormState';

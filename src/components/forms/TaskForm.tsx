@@ -37,7 +37,7 @@ type TaskFormProps = {
     onCloseClick?: () => void;
 };
 
-export default function TaskForm(props: TaskFormProps) {
+export function TaskForm(props: TaskFormProps) {
     // form data managed by useForm hook
     const { register, handleSubmit, control, setValue, reset } =
         useForm<TaskPayload>({

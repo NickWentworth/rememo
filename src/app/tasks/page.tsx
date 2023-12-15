@@ -2,8 +2,8 @@
 
 import { Search } from '@/components/icons';
 import { TaskPayload } from '@/lib/types';
-import TaskCard from '@/components/TaskCard';
-import TaskForm from '@/components/forms/TaskForm';
+import { TaskCard } from '@/components/cards';
+import { TaskForm } from '@/components/forms';
 import { deleteTask } from '@/lib/actions/tasks';
 import { useFormState } from '@/lib/hooks/useFormState';
 import { useTaskData } from '@/components/providers';

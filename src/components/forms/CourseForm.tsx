@@ -1,12 +1,11 @@
 'use client';
 
 import { Close } from '../icons';
-import { DateTimePicker } from './DateTimePicker';
 import { CoursePayload } from '@/lib/types';
 import { FormState } from '@/lib/hooks/useFormState';
 import { createCourse, updateCourse } from '@/lib/actions/courses';
 import { useTermData } from '../providers';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import styles from './form.module.css';
 
 const COLORS = [
@@ -34,7 +33,7 @@ type CourseFormProps = {
     onCloseClick?: () => void;
 };
 
-export default function CourseForm(props: CourseFormProps) {
+export function CourseForm(props: CourseFormProps) {
     // reference all terms to link a course to a term
     const terms = useTermData().data;
 
