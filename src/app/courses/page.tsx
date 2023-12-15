@@ -2,8 +2,10 @@
 
 import { CoursePayload, TermPayload } from '@/lib/types';
 import { CourseCard } from '@/components/TaskCard/CourseCard';
+import CourseForm from '@/components/forms/CourseForm';
 import { TermCard } from '@/components/TaskCard/TermCard';
 import TermForm from '@/components/forms/TermForm';
+import { deleteCourse } from '@/lib/actions/courses';
 import { deleteTerm } from '@/lib/actions/terms';
 import { useFormState } from '@/lib/hooks/useFormState';
 import { useCourseData, useTermData } from '@/components/providers';
@@ -66,9 +68,7 @@ export default function Courses() {
                             key={c.id}
                             course={c}
                             onEditClick={() => courseFormState.update(c)}
-                            onDeleteClick={() =>
-                                console.log(`TODO: delete ${c.name}`)
-                            }
+                            onDeleteClick={() => deleteCourse(c.id)}
                         />
                     ))}
                 </div>
@@ -79,7 +79,10 @@ export default function Courses() {
                 onCloseClick={termFormState.close}
             />
 
-            {/* TODO: course form */}
+            <CourseForm
+                state={courseFormState.formState}
+                onCloseClick={courseFormState.close}
+            />
         </>
     );
 }
