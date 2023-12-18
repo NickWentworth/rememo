@@ -1,6 +1,6 @@
 import { Subtask } from '@prisma/client';
 import styles from './card.module.css';
-import { formatSubtaskDate } from '@/lib/date';
+import { formatTaskDate } from '@/lib/date';
 import { setSubtaskCompletion } from '@/lib/actions/tasks';
 
 type SubtaskRowProps = {
@@ -24,7 +24,7 @@ export function Subtask(props: SubtaskRowProps) {
             <h3>{props.subtask.name}</h3>
 
             <p className={styles.subtaskDue}>
-                {formatSubtaskDate(props.subtask.due)}
+                {formatTaskDate(props.subtask.due)}
             </p>
         </div>
     );

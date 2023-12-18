@@ -1,3 +1,6 @@
+const MS_PER_MINUTE = 1000 * 60;
+const MS_PER_DAY = 1000 * 60 * 60 * 24;
+
 /**
  * Returns a `Date` object after modifying a given one's date, leaving time untouched
  *
@@ -79,19 +82,70 @@ export function timeISO(date: Date): string {
     return date.toISOString().split('T')[1].replace('Z', '');
 }
 
-// TODO: implement term date formatting
+/**
+ * Formats the given start and end date to display on a term card
+ */
 export function formatTermDate(start: Date, end: Date): string {
-    return `${dateISO(start)} - ${dateISO(end)}`;
+    const format = (d: Date) =>
+        d.toLocaleDateString('en-US', {
+            timeZone: 'UTC',
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+        });
+
+    return `${format(start)} — ${format(end)}`;
 }
 
-// TODO: implement task date formatting
+/**
+ * Formats the given due date to display on a task card
+ */
 export function formatTaskDate(due: Date): string {
-    return 'Due ' + due.toUTCString();
-}
+    const now = new Date();
+    const nowUTC = new Date(
+        now.getTime() - now.getTimezoneOffset() * MS_PER_MINUTE
+    );
 
-export function formatSubtaskDate(due: Date): string {
-    // remove "due" from formatted task date, everything else remains the same
-    const tokens = formatTaskDate(due).split(' ');
-    tokens.shift();
-    return tokens.join(' ');
+    const dueDay = Math.floor(due.getTime() / MS_PER_DAY);
+    const nowDay = Math.floor(now.getTime() / MS_PER_DAY);
+
+    const time = due.toLocaleTimeString('en-US', {
+        timeZone: 'UTC',
+        hour: 'numeric',
+        minute: 'numeric',
+    });
+
+    const weekday = due.toLocaleDateString('en-US', {
+        timeZone: 'UTC',
+        weekday: 'long',
+    });
+
+    const fullDaysAway = dueDay - nowDay;
+    const overdue = due < nowUTC;
+
+    switch (true) {
+        case fullDaysAway < -1:
+            return `Overdue by ${-fullDaysAway} days`;
+
+        case fullDaysAway == -1:
+            return `Overdue by ${-fullDaysAway} day`;
+
+        case fullDaysAway == 0:
+            return `Due ${overdue ? 'earlier' : ''} today - ${time}`;
+
+        case fullDaysAway == 0 && !overdue:
+            return `Due today - ${time}`;
+
+        case fullDaysAway == 1:
+            return `Due tomorrow - ${time}`;
+
+        case fullDaysAway < 7:
+            return `Due ${weekday} - ${time}`;
+
+        case fullDaysAway < 13:
+            return `Due next ${weekday} - ${time}`;
+
+        default:
+            return `Due in ${fullDaysAway} days`;
+    }
 }
