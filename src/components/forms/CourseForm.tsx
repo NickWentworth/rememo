@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 import styles from './form.module.css';
 
 const COLORS = [
+    '#EFFFFF', // global white color
     '#EF7E7E',
     '#ECA978',
     '#E9EB98',
@@ -150,18 +151,16 @@ export function CourseForm(props: CourseFormProps) {
                             <p>Course Color</p>
                         </label>
 
-                        {/* TODO: make this a custom radio input component */}
-                        <select
-                            id='color'
-                            style={{ color: watch('color') }}
-                            {...register('color')}
-                        >
+                        <div className={styles.colorSection}>
                             {COLORS.map((c) => (
-                                <option value={c} style={{ color: c }}>
-                                    {c}
-                                </option>
+                                <input
+                                    {...register('color')}
+                                    type='radio'
+                                    value={c}
+                                    style={{ color: c }}
+                                />
                             ))}
-                        </select>
+                        </div>
                     </div>
                 </div>
 
