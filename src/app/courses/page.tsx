@@ -7,7 +7,9 @@ import { deleteCourse } from '@/lib/actions/courses';
 import { deleteTerm } from '@/lib/actions/terms';
 import { useFormState } from '@/lib/hooks/useFormState';
 import { useCourseData, useTermData } from '@/components/providers';
-import styles from './page.module.css';
+
+import pageStyles from '@/app/page.module.css';
+import styles from './courses.module.css';
 
 export default function Courses() {
     const terms = useTermData().data;
@@ -18,35 +20,39 @@ export default function Courses() {
 
     return (
         <>
-            <div className={styles.page}>
+            <div className={`${pageStyles.page} ${styles.page}`}>
                 {/* terms header */}
-                <div className={styles.header}>
-                    <h1>Terms</h1>
+                <div className={pageStyles.header}>
+                    <div className={pageStyles.headerSection}>
+                        <h1>Terms</h1>
 
-                    <button
-                        className={styles.addButton}
-                        onClick={termFormState.create}
-                    >
-                        <h1>+</h1>
-                    </button>
+                        <button
+                            className={pageStyles.addButton}
+                            onClick={termFormState.create}
+                        >
+                            <h1>+</h1>
+                        </button>
+                    </div>
                 </div>
 
-                <div className={styles.header} />
+                <div className={pageStyles.header} />
 
                 {/* courses header */}
-                <div className={styles.header}>
-                    <h1>Courses</h1>
+                <div className={pageStyles.header}>
+                    <div className={pageStyles.headerSection}>
+                        <h1>Courses</h1>
 
-                    <button
-                        className={styles.addButton}
-                        onClick={courseFormState.create}
-                    >
-                        <h1>+</h1>
-                    </button>
+                        <button
+                            className={pageStyles.addButton}
+                            onClick={courseFormState.create}
+                        >
+                            <h1>+</h1>
+                        </button>
+                    </div>
                 </div>
 
                 {/* terms list */}
-                <div className={styles.list}>
+                <div className={pageStyles.cardList}>
                     {terms.map((t) => (
                         <TermCard
                             key={t.id}
@@ -60,7 +66,7 @@ export default function Courses() {
                 <div className={styles.vr} />
 
                 {/* courses list */}
-                <div className={styles.list}>
+                <div className={pageStyles.cardList}>
                     {courses.map((c) => (
                         <CourseCard
                             key={c.id}

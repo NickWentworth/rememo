@@ -8,7 +8,9 @@ import { deleteTask } from '@/lib/actions/tasks';
 import { useFormState } from '@/lib/hooks/useFormState';
 import { useTaskData } from '@/components/providers';
 import { CSSProperties } from 'react';
-import styles from './page.module.css';
+
+import pageStyles from '@/app/page.module.css';
+import styles from './tasks.module.css';
 
 export default function Tasks() {
     const { data: tasks } = useTaskData();
@@ -22,16 +24,14 @@ export default function Tasks() {
 
     return (
         <>
-            <div className={styles.page}>
-                <div className={styles.header}>
-                    <div className={styles.count}>
+            <div className={pageStyles.page}>
+                <div className={pageStyles.header}>
+                    <div className={pageStyles.headerSection}>
                         <h1>Tasks</h1>
-
-                        <h1 className={styles.numberFill}>{tasks.length}</h1>
 
                         {/* TODO: plus sign is slightly off-center, either fix or add new svg */}
                         <button
-                            className={styles.addButton}
+                            className={pageStyles.addButton}
                             onClick={setTaskFormCreate}
                         >
                             <h1>+</h1>
@@ -52,15 +52,15 @@ export default function Tasks() {
                         />
                     </div>
 
-                    <div className={styles.search}>
-                        <div className={styles.searchBox}>
-                            <p>Search</p>
-                            <Search size={16} color='light' />
-                        </div>
+                    <div className={styles.searchBox}>
+                        <p>Search</p>
+                        <Search size={16} color='light' />
                     </div>
                 </div>
 
-                <div className={styles.list}>
+                <div
+                    className={`${pageStyles.cardList} ${styles.taskCardList}`}
+                >
                     {tasks.map((t) => (
                         <TaskCard
                             key={t.id}
@@ -102,7 +102,7 @@ function FilterButton(props: FilterButtonProps) {
                 {props.name}
             </p>
 
-            <h4 className={`${styles.numberFill}`} style={activeNumberStyle}>
+            <h4 className={styles.numberFill} style={activeNumberStyle}>
                 {props.count}
             </h4>
 
