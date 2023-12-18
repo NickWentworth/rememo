@@ -72,6 +72,11 @@
     gap: 0.25rem;
 }
 
+.termCard {
+    cursor: pointer;
+    border: 2px solid;
+}
+
 .courseDataSection {
     display: flex;
     flex-direction: column;

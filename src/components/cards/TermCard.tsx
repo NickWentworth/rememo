@@ -12,17 +12,23 @@ type TermCardProps = {
     term: TermPayload;
     onEditClick?: () => void;
     onDeleteClick?: () => void;
+    selected: boolean;
+    onClick?: () => void;
 };
 
 export function TermCard(props: TermCardProps) {
     // is the mouse currently hovering over the task card?
     const [hovering, setHovering] = useState(false);
 
+    const borderColor = props.selected ? 'var(--white)' : 'transparent';
+
     return (
         <div
-            className={styles.card}
+            className={`${styles.card} ${styles.termCard}`}
+            style={{ borderColor }}
             onMouseOver={() => setHovering(true)}
             onMouseLeave={() => setHovering(false)}
+            onClick={props.onClick}
         >
             <div className={styles.body}>
                 <h1>{props.term.name}</h1>

@@ -7,6 +7,7 @@ import { deleteCourse } from '@/lib/actions/courses';
 import { deleteTerm } from '@/lib/actions/terms';
 import { useFormState } from '@/lib/hooks/useFormState';
 import { useCourseData, useTermData } from '@/components/providers';
+import { useState } from 'react';
 
 import pageStyles from '@/app/page.module.css';
 import styles from './courses.module.css';
@@ -14,6 +15,9 @@ import styles from './courses.module.css';
 export default function Courses() {
     const terms = useTermData().data;
     const courses = useCourseData().data;
+
+    // only show courses for the selected term
+    const [selectedTermId, setSelectedTermId] = useState(terms[0].id);
 
     const termFormState = useFormState<TermPayload>();
     const courseFormState = useFormState<CoursePayload>();
@@ -59,6 +63,8 @@ export default function Courses() {
                             term={t}
                             onEditClick={() => termFormState.update(t)}
                             onDeleteClick={() => deleteTerm(t.id)}
+                            selected={selectedTermId === t.id}
+                            onClick={() => setSelectedTermId(t.id)}
                         />
                     ))}
                 </div>
@@ -67,14 +73,16 @@ export default function Courses() {
 
                 {/* courses list */}
                 <div className={pageStyles.cardList}>
-                    {courses.map((c) => (
-                        <CourseCard
-                            key={c.id}
-                            course={c}
-                            onEditClick={() => courseFormState.update(c)}
-                            onDeleteClick={() => deleteCourse(c.id)}
-                        />
-                    ))}
+                    {courses
+                        .filter((c) => c.termId === selectedTermId)
+                        .map((c) => (
+                            <CourseCard
+                                key={c.id}
+                                course={c}
+                                onEditClick={() => courseFormState.update(c)}
+                                onDeleteClick={() => deleteCourse(c.id)}
+                            />
+                        ))}
                 </div>
             </div>
 
