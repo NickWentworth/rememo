@@ -1,0 +1,70 @@
+.window {
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    background-color: var(--dark);
+    height: 4rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    gap: 0.5rem;
+}
+
+.header > div {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.list {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    gap: 0.5rem;
+}
+
+.addButton {
+    cursor: pointer;
+    background-color: var(--accent);
+    border-radius: 50%;
+    border: 0;
+}
+
+/* -------------------- term window -------------------- */
+
+.window.term {
+    width: 40%;
+}
+
+/* -------------------- course window -------------------- */
+
+.window.course {
+    width: 60%;
+}
+
+/* -------------------- task window -------------------- */
+
+.window.task {
+    flex-grow: 1;
+}
+
+.list.task > * {
+    max-width: 800px;
+}
+
+.searchBar {
+    background-color: var(--medium);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100px;
+}
