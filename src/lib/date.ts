@@ -69,6 +69,26 @@ export function tonightUTC(time?: string): Date {
 }
 
 /**
+ * Returns a `Date` object set to the local timezone's time, but with a timezone offset of 0
+ *
+ * Required for comparing an input-generated `Date`, as they are stored as a UTC timezone (yyyy-mm-ddThh:mmZ)
+ */
+export function nowUTC(): Date {
+    const now = new Date();
+
+    const utc = Date.UTC(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate(),
+        now.getHours(),
+        now.getMinutes()
+        // further precision is not needed,
+    );
+
+    return new Date(utc);
+}
+
+/**
  * Returns the date of the given `Date` in YYYY-MM-DD format
  */
 export function dateISO(date: Date): string {
@@ -101,10 +121,7 @@ export function formatTermDate(start: Date, end: Date): string {
  * Formats the given due date to display on a task card
  */
 export function formatTaskDate(due: Date): string {
-    const now = new Date();
-    const nowUTC = new Date(
-        now.getTime() - now.getTimezoneOffset() * MS_PER_MINUTE
-    );
+    const now = nowUTC();
 
     const dueDay = Math.floor(due.getTime() / MS_PER_DAY);
     const nowDay = Math.floor(now.getTime() / MS_PER_DAY);
@@ -121,29 +138,29 @@ export function formatTaskDate(due: Date): string {
     });
 
     const fullDaysAway = dueDay - nowDay;
-    const overdue = due < nowUTC;
+    const overdue = due < now;
 
     switch (true) {
         case fullDaysAway < -1:
             return `Overdue by ${-fullDaysAway} days`;
 
         case fullDaysAway == -1:
-            return `Overdue by ${-fullDaysAway} day`;
+            return `Due yesterday @ ${time}`;
 
         case fullDaysAway == 0:
-            return `Due ${overdue ? 'earlier' : ''} today - ${time}`;
+            return `Due ${overdue ? 'earlier' : ''} today @ ${time}`;
 
         case fullDaysAway == 0 && !overdue:
-            return `Due today - ${time}`;
+            return `Due today @ ${time}`;
 
         case fullDaysAway == 1:
-            return `Due tomorrow - ${time}`;
+            return `Due tomorrow @ ${time}`;
 
         case fullDaysAway < 7:
-            return `Due ${weekday} - ${time}`;
+            return `Due ${weekday} @ ${time}`;
 
         case fullDaysAway < 13:
-            return `Due next ${weekday} - ${time}`;
+            return `Due next ${weekday} @ ${time}`;
 
         default:
             return `Due in ${fullDaysAway} days`;
