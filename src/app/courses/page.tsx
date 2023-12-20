@@ -8,7 +8,7 @@ import { useState } from 'react';
 export default function Courses() {
     // lifted state to store the selected term id
     const { data: terms } = useTermData();
-    const [selectedTermId, setSelectedTermId] = useState(terms[0].id);
+    const [selectedTermId, setSelectedTermId] = useState(terms.at(0)?.id);
 
     return (
         <>

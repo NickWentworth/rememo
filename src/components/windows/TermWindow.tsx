@@ -3,19 +3,38 @@
 import { TermCard } from '../cards';
 import { TermForm } from '../forms';
 import { TermPayload } from '@/lib/types';
-import { deleteCourse } from '@/lib/actions/courses';
+import { deleteTerm } from '@/lib/actions/terms';
 import { useTermData } from '../providers';
 import { useFormState } from '@/lib/hooks/useFormState';
 import styles from './window.module.css';
 
 type TermWindowProps = {
     onTermCardClick: (id: string) => void;
-    selectedTermId: string;
+    selectedTermId?: string;
 };
 
 export function TermWindow(props: TermWindowProps) {
     const { data: terms } = useTermData();
     const termFormState = useFormState<TermPayload>();
+
+    const list = () => {
+        // display message if no terms exist
+        if (terms.length == 0) {
+            return <p>No terms yet, add one with the button above!</p>;
+        }
+
+        // by default, return all terms mapped to a card component
+        return terms.map((t) => (
+            <TermCard
+                key={t.id}
+                term={t}
+                onEditClick={() => termFormState.update(t)}
+                onDeleteClick={() => deleteTerm(t.id)}
+                selected={t.id === props.selectedTermId}
+                onClick={() => props.onTermCardClick?.(t.id)}
+            />
+        ));
+    };
 
     return (
         <>
@@ -33,18 +52,7 @@ export function TermWindow(props: TermWindowProps) {
                     </div>
                 </div>
 
-                <div className={styles.list}>
-                    {terms.map((t) => (
-                        <TermCard
-                            key={t.id}
-                            term={t}
-                            onEditClick={() => termFormState.update(t)}
-                            onDeleteClick={() => deleteCourse(t.id)}
-                            selected={t.id === props.selectedTermId}
-                            onClick={() => props.onTermCardClick?.(t.id)}
-                        />
-                    ))}
-                </div>
+                <div className={styles.list}>{list()}</div>
             </div>
 
             <TermForm

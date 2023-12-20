@@ -59,6 +59,28 @@ export function TaskWindow() {
         );
     }
 
+    const list = () => {
+        // display message if there are no tasks in general
+        if (tasks.length == 0) {
+            return <p>No tasks yet, create one with the button above!</p>;
+        }
+
+        // display message if there are tasks, but none match the filters
+        if (filteredTasks.length == 0) {
+            return <p>No tasks match the given filters</p>;
+        }
+
+        // by default, return all filtered tasks mapped to a card component
+        return filteredTasks.map((t) => (
+            <TaskCard
+                key={t.id}
+                task={t}
+                onEditClick={() => taskFormState.update(t)}
+                onDeleteClick={() => deleteTask(t.id)}
+            />
+        ));
+    };
+
     return (
         <>
             <div className={`${styles.window} ${styles.task}`}>
@@ -102,16 +124,7 @@ export function TaskWindow() {
                     </div>
                 </div>
 
-                <div className={`${styles.list} ${styles.task}`}>
-                    {filteredTasks.map((t) => (
-                        <TaskCard
-                            key={t.id}
-                            task={t}
-                            onEditClick={() => taskFormState.update(t)}
-                            onDeleteClick={() => deleteTask(t.id)}
-                        />
-                    ))}
-                </div>
+                <div className={`${styles.list} ${styles.task}`}>{list()}</div>
             </div>
 
             <TaskForm
