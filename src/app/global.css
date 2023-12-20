@@ -33,7 +33,8 @@ h1,
 h2,
 h3,
 h4,
-p {
+p,
+input {
     margin: 0;
     font-family: 'Inter';
 }

@@ -1,6 +1,5 @@
 'use client';
 
-import { Search } from '../icons';
 import { TaskCard } from '../cards';
 import { TaskForm } from '../forms';
 import { FilterButton } from '../FilterButton';
@@ -36,11 +35,21 @@ export function TaskWindow() {
     // store active filters by their indices in the const filters array
     const [filterIndices, setFilterIndices] = useState<number[]>([]);
 
-    const filteredTasks = tasks.filter(
-        (task) =>
+    // store a search term to further filter tasks
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const filteredTasks = tasks.filter((task) => {
+        const filterMatch =
             filterIndices.length == 0 ||
-            filterIndices.some((idx) => FILTERS[idx].fn(task))
-    );
+            filterIndices.some((idx) => FILTERS[idx].fn(task));
+
+        // TODO: search by more than just name, include description, course name, etc.
+        const searchMatch =
+            searchTerm === '' ||
+            task.name.toLowerCase().includes(searchTerm.toLowerCase());
+
+        return filterMatch && searchMatch;
+    });
 
     function toggleFilter(idx: number) {
         setFilterIndices((indices) =>
@@ -76,9 +85,20 @@ export function TaskWindow() {
                         ))}
                     </div>
 
-                    <div className={styles.searchBar}>
-                        <p>Search</p>
-                        <Search size={16} color='white' />
+                    <div className={styles.search}>
+                        {/* TODO: fix layout shift when this appears */}
+                        <p hidden={searchTerm === ''}>
+                            {filteredTasks.length} Match
+                            {filteredTasks.length != 1 ? 'es' : ''}
+                        </p>
+
+                        <input
+                            type='text'
+                            className={styles.searchBar}
+                            placeholder='Search'
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
                     </div>
                 </div>
 

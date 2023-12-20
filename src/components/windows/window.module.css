@@ -63,10 +63,18 @@
     display: flex;
 }
 
+.search {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
 .searchBar {
     background-color: var(--medium);
+    color: var(--white);
     padding: 0.25rem 0.5rem;
     border-radius: 0.25rem;
+    border: 0;
 
     display: flex;
     align-items: center;
