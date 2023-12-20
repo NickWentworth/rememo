@@ -24,7 +24,7 @@ export function CourseWindow(props: CourseWindowProps) {
         <>
             <div className={`${styles.window} ${styles.course}`}>
                 <div className={styles.header}>
-                    <div>
+                    <div className={styles.title}>
                         <h1>Courses</h1>
 
                         <button

@@ -21,7 +21,7 @@ export function TermWindow(props: TermWindowProps) {
         <>
             <div className={`${styles.window} ${styles.term}`}>
                 <div className={styles.header}>
-                    <div>
+                    <div className={styles.title}>
                         <h1>Terms</h1>
 
                         <button

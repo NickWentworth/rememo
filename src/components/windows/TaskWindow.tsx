@@ -3,21 +3,58 @@
 import { Search } from '../icons';
 import { TaskCard } from '../cards';
 import { TaskForm } from '../forms';
+import { FilterButton } from '../FilterButton';
 import { TaskPayload } from '@/lib/types';
 import { deleteTask } from '@/lib/actions/tasks';
+import { nowUTC } from '@/lib/date';
 import { useTaskData } from '../providers';
 import { useFormState } from '@/lib/hooks/useFormState';
+import { useState } from 'react';
 import styles from './window.module.css';
+
+type Filter = {
+    name: string;
+    fn: (t: TaskPayload) => boolean;
+};
+
+const FILTERS = [
+    {
+        name: 'Overdue',
+        fn: (t) => t.due < nowUTC(),
+    },
+    {
+        name: 'On Time',
+        fn: (t) => t.due > nowUTC(),
+    },
+] satisfies Filter[];
 
 export function TaskWindow() {
     const { data: tasks } = useTaskData();
     const taskFormState = useFormState<TaskPayload>();
 
+    // TODO: store active filters in local storage or in the database
+    // store active filters by their indices in the const filters array
+    const [filterIndices, setFilterIndices] = useState<number[]>([]);
+
+    const filteredTasks = tasks.filter(
+        (task) =>
+            filterIndices.length == 0 ||
+            filterIndices.some((idx) => FILTERS[idx].fn(task))
+    );
+
+    function toggleFilter(idx: number) {
+        setFilterIndices((indices) =>
+            indices.includes(idx)
+                ? indices.filter((i) => i != idx)
+                : [...indices, idx]
+        );
+    }
+
     return (
         <>
             <div className={`${styles.window} ${styles.task}`}>
                 <div className={styles.header}>
-                    <div>
+                    <div className={styles.title}>
                         <h1>Tasks</h1>
 
                         <button
@@ -29,7 +66,14 @@ export function TaskWindow() {
                     </div>
 
                     <div className={styles.filters}>
-                        <p>===filters===</p>
+                        {FILTERS.map((filter, idx) => (
+                            <FilterButton
+                                active={filterIndices.includes(idx)}
+                                name={filter.name}
+                                count={tasks.filter((t) => filter.fn(t)).length}
+                                onClick={() => toggleFilter(idx)}
+                            />
+                        ))}
                     </div>
 
                     <div className={styles.searchBar}>
@@ -39,7 +83,7 @@ export function TaskWindow() {
                 </div>
 
                 <div className={`${styles.list} ${styles.task}`}>
-                    {tasks.map((t) => (
+                    {filteredTasks.map((t) => (
                         <TaskCard
                             key={t.id}
                             task={t}

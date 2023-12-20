@@ -14,7 +14,7 @@
     gap: 0.5rem;
 }
 
-.header > div {
+.title {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -56,6 +56,11 @@
 
 .list.task > * {
     max-width: 800px;
+}
+
+.filters {
+    height: 100%;
+    display: flex;
 }
 
 .searchBar {
