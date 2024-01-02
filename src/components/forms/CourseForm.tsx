@@ -38,6 +38,7 @@ export function CourseForm(props: CourseFormProps) {
     // reference all terms to link a course to a term
     const terms = useTermData().data;
 
+    // FIXME: this breaks if there are no terms
     // TODO: mark term as selected and set that one as default
     const TEST_TERM_ID = terms[0].id;
 
@@ -136,7 +137,9 @@ export function CourseForm(props: CourseFormProps) {
 
                         <select id='term' {...register('termId')}>
                             {terms.map((t) => (
-                                <option value={t.id}>{t.name}</option>
+                                <option key={t.id} value={t.id}>
+                                    {t.name}
+                                </option>
                             ))}
                         </select>
                     </div>
@@ -154,6 +157,7 @@ export function CourseForm(props: CourseFormProps) {
                         <div className={styles.colorSection}>
                             {COLORS.map((c) => (
                                 <input
+                                    key={c}
                                     {...register('color')}
                                     type='radio'
                                     value={c}

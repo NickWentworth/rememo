@@ -99,6 +99,7 @@ export function TaskWindow() {
                     <div className={styles.filters}>
                         {FILTERS.map((filter, idx) => (
                             <FilterButton
+                                key={idx}
                                 active={filterIndices.includes(idx)}
                                 name={filter.name}
                                 count={tasks.filter((t) => filter.fn(t)).length}

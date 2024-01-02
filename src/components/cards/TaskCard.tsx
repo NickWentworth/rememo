@@ -59,7 +59,6 @@ export function TaskCard(props: TaskCardProps) {
                 {/* Header */}
                 <div>
                     <div className={styles.headerTitle}>
-                        {/* TODO: checkbox might need to be hidden if subtasks exist, think more on what to do here */}
                         {/* TODO: style checkbox */}
                         <input
                             type='checkbox'
