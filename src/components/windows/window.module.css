@@ -81,3 +81,9 @@
     justify-content: space-between;
     width: 100px;
 }
+
+/* -------------------- calendar window -------------------- */
+
+.window.calendar {
+    flex-grow: 1;
+}

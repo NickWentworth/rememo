@@ -1,3 +1,7 @@
+'use client';
+
+import { CalendarWindow } from '@/components/windows/CalendarWindow';
+
 export default function Calendar() {
-    return <div>Calendar</div>;
+    return <CalendarWindow display='week' />;
 }
