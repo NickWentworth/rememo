@@ -43,7 +43,12 @@ export function CourseForm(props: CourseFormProps) {
     const TEST_TERM_ID = terms[0].id;
 
     // form data managed by useForm hook
-    const { register, handleSubmit, reset, watch } = useForm<CoursePayload>({
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm<CoursePayload>({
         values:
             props.state.mode === 'update'
                 ? props.state.data
@@ -125,8 +130,12 @@ export function CourseForm(props: CourseFormProps) {
                         <input
                             type='text'
                             id='name'
-                            {...register('name', { required: true })}
+                            {...register('name', {
+                                required: 'Course must include a name',
+                            })}
                         />
+
+                        <p className={styles.error}>{errors.name?.message}</p>
                     </div>
 
                     {/* term */}

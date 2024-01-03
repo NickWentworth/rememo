@@ -39,11 +39,15 @@ type TaskFormProps = {
 
 export function TaskForm(props: TaskFormProps) {
     // form data managed by useForm hook
-    const { register, handleSubmit, control, setValue, reset } =
-        useForm<TaskPayload>({
-            values:
-                props.state.mode === 'update' ? props.state.data : DEFAULT_TASK,
-        });
+    const {
+        register,
+        handleSubmit,
+        control,
+        reset,
+        formState: { errors },
+    } = useForm<TaskPayload>({
+        values: props.state.mode === 'update' ? props.state.data : DEFAULT_TASK,
+    });
 
     // dynamic subtasks section managed by useFieldArray hook
     const subtasksField = useFieldArray({
@@ -130,11 +134,16 @@ export function TaskForm(props: TaskFormProps) {
                         <label htmlFor='name'>
                             <p>Name</p>
                         </label>
+
                         <input
                             type='text'
                             id='name'
-                            {...register('name', { required: true })}
+                            {...register('name', {
+                                required: 'Task must include a name',
+                            })}
                         />
+
+                        <p className={styles.error}>{errors.name?.message}</p>
                     </div>
 
                     {/* course */}
@@ -170,8 +179,8 @@ export function TaskForm(props: TaskFormProps) {
                             name='due'
                             render={({ field }) => (
                                 <DateTimePicker
-                                    set={(date) => setValue(field.name, date)}
                                     value={field.value}
+                                    onChange={field.onChange}
                                 />
                             )}
                         />
@@ -186,23 +195,23 @@ export function TaskForm(props: TaskFormProps) {
                         <label>
                             <p>Subtasks</p>
                         </label>
+
                         {subtasksField.fields.map((field, idx) => (
                             <div key={field.id} className={styles.subtaskRow}>
                                 <input
                                     type='text'
                                     className={styles.subtaskRowName}
                                     {...register(`subtasks.${idx}.name`, {
-                                        required: true,
+                                        required: 'Subtask must include a name',
                                     })}
                                 />
+
                                 <Controller
                                     control={control}
                                     name={`subtasks.${idx}.due`}
                                     render={({ field }) => (
                                         <DateTimePicker
-                                            set={(date) =>
-                                                setValue(field.name, date)
-                                            }
+                                            onChange={field.onChange}
                                             value={field.value}
                                         />
                                     )}
@@ -215,6 +224,13 @@ export function TaskForm(props: TaskFormProps) {
                                 >
                                     <Trash color='light' size={16} />
                                 </button>
+
+                                <p
+                                    key={`${field.id}ERROR`}
+                                    className={styles.error}
+                                >
+                                    {errors.subtasks?.at?.(idx)?.name?.message}
+                                </p>
                             </div>
                         ))}
 

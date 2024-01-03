@@ -2,8 +2,9 @@ import { dateISO, timeISO, updateDate, updateTime } from '@/lib/date';
 import styles from './form.module.css';
 
 type DateTimePickerProps = {
+    // fields from controller component
     value: Date;
-    set: (date: Date) => void;
+    onChange: (date: Date) => void;
     // optionally hide either date or time element
     hideDate?: boolean;
     hideTime?: boolean;
@@ -16,7 +17,7 @@ export function DateTimePicker(props: DateTimePickerProps) {
                 type='date'
                 value={dateISO(props.value)}
                 onChange={(e) =>
-                    props.set(updateDate(props.value, e.target.value))
+                    props.onChange(updateDate(props.value, e.target.value))
                 }
                 hidden={props.hideDate}
             />
@@ -24,7 +25,7 @@ export function DateTimePicker(props: DateTimePickerProps) {
                 type='time'
                 value={timeISO(props.value)}
                 onChange={(e) =>
-                    props.set(updateTime(props.value, e.target.value))
+                    props.onChange(updateTime(props.value, e.target.value))
                 }
                 hidden={props.hideTime}
             />

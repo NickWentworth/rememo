@@ -26,11 +26,15 @@ type TermFormProps = {
 
 export function TermForm(props: TermFormProps) {
     // form data managed by useForm hook
-    const { register, handleSubmit, control, setValue, reset } =
-        useForm<TermPayload>({
-            values:
-                props.state.mode === 'update' ? props.state.data : DEFAULT_TERM,
-        });
+    const {
+        register,
+        handleSubmit,
+        control,
+        reset,
+        formState: { errors },
+    } = useForm<TermPayload>({
+        values: props.state.mode === 'update' ? props.state.data : DEFAULT_TERM,
+    });
 
     if (props.state.mode === 'closed') {
         // return early if closed and render nothing
@@ -100,11 +104,16 @@ export function TermForm(props: TermFormProps) {
                         <label htmlFor='name'>
                             <p>Name</p>
                         </label>
+
                         <input
                             type='text'
                             id='name'
-                            {...register('name', { required: true })}
+                            {...register('name', {
+                                required: 'Term must include a name',
+                            })}
                         />
+
+                        <p className={styles.error}>{errors.name?.message}</p>
                     </div>
 
                     {/* start date */}
@@ -116,10 +125,14 @@ export function TermForm(props: TermFormProps) {
                         <Controller
                             control={control}
                             name='start'
+                            rules={{
+                                // ensure start date comes before end
+                                validate: (value, form) => value < form.end,
+                            }}
                             render={({ field }) => (
                                 <DateTimePicker
                                     value={field.value}
-                                    set={(date) => setValue(field.name, date)}
+                                    onChange={field.onChange}
                                     hideTime
                                 />
                             )}
@@ -131,17 +144,28 @@ export function TermForm(props: TermFormProps) {
                         <label htmlFor='end'>
                             <p>End Date</p>
                         </label>
+
                         <Controller
                             control={control}
                             name='end'
+                            rules={{
+                                // ensure end date comes after start
+                                validate: (value, form) => value > form.start,
+                            }}
                             render={({ field }) => (
                                 <DateTimePicker
                                     value={field.value}
-                                    set={(date) => setValue(field.name, date)}
+                                    onChange={field.onChange}
                                     hideTime
                                 />
                             )}
                         />
+
+                        {/* start and end date errors are related, so check for either */}
+                        <p className={styles.error}>
+                            {(errors.start || errors.end) &&
+                                'End date must come after start date'}
+                        </p>
                     </div>
                 </div>
 
