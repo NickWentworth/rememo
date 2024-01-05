@@ -6,7 +6,8 @@ import { FilterButton } from '../FilterButton';
 import { TaskPayload } from '@/lib/types';
 import { deleteTask } from '@/lib/actions/tasks';
 import { nowUTC } from '@/lib/date';
-import { useTaskData } from '../providers';
+import { search } from '@/lib/search';
+import { useCourseData, useTaskData } from '../providers';
 import { useFormState } from '@/lib/hooks/useFormState';
 import { useState } from 'react';
 import styles from './window.module.css';
@@ -29,6 +30,7 @@ const FILTERS = [
 
 export function TaskWindow() {
     const { data: tasks } = useTaskData();
+    const { get: getCourse } = useCourseData();
     const taskFormState = useFormState<TaskPayload>();
 
     // TODO: store active filters in local storage or in the database
@@ -39,14 +41,20 @@ export function TaskWindow() {
     const [searchTerm, setSearchTerm] = useState('');
 
     const filteredTasks = tasks.filter((task) => {
+        // filter tasks by function
         const filterMatch =
             filterIndices.length == 0 ||
             filterIndices.some((idx) => FILTERS[idx].fn(task));
 
-        // TODO: search by more than just name, include description, course name, etc.
-        const searchMatch =
-            searchTerm === '' ||
-            task.name.toLowerCase().includes(searchTerm.toLowerCase());
+        // TODO: add course filter dropdown and filter by that instead
+        // search task name, description, subtask names, and course name for user-given search term
+        const courseName = getCourse(task.courseId ?? '')?.name ?? '';
+        const searchMatch = search(searchTerm, [
+            task.name,
+            task.description,
+            ...task.subtasks.map((s) => s.name),
+            courseName,
+        ]);
 
         return filterMatch && searchMatch;
     });
