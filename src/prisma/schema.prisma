@@ -8,7 +8,13 @@ datasource db {
 }
 
 model User {
-    id String @id @default(uuid())
+    id    String  @id @default(uuid())
+    name  String?
+    email String  @unique
+    image String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
     terms Term[]
     tasks Task[] // reference all tasks as they may not always store a courseId

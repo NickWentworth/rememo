@@ -7,3 +7,6 @@ next-env.d.ts
 
 # development database
 *.db
+
+# environment variables
+.env.local
