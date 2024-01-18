@@ -1,30 +1,30 @@
 'use client';
 
 import { Calendar, Courses, Dashboard, Hamburger, Logo, Tasks } from '../icons';
-import { SVGComponent } from '../icons/props';
+import { PageLink } from './PageLink';
+import { UserButton } from './UserButton';
 import { useReducer } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import styles from './sidebar.module.css';
 
-const ICON_SIZE = 32;
-const LOGO_SIZE = ICON_SIZE + 16;
+export const SIDEBAR_ICON_SIZE = 32;
+const LOGO_SIZE = SIDEBAR_ICON_SIZE + 16;
 
 export function Sidebar() {
-    const [expanded, toggleExpanded] = useReducer((curr) => !curr, true);
+    const [expanded, toggleExpanded] = useReducer((curr) => !curr, false);
 
     return (
         <div className={styles.sidebar}>
             {/* Logo */}
             <div className={styles.logo}>
                 <Logo color='accent' size={LOGO_SIZE} />
+
                 {expanded && <h1 className={styles.logoText}>Rememo</h1>}
             </div>
 
             <hr />
 
-            {/* Links */}
-            <div className={styles.links}>
+            <div className={styles.sidebarBody}>
+                {/* Links */}
                 <PageLink
                     name='Dashboard'
                     to='/dashboard'
@@ -49,51 +49,18 @@ export function Sidebar() {
                     icon={Calendar}
                     expanded={expanded}
                 />
-            </div>
 
-            {/* Hamburger */}
-            <div className={styles.hamburger}>
-                <button
-                    className={`${styles.hamburgerButton} ${styles.button}`}
-                    onClick={toggleExpanded}
-                >
-                    <Hamburger color='white' size={ICON_SIZE} />
+                {/* Filling div */}
+                <div className={styles.fill} />
+
+                {/* User */}
+                <UserButton expanded={expanded} />
+
+                {/* Hamburger */}
+                <button className={styles.button} onClick={toggleExpanded}>
+                    <Hamburger color='white' size={SIDEBAR_ICON_SIZE} />
                 </button>
             </div>
         </div>
-    );
-}
-
-type PageLinkProps = {
-    // display name of link
-    name: string;
-    // routing location of link
-    to: string;
-    // icon to display
-    icon: SVGComponent;
-    // is the sidebar expanded?
-    expanded: boolean;
-};
-
-function PageLink(props: PageLinkProps) {
-    // is this page link the active one?
-    const active = usePathname() === props.to;
-
-    // styling for the link's display name, if shown
-    const textStyle = { color: `var(--${active ? 'accent' : 'white'})` };
-
-    // icon to render
-    let icon = props.icon({
-        color: active ? 'accent' : 'white',
-        size: ICON_SIZE,
-    });
-
-    return (
-        <Link className={styles.pageLink} href={props.to}>
-            <button className={`${styles.pageLinkButton} ${styles.button}`}>
-                {icon}
-                {props.expanded && <h1 style={textStyle}>{props.name}</h1>}
-            </button>
-        </Link>
     );
 }

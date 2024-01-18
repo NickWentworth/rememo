@@ -6,6 +6,8 @@ import {
 } from '@/components/providers';
 import { TERM_ARGS, COURSE_ARGS, TASK_ARGS } from '@/lib/types';
 import { PrismaClient } from '@prisma/client';
+import { getServerSession } from 'next-auth';
+import { AuthProvider } from './providers';
 import './global.css';
 
 const prisma = new PrismaClient();
@@ -16,6 +18,8 @@ type LayoutProps = {
 };
 
 export default async function Layout(props: LayoutProps) {
+    const session = await getServerSession();
+
     const terms = await prisma.term.findMany({
         where: { userId: TEST_USER },
         ...TERM_ARGS,
@@ -37,8 +41,10 @@ export default async function Layout(props: LayoutProps) {
                 <TermProvider data={terms}>
                     <CourseProvider data={courses}>
                         <TaskProvider data={tasks}>
-                            <Sidebar />
-                            {props.children}
+                            <AuthProvider session={session}>
+                                <Sidebar />
+                                {props.children}
+                            </AuthProvider>
                         </TaskProvider>
                     </CourseProvider>
                 </TermProvider>
