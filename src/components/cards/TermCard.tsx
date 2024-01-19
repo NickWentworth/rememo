@@ -28,9 +28,8 @@ export function TermCard(props: TermCardProps) {
             style={{ borderColor }}
             onMouseOver={() => setHovering(true)}
             onMouseLeave={() => setHovering(false)}
-            onClick={props.onClick}
         >
-            <div className={styles.body}>
+            <div className={styles.body} onClick={props.onClick}>
                 <h1>{props.term.name}</h1>
 
                 <div className={styles.iconField}>

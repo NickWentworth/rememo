@@ -9,8 +9,8 @@ import { useFormState } from '@/lib/hooks/useFormState';
 import styles from './window.module.css';
 
 type TermWindowProps = {
-    onTermCardClick: (id: string) => void;
     selectedTermId?: string;
+    setSelectedTermId: (id?: string) => void;
 };
 
 export function TermWindow(props: TermWindowProps) {
@@ -29,9 +29,15 @@ export function TermWindow(props: TermWindowProps) {
                 key={t.id}
                 term={t}
                 onEditClick={() => termFormState.update(t)}
-                onDeleteClick={() => deleteTerm(t.id)}
+                onDeleteClick={() => {
+                    if (props.selectedTermId === t.id) {
+                        // TODO: convert term deletion into a dispatch action used by a reducer so this is done automatically
+                        props.setSelectedTermId(undefined);
+                    }
+                    deleteTerm(t.id);
+                }}
                 selected={t.id === props.selectedTermId}
-                onClick={() => props.onTermCardClick?.(t.id)}
+                onClick={() => props.setSelectedTermId(t.id)}
             />
         ));
     };

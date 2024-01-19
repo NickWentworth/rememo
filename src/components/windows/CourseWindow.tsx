@@ -25,19 +25,19 @@ export function CourseWindow(props: CourseWindowProps) {
     const list = () => {
         // if no selected term id, there are no terms that exist
         if (props.selectedTermId === undefined) {
-            return (
-                <p>No terms exist, create one first to add courses to it!</p>
-            );
+            return <p>Create a term and select it to add courses to it!</p>;
         }
 
         // display message if there are no courses for the selected term
         if (selectedCourses.length == 0) {
-            const term = terms.find((t) => props.selectedTermId === t.id)?.name;
+            const selectedTermName = terms.find(
+                (t) => props.selectedTermId === t.id
+            )?.name;
 
             return (
                 <p>
-                    The selected term <b>{term}</b> has no courses, add one with
-                    the button above!
+                    The selected term <b>{selectedTermName}</b> has no courses,
+                    add one with the button above!
                 </p>
             );
         }
@@ -63,6 +63,8 @@ export function CourseWindow(props: CourseWindowProps) {
                         <button
                             className={styles.addButton}
                             onClick={courseFormState.create}
+                            // disable addition of courses if no term is focused, as courses need to be linked to terms
+                            hidden={props.selectedTermId === undefined}
                         >
                             <h1>+</h1>
                         </button>
@@ -72,10 +74,13 @@ export function CourseWindow(props: CourseWindowProps) {
                 <div className={styles.list}>{list()}</div>
             </div>
 
-            <CourseForm
-                state={courseFormState.formState}
-                onCloseClick={courseFormState.close}
-            />
+            {props.selectedTermId && (
+                <CourseForm
+                    state={courseFormState.formState}
+                    onCloseClick={courseFormState.close}
+                    selectedTermId={props.selectedTermId}
+                />
+            )}
         </>
     );
 }

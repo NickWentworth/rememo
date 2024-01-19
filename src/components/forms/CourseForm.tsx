@@ -32,15 +32,13 @@ const DEFAULT_COURSE = {
 type CourseFormProps = {
     state: FormState<CoursePayload>;
     onCloseClick?: () => void;
+    // a selected term is required for a course to be added/updated
+    selectedTermId: string;
 };
 
 export function CourseForm(props: CourseFormProps) {
     // reference all terms to link a course to a term
     const terms = useTerms().data;
-
-    // FIXME: this breaks if there are no terms
-    // TODO: mark term as selected and set that one as default
-    const TEST_TERM_ID = terms[0].id;
 
     // form data managed by useForm hook
     const {
@@ -52,7 +50,7 @@ export function CourseForm(props: CourseFormProps) {
         values:
             props.state.mode === 'update'
                 ? props.state.data
-                : { ...DEFAULT_COURSE, termId: TEST_TERM_ID },
+                : { ...DEFAULT_COURSE, termId: props.selectedTermId },
     });
 
     if (props.state.mode === 'closed') {

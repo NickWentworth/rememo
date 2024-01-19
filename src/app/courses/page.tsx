@@ -14,7 +14,7 @@ export default function Courses() {
         <>
             <TermWindow
                 selectedTermId={selectedTermId}
-                onTermCardClick={setSelectedTermId}
+                setSelectedTermId={setSelectedTermId}
             />
 
             {/* TODO: maybe automate this divider between sections */}
