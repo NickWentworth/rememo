@@ -4,7 +4,7 @@ import { TermCard } from '../cards';
 import { TermForm } from '../forms';
 import { TermPayload } from '@/lib/types';
 import { deleteTerm } from '@/lib/actions/terms';
-import { useTermData } from '../providers';
+import { useTerms } from '@/providers';
 import { useFormState } from '@/lib/hooks/useFormState';
 import styles from './window.module.css';
 
@@ -14,7 +14,7 @@ type TermWindowProps = {
 };
 
 export function TermWindow(props: TermWindowProps) {
-    const { data: terms } = useTermData();
+    const { data: terms } = useTerms();
     const termFormState = useFormState<TermPayload>();
 
     const list = () => {

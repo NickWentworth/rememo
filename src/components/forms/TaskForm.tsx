@@ -7,7 +7,7 @@ import { tonightUTC } from '@/lib/date';
 import { FormState } from '@/lib/hooks/useFormState';
 import { createTask, updateTask } from '@/lib/actions/tasks';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
-import { useCourseData } from '../providers';
+import { useCourses } from '@/providers';
 import { Subtask } from '@prisma/client';
 import styles from './form.module.css';
 
@@ -56,7 +56,7 @@ export function TaskForm(props: TaskFormProps) {
     });
 
     // reference all courses to link a task to a course
-    const courses = useCourseData().data;
+    const courses = useCourses().data;
 
     if (props.state.mode === 'closed') {
         // return early if closed and render nothing
@@ -76,8 +76,6 @@ export function TaskForm(props: TaskFormProps) {
             subtasks: data.subtasks ?? [],
             courseId: (data.courseId === '' ? null : data.courseId) ?? null,
         } satisfies Partial<TaskPayload>;
-
-        console.log(partialTask);
 
         switch (props.state.mode) {
             case 'closed':

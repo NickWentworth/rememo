@@ -1,6 +1,6 @@
 import { SIDEBAR_ICON_SIZE } from './Sidebar';
+import { useUser } from '@/providers';
 import Link from 'next/link';
-import { useSession } from 'next-auth/react';
 import styles from './sidebar.module.css';
 
 type UserButtonProps = {
@@ -8,8 +8,7 @@ type UserButtonProps = {
 };
 
 export function UserButton(props: UserButtonProps) {
-    const session = useSession();
-    const user = session.data?.user;
+    const user = useUser();
 
     if (!user) {
         return;

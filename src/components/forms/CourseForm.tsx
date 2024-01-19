@@ -4,7 +4,7 @@ import { Close } from '../icons';
 import { CoursePayload } from '@/lib/types';
 import { FormState } from '@/lib/hooks/useFormState';
 import { createCourse, updateCourse } from '@/lib/actions/courses';
-import { useTermData } from '../providers';
+import { useTerms } from '@/providers';
 import { useForm } from 'react-hook-form';
 import styles from './form.module.css';
 
@@ -36,7 +36,7 @@ type CourseFormProps = {
 
 export function CourseForm(props: CourseFormProps) {
     // reference all terms to link a course to a term
-    const terms = useTermData().data;
+    const terms = useTerms().data;
 
     // FIXME: this breaks if there are no terms
     // TODO: mark term as selected and set that one as default

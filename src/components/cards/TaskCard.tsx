@@ -5,7 +5,7 @@ import { Edit, Trash } from '../icons';
 import { Subtask } from './Subtask';
 import { formatTaskDate } from '@/lib/date';
 import { setTaskCompletion } from '@/lib/actions/tasks';
-import { useCourseData } from '../providers';
+import { useCourses } from '@/providers';
 import { useState } from 'react';
 import styles from './card.module.css';
 
@@ -19,7 +19,7 @@ type TaskCardProps = {
 
 export function TaskCard(props: TaskCardProps) {
     // use course data to get referenced course's name and color
-    const course = useCourseData().get(props.task.courseId ?? '');
+    const course = useCourses().get(props.task.courseId ?? '');
 
     // is the mouse currently hovering over the task card?
     const [hovering, setHovering] = useState(false);

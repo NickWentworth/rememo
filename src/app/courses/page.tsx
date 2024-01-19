@@ -2,12 +2,12 @@
 
 import { TermWindow } from '@/components/windows/TermWindow';
 import { CourseWindow } from '@/components/windows/CourseWindow';
-import { useTermData } from '@/components/providers';
+import { useTerms } from '@/providers';
 import { useState } from 'react';
 
 export default function Courses() {
     // lifted state to store the selected term id
-    const { data: terms } = useTermData();
+    const { data: terms } = useTerms();
     const [selectedTermId, setSelectedTermId] = useState(terms.at(0)?.id);
 
     return (

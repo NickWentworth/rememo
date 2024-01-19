@@ -7,7 +7,7 @@ import { TaskPayload } from '@/lib/types';
 import { deleteTask } from '@/lib/actions/tasks';
 import { nowUTC } from '@/lib/date';
 import { search } from '@/lib/search';
-import { useCourseData, useTaskData } from '../providers';
+import { useCourses, useTasks } from '@/providers';
 import { useFormState } from '@/lib/hooks/useFormState';
 import { useState } from 'react';
 import styles from './window.module.css';
@@ -29,8 +29,8 @@ const FILTERS = [
 ] satisfies Filter[];
 
 export function TaskWindow() {
-    const { data: tasks } = useTaskData();
-    const { get: getCourse } = useCourseData();
+    const { data: tasks } = useTasks();
+    const { get: getCourse } = useCourses();
     const taskFormState = useFormState<TaskPayload>();
 
     // TODO: store active filters in local storage or in the database

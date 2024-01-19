@@ -4,7 +4,7 @@ import { CourseCard } from '../cards';
 import { CourseForm } from '../forms';
 import { CoursePayload } from '@/lib/types';
 import { deleteCourse } from '@/lib/actions/courses';
-import { useCourseData, useTermData } from '../providers';
+import { useCourses, useTerms } from '@/providers';
 import { useFormState } from '@/lib/hooks/useFormState';
 import styles from './window.module.css';
 
@@ -13,8 +13,8 @@ type CourseWindowProps = {
 };
 
 export function CourseWindow(props: CourseWindowProps) {
-    const { data: courses } = useCourseData();
-    const { data: terms } = useTermData();
+    const { data: courses } = useCourses();
+    const { data: terms } = useTerms();
 
     const courseFormState = useFormState<CoursePayload>();
 
