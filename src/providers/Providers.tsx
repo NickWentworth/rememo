@@ -4,7 +4,8 @@ import CourseProvider from './CourseProvider';
 import TaskProvider from './TaskProvider';
 import { COURSE_ARGS, TASK_ARGS, TERM_ARGS } from '@/lib/types';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { redirect } from 'next/navigation';
+import { authOptions, SIGNIN_ROUTE } from '@/app/api/auth/[...nextauth]/route';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -24,7 +25,9 @@ export default async function Providers(props: ProviderProps) {
     });
 
     if (!user) {
-        throw new Error('Something went wrong providing the user');
+        console.error('Something went wrong providing the user');
+        console.error('Redirecting to sign-in page');
+        redirect(SIGNIN_ROUTE);
     }
 
     const terms = await prisma.term.findMany({
