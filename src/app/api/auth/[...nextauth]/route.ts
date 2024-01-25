@@ -4,9 +4,12 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export const SIGNIN_ROUTE = '/api/auth/signin';
+export const LOGIN_ROUTE = '/login';
 
 export const authOptions = {
+    pages: {
+        signIn: LOGIN_ROUTE,
+    },
     providers: [
         Google({
             clientId: process.env.GOOGLE_ID!,
