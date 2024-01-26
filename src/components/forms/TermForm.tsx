@@ -1,6 +1,7 @@
 'use client';
 
 import { Close } from '../icons';
+import Button from '@/components/Button';
 import { DateTimePicker } from './DateTimePicker';
 import { TermPayload } from '@/lib/types';
 import { tonightUTC } from '@/lib/date';
@@ -84,13 +85,11 @@ export function TermForm(props: TermFormProps) {
                 <div className={styles.formHeader}>
                     <h1>{title}</h1>
 
-                    <button
-                        className={styles.closeButton}
-                        type='button'
+                    <Button
+                        type='transparent'
                         onClick={props.onCloseClick}
-                    >
-                        <Close size={30} color='white' />
-                    </button>
+                        icon={<Close size={30} color='white' />}
+                    />
                 </div>
 
                 <hr />
@@ -167,9 +166,11 @@ export function TermForm(props: TermFormProps) {
                     </div>
                 </div>
 
-                <button className={styles.submit} type='submit'>
-                    <h3>Submit</h3>
-                </button>
+                <hr />
+
+                <Button type='solid' submit>
+                    Submit
+                </Button>
             </form>
         </div>
     );

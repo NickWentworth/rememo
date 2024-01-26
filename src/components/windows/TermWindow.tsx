@@ -1,7 +1,9 @@
 'use client';
 
+import { Plus } from '../icons';
 import { TermCard } from '../cards';
 import { TermForm } from '../forms';
+import Button from '@/components/Button';
 import { TermPayload } from '@/lib/types';
 import { deleteTerm } from '@/lib/actions/terms';
 import { useTerms } from '@/providers';
@@ -49,12 +51,12 @@ export function TermWindow(props: TermWindowProps) {
                     <div className={styles.title}>
                         <h1>Terms</h1>
 
-                        <button
-                            className={styles.addButton}
+                        <Button
+                            type='solid'
                             onClick={termFormState.create}
-                        >
-                            <h1>+</h1>
-                        </button>
+                            icon={<Plus size={20} color='dark' />}
+                            border='round'
+                        />
                     </div>
                 </div>
 

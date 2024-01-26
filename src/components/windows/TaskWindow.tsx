@@ -1,8 +1,9 @@
 'use client';
 
+import { Plus } from '../icons';
 import { TaskCard } from '../cards';
 import { TaskForm } from '../forms';
-import { FilterButton } from '../FilterButton';
+import Button, { FilterButton } from '@/components/Button';
 import { TaskPayload } from '@/lib/types';
 import { deleteTask } from '@/lib/actions/tasks';
 import { nowUTC } from '@/lib/date';
@@ -96,12 +97,12 @@ export function TaskWindow() {
                     <div className={styles.title}>
                         <h1>Tasks</h1>
 
-                        <button
-                            className={styles.addButton}
+                        <Button
+                            type='solid'
                             onClick={taskFormState.create}
-                        >
-                            <h1>+</h1>
-                        </button>
+                            icon={<Plus size={20} color='dark' />}
+                            border='round'
+                        />
                     </div>
 
                     <div className={styles.filters}>

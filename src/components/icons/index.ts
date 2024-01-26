@@ -14,4 +14,5 @@ export { Search } from './search';
 export { Edit } from './edit';
 export { Trash } from './trash';
 export { Close } from './close';
+export { Plus } from './plus';
 export { Location } from './location';

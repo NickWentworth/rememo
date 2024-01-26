@@ -1,6 +1,7 @@
 'use client';
 
 import { Close } from '../icons';
+import Button from '@/components/Button';
 import { CoursePayload } from '@/lib/types';
 import { FormState } from '@/lib/hooks/useFormState';
 import { createCourse, updateCourse } from '@/lib/actions/courses';
@@ -106,13 +107,11 @@ export function CourseForm(props: CourseFormProps) {
                 <div className={styles.formHeader}>
                     <h1>{title}</h1>
 
-                    <button
-                        className={styles.closeButton}
-                        type='button'
+                    <Button
+                        type='transparent'
                         onClick={props.onCloseClick}
-                    >
-                        <Close size={30} color='white' />
-                    </button>
+                        icon={<Close size={30} color='white' />}
+                    />
                 </div>
 
                 <hr />
@@ -206,9 +205,11 @@ export function CourseForm(props: CourseFormProps) {
                     </div>
                 </div>
 
-                <button className={styles.submit} type='submit'>
-                    <h3>Submit</h3>
-                </button>
+                <hr />
+
+                <Button type='solid' submit>
+                    Submit
+                </Button>
             </form>
         </div>
     );

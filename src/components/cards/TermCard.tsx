@@ -1,12 +1,12 @@
 'use client';
 
-import { TermPayload } from '@/lib/types';
 import { Calendar, Edit, Trash } from '../icons';
+import Button from '../Button';
+import { BUTTON_ICON_SIZE } from '.';
+import { TermPayload } from '@/lib/types';
 import { formatTermDate } from '@/lib/date';
 import { useState } from 'react';
 import styles from './card.module.css';
-
-const BUTTON_ICON_SIZE = 20;
 
 type TermCardProps = {
     term: TermPayload;
@@ -40,25 +40,31 @@ export function TermCard(props: TermCardProps) {
             </div>
 
             <div className={styles.buttons}>
-                <button
-                    className={styles.bannerButton}
+                <Button
+                    type='transparent'
                     onClick={props.onEditClick}
-                >
-                    <Edit
-                        size={BUTTON_ICON_SIZE}
-                        color={hovering ? 'white' : 'transparent'}
-                    />
-                </button>
+                    icon={
+                        <Edit
+                            size={BUTTON_ICON_SIZE}
+                            color={hovering ? 'white' : 'transparent'}
+                        />
+                    }
+                    usualPadding
+                    border='square'
+                />
 
-                <button
-                    className={styles.bannerButton}
+                <Button
+                    type='transparent'
                     onClick={props.onDeleteClick}
-                >
-                    <Trash
-                        size={BUTTON_ICON_SIZE}
-                        color={hovering ? 'white' : 'transparent'}
-                    />
-                </button>
+                    icon={
+                        <Trash
+                            size={BUTTON_ICON_SIZE}
+                            color={hovering ? 'white' : 'transparent'}
+                        />
+                    }
+                    usualPadding
+                    border='square'
+                />
             </div>
         </div>
     );

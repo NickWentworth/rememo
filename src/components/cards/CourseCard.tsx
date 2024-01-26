@@ -1,11 +1,11 @@
 'use client';
 
-import { CoursePayload } from '@/lib/types';
 import { Edit, Location, Trash, User } from '../icons';
+import Button from '@/components/Button';
+import { BUTTON_ICON_SIZE } from '.';
+import { CoursePayload } from '@/lib/types';
 import { useState } from 'react';
 import styles from './card.module.css';
-
-const BUTTON_ICON_SIZE = 20;
 
 type CourseCardProps = {
     course: CoursePayload;
@@ -49,25 +49,31 @@ export function CourseCard(props: CourseCardProps) {
 
             {/* TODO: don't really love the location of these buttons, feels awkward */}
             <div className={styles.buttons}>
-                <button
-                    className={styles.bannerButton}
+                <Button
+                    type='transparent'
                     onClick={props.onEditClick}
-                >
-                    <Edit
-                        size={BUTTON_ICON_SIZE}
-                        color={hovering ? 'white' : 'transparent'}
-                    />
-                </button>
+                    icon={
+                        <Edit
+                            size={BUTTON_ICON_SIZE}
+                            color={hovering ? 'white' : 'transparent'}
+                        />
+                    }
+                    usualPadding
+                    border='square'
+                />
 
-                <button
-                    className={styles.bannerButton}
+                <Button
+                    type='transparent'
                     onClick={props.onDeleteClick}
-                >
-                    <Trash
-                        size={BUTTON_ICON_SIZE}
-                        color={hovering ? 'white' : 'transparent'}
-                    />
-                </button>
+                    icon={
+                        <Trash
+                            size={BUTTON_ICON_SIZE}
+                            color={hovering ? 'white' : 'transparent'}
+                        />
+                    }
+                    usualPadding
+                    border='square'
+                />
             </div>
         </div>
     );

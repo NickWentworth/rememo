@@ -1,15 +1,15 @@
 'use client';
 
-import { TaskPayload } from '@/lib/types';
 import { Edit, Trash } from '../icons';
+import Button from '@/components/Button';
 import { Subtask } from './Subtask';
+import { BUTTON_ICON_SIZE } from '.';
+import { TaskPayload } from '@/lib/types';
 import { formatTaskDate } from '@/lib/date';
 import { setTaskCompletion } from '@/lib/actions/tasks';
 import { useCourses } from '@/providers';
 import { useState } from 'react';
 import styles from './card.module.css';
-
-const BANNER_ICON_SIZE = 20;
 
 type TaskCardProps = {
     task: TaskPayload;
@@ -34,25 +34,31 @@ export function TaskCard(props: TaskCardProps) {
                 className={styles.banner}
                 style={{ backgroundColor: course?.color }}
             >
-                <button
-                    className={styles.bannerButton}
+                <Button
+                    type='transparent'
                     onClick={props.onEditClick}
-                >
-                    <Edit
-                        size={BANNER_ICON_SIZE}
-                        color={hovering ? 'dark' : 'transparent'}
-                    />
-                </button>
+                    icon={
+                        <Edit
+                            size={BUTTON_ICON_SIZE}
+                            color={hovering ? 'dark' : 'transparent'}
+                        />
+                    }
+                    usualPadding
+                    border='square'
+                />
 
-                <button
-                    className={styles.bannerButton}
+                <Button
+                    type='transparent'
                     onClick={props.onDeleteClick}
-                >
-                    <Trash
-                        size={BANNER_ICON_SIZE}
-                        color={hovering ? 'dark' : 'transparent'}
-                    />
-                </button>
+                    icon={
+                        <Trash
+                            size={BUTTON_ICON_SIZE}
+                            color={hovering ? 'dark' : 'transparent'}
+                        />
+                    }
+                    usualPadding
+                    border='square'
+                />
             </div>
 
             <div className={styles.body}>

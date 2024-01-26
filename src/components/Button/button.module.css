@@ -15,6 +15,20 @@
     opacity: 25%;
 }
 
+.iconOnly {
+    padding: 0.25rem;
+}
+
+.round {
+    border-radius: 9999px;
+    aspect-ratio: 1;
+    overflow: hidden;
+}
+
+.square {
+    border-radius: 0;
+}
+
 /* -------------------- solid button -------------------- */
 
 .button.solid {
@@ -52,5 +66,5 @@
 }
 
 .button.transparent:enabled:hover {
-    background-color: #ffffff11;
+    background-color: #ffffff22;
 }

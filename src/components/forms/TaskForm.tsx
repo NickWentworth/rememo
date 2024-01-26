@@ -1,6 +1,7 @@
 'use client';
 
 import { Close, Trash } from '../icons';
+import Button from '@/components/Button';
 import { DateTimePicker } from './DateTimePicker';
 import { TaskPayload } from '@/lib/types';
 import { tonightUTC } from '@/lib/date';
@@ -112,13 +113,11 @@ export function TaskForm(props: TaskFormProps) {
                 <div className={styles.formHeader}>
                     <h1>{title}</h1>
 
-                    <button
-                        className={styles.closeButton}
-                        type='button'
+                    <Button
+                        type='transparent'
                         onClick={props.onCloseClick}
-                    >
-                        <Close size={30} color='white' />
-                    </button>
+                        icon={<Close size={30} color='white' />}
+                    />
                 </div>
 
                 <hr />
@@ -213,13 +212,11 @@ export function TaskForm(props: TaskFormProps) {
                                     )}
                                 />
 
-                                <button
-                                    type='button'
-                                    className={styles.closeButton}
+                                <Button
+                                    type='transparent'
                                     onClick={() => subtasksField.remove(idx)}
-                                >
-                                    <Trash color='light' size={16} />
-                                </button>
+                                    icon={<Trash color='light' size={16} />}
+                                />
 
                                 <p
                                     key={`${field.id}ERROR`}
@@ -230,15 +227,14 @@ export function TaskForm(props: TaskFormProps) {
                             </div>
                         ))}
 
-                        <button
-                            type='button'
-                            className={styles.submit}
+                        <Button
+                            type='solid'
                             onClick={() =>
                                 subtasksField.append(DEFAULT_SUBTASK)
                             }
                         >
                             +
-                        </button>
+                        </Button>
                     </div>
                 </div>
 
@@ -261,9 +257,9 @@ export function TaskForm(props: TaskFormProps) {
 
                 <hr />
 
-                <button className={styles.submit} type='submit'>
-                    <h3>Submit</h3>
-                </button>
+                <Button type='solid' submit>
+                    Submit
+                </Button>
             </form>
         </div>
     );

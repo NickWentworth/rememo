@@ -43,19 +43,6 @@
     justify-content: space-between;
 }
 
-.closeButton {
-    background-color: transparent;
-    display: flex;
-    padding: 0.25rem;
-    border-radius: 0.25rem;
-    border: 0;
-}
-
-.closeButton:hover {
-    cursor: pointer;
-    background-color: #ffffff20;
-}
-
 .formSection {
     display: flex;
     flex-direction: column;
@@ -83,21 +70,6 @@
 .subtaskRowName {
     flex-grow: 1;
     text-overflow: ellipsis;
-}
-
-.submit {
-    background-color: var(--dark);
-    color: var(--light);
-
-    border: 1px solid var(--light);
-    border-radius: 0.25rem;
-    padding: 0.25rem 0.5rem;
-    align-self: center;
-}
-
-.submit:hover {
-    cursor: pointer;
-    background-color: var(--medium);
 }
 
 .dateTimePicker {

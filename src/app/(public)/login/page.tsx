@@ -1,5 +1,5 @@
 import { Logo } from '@/components/icons';
-import ProviderButton from './ProviderButton';
+import { ProviderButton } from '@/components/Button';
 import { redirect } from 'next/navigation';
 import { getProviders } from 'next-auth/react';
 import { getServerSession } from 'next-auth';

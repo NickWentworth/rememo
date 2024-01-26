@@ -1,5 +1,7 @@
 import styles from './filterButton.module.css';
 
+// filter button doesn't currently use the <Button /> component, but it is still a button so its located here
+
 type FilterButtonProps = {
     active: boolean;
     name: string;
@@ -7,7 +9,7 @@ type FilterButtonProps = {
     onClick?: () => void;
 };
 
-export function FilterButton(props: FilterButtonProps) {
+export default function FilterButton(props: FilterButtonProps) {
     // applies the .active class if this filter is active
     const active = (c: string) => (props.active ? `${c} ${styles.active}` : c);
 

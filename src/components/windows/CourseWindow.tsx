@@ -1,7 +1,9 @@
 'use client';
 
+import { Plus } from '../icons';
 import { CourseCard } from '../cards';
 import { CourseForm } from '../forms';
+import Button from '@/components/Button';
 import { CoursePayload } from '@/lib/types';
 import { deleteCourse } from '@/lib/actions/courses';
 import { useCourses, useTerms } from '@/providers';
@@ -60,14 +62,14 @@ export function CourseWindow(props: CourseWindowProps) {
                     <div className={styles.title}>
                         <h1>Courses</h1>
 
-                        <button
-                            className={styles.addButton}
+                        <Button
+                            type='solid'
                             onClick={courseFormState.create}
+                            icon={<Plus size={20} color='dark' />}
+                            border='round'
                             // disable addition of courses if no term is focused, as courses need to be linked to terms
-                            hidden={props.selectedTermId === undefined}
-                        >
-                            <h1>+</h1>
-                        </button>
+                            disabled={props.selectedTermId === undefined}
+                        />
                     </div>
                 </div>
 
