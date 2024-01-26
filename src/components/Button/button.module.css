@@ -1,0 +1,56 @@
+.button {
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.button:disabled {
+    cursor: not-allowed;
+    opacity: 25%;
+}
+
+/* -------------------- solid button -------------------- */
+
+.button.solid {
+    color: var(--dark);
+    background-color: var(--accent);
+}
+
+.button.solid:enabled:hover {
+    filter: brightness(120%);
+}
+
+.button.solid .text {
+    /* give some extra font weight to better match other button types */
+    font-weight: 500;
+}
+
+/* -------------------- outlined button -------------------- */
+
+.button.outline {
+    color: var(--accent);
+    background-color: transparent;
+    border-color: var(--accent);
+}
+
+.button.outline:enabled:hover {
+    background-color: #ffffff11;
+}
+
+/* -------------------- transparent button -------------------- */
+
+.button.transparent {
+    color: var(--accent);
+    background-color: transparent;
+    border: 1px solid transparent;
+}
+
+.button.transparent:enabled:hover {
+    background-color: #ffffff11;
+}
