@@ -1,11 +1,14 @@
 import { Logo } from '@/components/icons';
 import { ProviderButton } from '@/components/Button';
+import { buildMetadata } from '@/lib/metadata';
 import { redirect } from 'next/navigation';
 import { getProviders } from 'next-auth/react';
 import { getServerSession } from 'next-auth';
 import styles from './login.module.css';
 
 const LOGO_SIZE = 64;
+
+export const metadata = buildMetadata({ title: 'Login' });
 
 export default async function Login() {
     // reroute if user is already signed in

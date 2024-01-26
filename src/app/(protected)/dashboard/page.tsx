@@ -1,5 +1,8 @@
 import { CalendarWindow } from '@/components/windows/CalendarWindow';
 import { TaskWindow } from '@/components/windows/TaskWindow';
+import { buildMetadata } from '@/lib/metadata';
+
+export const metadata = buildMetadata({ title: 'Dashboard' });
 
 export default function Dashboard() {
     return (

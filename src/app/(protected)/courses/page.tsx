@@ -1,31 +1,9 @@
-'use client';
+import CoursesPage from './CoursesPage';
+import { buildMetadata } from '@/lib/metadata';
 
-import { TermWindow } from '@/components/windows/TermWindow';
-import { CourseWindow } from '@/components/windows/CourseWindow';
-import { useTerms } from '@/providers';
-import { useState } from 'react';
+export const metadata = buildMetadata({ title: 'Courses' });
 
 export default function Courses() {
-    // lifted state to store the selected term id
-    const { data: terms } = useTerms();
-    const [selectedTermId, setSelectedTermId] = useState(terms.at(0)?.id);
-
-    return (
-        <>
-            <TermWindow
-                selectedTermId={selectedTermId}
-                setSelectedTermId={setSelectedTermId}
-            />
-
-            {/* TODO: maybe automate this divider between sections */}
-            <div
-                style={{
-                    width: '1px',
-                    backgroundColor: 'var(--dark)',
-                }}
-            />
-
-            <CourseWindow selectedTermId={selectedTermId} />
-        </>
-    );
+    // extract courses page into its own component because it requires 'use client', which collides with metadata
+    return <CoursesPage />;
 }
