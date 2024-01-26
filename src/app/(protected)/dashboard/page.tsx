@@ -1,5 +1,3 @@
-'use client';
-
 import { CalendarWindow } from '@/components/windows/CalendarWindow';
 import { TaskWindow } from '@/components/windows/TaskWindow';
 

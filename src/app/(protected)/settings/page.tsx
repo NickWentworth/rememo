@@ -1,10 +1,8 @@
-'use client';
-
 import { SignOutButton } from '@/components/Button';
-import { useUser } from '@/providers';
+import { getServerUser } from '@/lib/auth';
 
-export default function Settings() {
-    const user = useUser();
+export default async function Settings() {
+    const user = await getServerUser();
 
     return (
         <div>
