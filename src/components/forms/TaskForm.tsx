@@ -1,6 +1,6 @@
 'use client';
 
-import { Close, Trash } from '../icons';
+import { Close, Plus, Trash } from '../icons';
 import Button from '@/components/Button';
 import { DateTimePicker } from './DateTimePicker';
 import { TaskPayload } from '@/lib/types';
@@ -232,9 +232,9 @@ export function TaskForm(props: TaskFormProps) {
                             onClick={() =>
                                 subtasksField.append(DEFAULT_SUBTASK)
                             }
-                        >
-                            +
-                        </Button>
+                            icon={<Plus size={20} color='dark' />}
+                            border='round'
+                        />
                     </div>
                 </div>
 

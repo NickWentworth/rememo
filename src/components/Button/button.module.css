@@ -21,8 +21,6 @@
 
 .round {
     border-radius: 9999px;
-    aspect-ratio: 1;
-    overflow: hidden;
 }
 
 .square {
