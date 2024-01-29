@@ -80,3 +80,56 @@
 .window.calendar {
     flex-grow: 1;
 }
+
+/* -------------------- settings window -------------------- */
+
+.window.settings {
+    flex-grow: 1;
+}
+
+.list.settings {
+    align-items: flex-start;
+}
+
+.settings hr {
+    width: 100%;
+    opacity: 50%;
+}
+
+.userProfile {
+    display: flex;
+    gap: 1rem;
+}
+
+.userProfileLabel {
+    position: relative;
+    height: fit-content;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.userName {
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.userImage {
+    border-radius: 9999px;
+}
+
+.infoTooltip {
+    background-color: var(--dark);
+    text-align: center;
+    position: absolute;
+    top: 1.5rem;
+    width: 200%;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    z-index: 1;
+}
+
+.userImage {
+    border-radius: 9999px;
+}
