@@ -1,8 +1,8 @@
 'use client';
 
 import { Plus } from '../icons';
-import { TaskCard } from '../cards';
-import { TaskForm } from '../forms';
+import { TaskCard } from './cards';
+import { TaskForm } from './forms';
 import Button, { FilterButton } from '@/components/Button';
 import { TaskPayload } from '@/lib/types';
 import { deleteTask } from '@/lib/actions/tasks';

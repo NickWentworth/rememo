@@ -1,6 +1,6 @@
 'use client';
 
-import { Close } from '../icons';
+import { Close } from '@/components/icons';
 import Button from '@/components/Button';
 import { CoursePayload } from '@/lib/types';
 import { FormState } from '@/lib/hooks/useFormState';

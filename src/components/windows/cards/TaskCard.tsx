@@ -1,6 +1,6 @@
 'use client';
 
-import { Edit, Trash } from '../icons';
+import { Edit, Trash } from '@/components/icons';
 import Button from '@/components/Button';
 import { Subtask } from './Subtask';
 import { BUTTON_ICON_SIZE } from '.';

@@ -1,8 +1,8 @@
 'use client';
 
 import { Plus } from '../icons';
-import { CourseCard } from '../cards';
-import { CourseForm } from '../forms';
+import { CourseCard } from './cards';
+import { CourseForm } from './forms';
 import Button from '@/components/Button';
 import { CoursePayload } from '@/lib/types';
 import { deleteCourse } from '@/lib/actions/courses';

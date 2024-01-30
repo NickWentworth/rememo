@@ -1,53 +1,44 @@
 'use client';
 
-import { Edit, Location, Trash, User } from '../icons';
+import { Calendar, Edit, Trash } from '@/components/icons';
 import Button from '@/components/Button';
 import { BUTTON_ICON_SIZE } from '.';
-import { CoursePayload } from '@/lib/types';
+import { TermPayload } from '@/lib/types';
+import { formatTermDate } from '@/lib/date';
 import { useState } from 'react';
 import styles from './card.module.css';
 
-type CourseCardProps = {
-    course: CoursePayload;
+type TermCardProps = {
+    term: TermPayload;
     onEditClick?: () => void;
     onDeleteClick?: () => void;
+    selected: boolean;
+    onClick?: () => void;
 };
 
-export function CourseCard(props: CourseCardProps) {
+export function TermCard(props: TermCardProps) {
     // is the mouse currently hovering over the task card?
     const [hovering, setHovering] = useState(false);
 
+    const borderColor = props.selected ? 'var(--white)' : 'transparent';
+
     return (
         <div
-            className={styles.card}
+            className={`${styles.card} ${styles.termCard}`}
+            style={{ borderColor }}
             onMouseOver={() => setHovering(true)}
             onMouseLeave={() => setHovering(false)}
         >
-            <div className={styles.body}>
-                <h1 style={{ color: props.course.color }}>
-                    {props.course.name}
-                </h1>
+            <div className={styles.body} onClick={props.onClick}>
+                <h1>{props.term.name}</h1>
 
-                <div className={styles.courseDataSection}>
-                    {props.course.instructor && (
-                        <div className={styles.iconField}>
-                            <User size={16} color='light' />
-                            <p>{props.course.instructor}</p>
-                        </div>
-                    )}
+                <div className={styles.iconField}>
+                    <Calendar size={16} color='light' />
 
-                    {props.course.location && (
-                        <div className={styles.iconField}>
-                            <Location size={16} color='light' />
-                            <p>{props.course.location}</p>
-                        </div>
-                    )}
+                    <p>{formatTermDate(props.term.start, props.term.end)}</p>
                 </div>
-
-                {/* TODO: course times */}
             </div>
 
-            {/* TODO: don't really love the location of these buttons, feels awkward */}
             <div className={styles.buttons}>
                 <Button
                     type='transparent'

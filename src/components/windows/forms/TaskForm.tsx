@@ -1,6 +1,6 @@
 'use client';
 
-import { Close, Plus, Trash } from '../icons';
+import { Close, Plus, Trash } from '@/components/icons';
 import Button from '@/components/Button';
 import { DateTimePicker } from './DateTimePicker';
 import { TaskPayload } from '@/lib/types';

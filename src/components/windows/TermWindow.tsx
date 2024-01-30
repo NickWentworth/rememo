@@ -1,8 +1,8 @@
 'use client';
 
 import { Plus } from '../icons';
-import { TermCard } from '../cards';
-import { TermForm } from '../forms';
+import { TermCard } from './cards';
+import { TermForm } from './forms';
 import Button from '@/components/Button';
 import { TermPayload } from '@/lib/types';
 import { deleteTerm } from '@/lib/actions/terms';

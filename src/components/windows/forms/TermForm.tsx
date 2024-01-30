@@ -1,6 +1,6 @@
 'use client';
 
-import { Close } from '../icons';
+import { Close } from '@/components/icons';
 import Button from '@/components/Button';
 import { DateTimePicker } from './DateTimePicker';
 import { TermPayload } from '@/lib/types';
