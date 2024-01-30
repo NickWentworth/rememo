@@ -1,4 +1,4 @@
-import { SettingsWindow } from '@/components/windows/SettingsWindow';
+import { SettingsWindow } from '@/components/windows';
 import { buildMetadata } from '@/lib/metadata';
 
 export const metadata = buildMetadata({ title: 'Settings' });

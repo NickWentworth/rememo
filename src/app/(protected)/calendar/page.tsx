@@ -1,4 +1,4 @@
-import { CalendarWindow } from '@/components/windows/CalendarWindow';
+import { CalendarWindow } from '@/components/windows';
 import { buildMetadata } from '@/lib/metadata';
 
 export const metadata = buildMetadata({ title: 'Calendar' });

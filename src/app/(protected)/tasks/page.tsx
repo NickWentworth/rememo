@@ -1,4 +1,4 @@
-import { TaskWindow } from '@/components/windows/TaskWindow';
+import { TaskWindow } from '@/components/windows';
 import { buildMetadata } from '@/lib/metadata';
 
 export const metadata = buildMetadata({ title: 'Tasks' });

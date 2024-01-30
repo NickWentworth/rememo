@@ -1,5 +1,4 @@
-import { CalendarWindow } from '@/components/windows/CalendarWindow';
-import { TaskWindow } from '@/components/windows/TaskWindow';
+import { CalendarWindow, TaskWindow } from '@/components/windows';
 import { buildMetadata } from '@/lib/metadata';
 
 export const metadata = buildMetadata({ title: 'Dashboard' });

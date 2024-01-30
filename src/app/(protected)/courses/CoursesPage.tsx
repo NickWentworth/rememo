@@ -1,7 +1,6 @@
 'use client';
 
-import { TermWindow } from '@/components/windows/TermWindow';
-import { CourseWindow } from '@/components/windows/CourseWindow';
+import { CourseWindow, TermWindow } from '@/components/windows';
 import { useTerms } from '@/providers';
 import { useState } from 'react';
 
