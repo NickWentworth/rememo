@@ -30,7 +30,7 @@ model Term {
 
     courses Course[]
 
-    user   User   @relation(fields: [userId], references: [id])
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId String
 }
 
@@ -45,7 +45,7 @@ model Course {
 
     tasks Task[]
 
-    term   Term   @relation(fields: [termId], references: [id])
+    term   Term   @relation(fields: [termId], references: [id], onDelete: Cascade)
     termId String
 }
 
@@ -58,10 +58,10 @@ model Task {
 
     subtasks Subtask[]
 
-    course   Course? @relation(fields: [courseId], references: [id])
+    course   Course? @relation(fields: [courseId], references: [id], onDelete: SetNull)
     courseId String?
 
-    user   User   @relation(fields: [userId], references: [id])
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId String
 }
 
