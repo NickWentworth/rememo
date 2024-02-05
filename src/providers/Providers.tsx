@@ -3,9 +3,9 @@ import TermProvider from './TermProvider';
 import CourseProvider from './CourseProvider';
 import TaskProvider from './TaskProvider';
 import { COURSE_ARGS, TASK_ARGS, TERM_ARGS } from '@/lib/types';
+import { authOptions, LOGIN_ROUTE } from '@/lib/auth';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
-import { LOGIN_ROUTE, authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
