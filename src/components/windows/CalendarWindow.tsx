@@ -1,3 +1,4 @@
+import Calendar from '@/components/Calendar';
 import styles from './window.module.css';
 
 type CalendarWindowProps = {
@@ -14,8 +15,7 @@ export function CalendarWindow(props: CalendarWindowProps) {
             </div>
 
             <div className={styles.list}>
-                <p>TODO: add an actual calendar display</p>
-                <p>Currently displaying: {props.display}</p>
+                <Calendar start={6} end={18} />
             </div>
         </div>
     );

@@ -16,4 +16,6 @@ export { Trash } from './trash';
 export { Close } from './close';
 export { Info } from './info';
 export { Plus } from './plus';
+export { Left } from './left';
+export { Right } from './right';
 export { Location } from './location';

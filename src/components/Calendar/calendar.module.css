@@ -1,0 +1,53 @@
+.calendar {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.header {
+    background-color: var(--dark);
+    border-radius: 1rem 1rem 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.tabular {
+    display: grid;
+    grid-template-columns: 5rem repeat(7, 1fr);
+}
+
+.tableDate {
+    padding: 0.25rem;
+    border-right: 1px solid var(--light);
+}
+
+.tableDate.today {
+    color: var(--accent);
+}
+
+.times,
+.day {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--light);
+    border-top: 1px solid var(--light);
+}
+
+.day.today {
+    background: linear-gradient(transparent 0%, var(--accent30) 100%);
+}
+
+.cell {
+    height: 2rem;
+    border-bottom: 1px solid var(--light30);
+}
+
+.cell:nth-child(2n) {
+    border-bottom-color: var(--light);
+}

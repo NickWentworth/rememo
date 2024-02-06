@@ -18,6 +18,10 @@
     --light: #afc7c2;
     --white: #efffff;
     --accent: #27c69b;
+
+    /* transparent color variables */
+    --light30: #afc7c230;
+    --accent30: #27c69b30;
 }
 
 body {

@@ -89,6 +89,23 @@ export function nowUTC(): Date {
 }
 
 /**
+ * Returns a new `Date` object that is `day`s ahead from the given `from` date
+ */
+export function daysAhead(from: Date, days: number): Date {
+    return new Date(from.getTime() + days * MS_PER_DAY);
+}
+
+/**
+ * Returns `true` if both of the given dates are a part of the same day
+ */
+export function isSameDay(a: Date, b: Date): boolean {
+    return (
+        Math.floor(a.getTime() / MS_PER_DAY) ===
+        Math.floor(b.getTime() / MS_PER_DAY)
+    );
+}
+
+/**
  * Returns the date of the given `Date` in YYYY-MM-DD format
  */
 export function dateISO(date: Date): string {
@@ -165,4 +182,39 @@ export function formatTaskDate(due: Date): string {
         default:
             return `Due in ${fullDaysAway} days`;
     }
+}
+
+/**
+ * Formats the given start of the week date for displaying in the calendar's header
+ *
+ * Returns in the form Month DD, YYYY - Month DD YYYY with first YYYY omitted if the week is in the same year
+ */
+export function formatCalendarWeeklyRange(weekStart: Date): string {
+    const weekEnd = daysAhead(weekStart, 6);
+
+    const sameYear = weekStart.getFullYear() === weekEnd.getFullYear();
+
+    const format = (date: Date, includeYear: boolean) =>
+        date.toLocaleDateString('en-US', {
+            month: 'long',
+            day: 'numeric',
+            year: includeYear ? 'numeric' : undefined,
+        });
+
+    return `${format(weekStart, !sameYear)} — ${format(weekEnd, true)}`;
+}
+
+/**
+ * Formats the date for displaying in the header of a day on the calendar
+ *
+ * Returns in the form Weekday MM/DD
+ */
+export function formatCalendarWeeklyDate(date: Date): string {
+    return date
+        .toLocaleDateString('en-US', {
+            weekday: 'long',
+            month: 'numeric',
+            day: 'numeric',
+        })
+        .replace(',', '');
 }
