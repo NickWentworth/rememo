@@ -1,10 +1,5 @@
+import { buildClass } from '@/lib/utils';
 import styles from './button.module.css';
-
-type ClassValue = string | boolean | undefined;
-
-function buildClass(...classes: ClassValue[]): string {
-    return classes.filter((c) => c !== false ?? false).join(' ');
-}
 
 type ButtonProps = {
     type: 'solid' | 'outline' | 'transparent';

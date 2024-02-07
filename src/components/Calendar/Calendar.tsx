@@ -10,14 +10,10 @@ import {
     formatCalendarWeeklyRange,
     isSameDay,
 } from '@/lib/date';
-import { useEffect, useRef, useState } from 'react';
+import { buildClass, inverseLerp } from '@/lib/utils';
+import { useDivHeight } from '@/lib/hooks/useDivHeight';
+import { useState } from 'react';
 import styles from './calendar.module.css';
-
-// TODO: move to a utility function in /src/lib
-type ClassValue = string | boolean | undefined;
-function buildClass(...classes: ClassValue[]): string {
-    return classes.filter((c) => c !== false ?? false).join(' ');
-}
 
 type CalendarProps = {
     events: CalendarEvent[];
@@ -49,16 +45,20 @@ export default function Calendar(props: CalendarProps) {
     const dayRange = range(0, 7);
     const hourRange = range(props.start ?? 0, props.end ?? 24);
 
-    // to allow placing between segments in the calendar, store its height for calculations
-    const tableRef = useRef<React.ElementRef<'div'>>(null);
-    const [tableHeight, setTableHeight] = useState(0);
+    // store calendar height for calculations to allow precise placement of elements within it
+    const [tableRef, tableHeight] = useDivHeight();
 
-    // update table height when the ref is properly set
-    useEffect(() => {
-        if (tableRef.current) {
-            setTableHeight(tableRef.current.offsetHeight);
-        }
-    }, [tableRef]);
+    // converts a time extracted from the given date into a px value distance from the top of the calendar
+    const heightOf = (date: Date) => {
+        // get the date's time of day in a range [0,1], where 0 = 12:00am and 1 = 11:59pm
+        const t = (date.getTime() % MS_PER_DAY) / MS_PER_DAY;
+
+        // get values for the calendar's start and end times, using the same range as the date's time
+        const calendarStart = (props.start ?? 0) / 24;
+        const calendarEnd = (props.end ?? 24) / 24;
+
+        return inverseLerp(calendarStart, calendarEnd, t) * tableHeight;
+    };
 
     return (
         <div className={styles.calendar}>
@@ -128,51 +128,9 @@ export default function Calendar(props: CalendarProps) {
                         isSameDay(day, now) && styles.today
                     );
 
-                    const events = props.events
-                        .filter((event) => event.days.includes(d))
-                        .map((event, idx) => {
-                            // TODO: extract as utils function
-                            // convert the date value to a range 0-1 representing how far along the calendar it should be displayed
-                            const inverseLerp = (date: Date) => {
-                                // get a value 0-1 representing how far in the day the given date's time is
-                                const t =
-                                    (date.getTime() % MS_PER_DAY) / MS_PER_DAY;
-
-                                // get a min and max value from 0-1 representing the range the calendar is showing
-                                const min = (props.start ?? 0) / 24;
-                                const max = (props.end ?? 24) / 24;
-
-                                // inverse lerp between the calendar's min and max values
-                                return (t - min) / (max - min);
-                            };
-
-                            // calculate start and end percentages to display this event
-                            const start = inverseLerp(event.start);
-                            const end = inverseLerp(event.end);
-
-                            // scale by total table height (subtract 1 to show borders between events)
-                            const top = Math.floor(tableHeight * start);
-                            const height =
-                                Math.floor(tableHeight * (end - start)) - 1;
-
-                            return (
-                                <div
-                                    key={idx}
-                                    className={styles.eventContainer}
-                                    style={{ top, height }}
-                                >
-                                    <div className={styles.event}>
-                                        <h3>{event.name}</h3>
-                                        <p>
-                                            {formatCalendarEventTimeRange(
-                                                event.start,
-                                                event.end
-                                            )}
-                                        </p>
-                                    </div>
-                                </div>
-                            );
-                        });
+                    const events = props.events.filter((event) =>
+                        event.days.includes(d)
+                    );
 
                     return (
                         <div key={d} className={cn}>
@@ -182,7 +140,33 @@ export default function Calendar(props: CalendarProps) {
                                     <div key={idx} className={styles.cell} />
                                 ))}
 
-                            {...events}
+                            {events.map((event, idx) => {
+                                // calculate start and end percentages to display this event
+                                const start = heightOf(event.start);
+                                const end = heightOf(event.end);
+
+                                // scale by total table height (subtract 1 to show borders between events)
+                                const top = Math.floor(start);
+                                const height = Math.floor(end - start) - 1;
+
+                                return (
+                                    <div
+                                        key={idx}
+                                        className={styles.eventContainer}
+                                        style={{ top, height }}
+                                    >
+                                        <div className={styles.event}>
+                                            <h3>{event.name}</h3>
+                                            <p>
+                                                {formatCalendarEventTimeRange(
+                                                    event.start,
+                                                    event.end
+                                                )}
+                                            </p>
+                                        </div>
+                                    </div>
+                                );
+                            })}
                         </div>
                     );
                 })}
