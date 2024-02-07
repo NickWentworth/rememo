@@ -39,6 +39,10 @@
     border-top: 1px solid var(--light);
 }
 
+.day {
+    position: relative;
+}
+
 .day.today {
     background: linear-gradient(transparent 0%, var(--accent30) 100%);
 }
@@ -50,4 +54,16 @@
 
 .cell:nth-child(2n) {
     border-bottom-color: var(--light);
+}
+
+.eventContainer {
+    background-color: var(--dark);
+    position: absolute;
+    right: 0;
+    left: 0;
+    border-radius: 0.5rem;
+}
+
+.event {
+    padding: 0.5rem;
 }

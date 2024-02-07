@@ -1,5 +1,4 @@
-const MS_PER_MINUTE = 1000 * 60;
-const MS_PER_DAY = 1000 * 60 * 60 * 24;
+export const MS_PER_DAY = 1000 * 60 * 60 * 24;
 
 /**
  * Returns a `Date` object after modifying a given one's date, leaving time untouched
@@ -217,4 +216,20 @@ export function formatCalendarWeeklyDate(date: Date): string {
             day: 'numeric',
         })
         .replace(',', '');
+}
+
+/**
+ * Formats the time range for displaying in an event on the calendar
+ *
+ * Returns in the form HH:MM AM/PM - HH:MM AM/PM
+ */
+export function formatCalendarEventTimeRange(start: Date, end: Date): string {
+    const format = (d: Date) =>
+        d.toLocaleTimeString('en-US', {
+            timeZone: 'UTC',
+            hour: 'numeric',
+            minute: 'numeric',
+        });
+
+    return `${format(start)} — ${format(end)}`;
 }
