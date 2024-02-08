@@ -11,7 +11,7 @@ import {
     isSameDay,
 } from '@/lib/date';
 import { buildClass, inverseLerp, range } from '@/lib/utils';
-import { useDivHeight } from '@/lib/hooks/useDivHeight';
+import { useElementAttribute } from '@/lib/hooks/useElementAttribute';
 import { useState } from 'react';
 import styles from './calendar.module.css';
 
@@ -43,7 +43,11 @@ export default function Calendar(props: CalendarProps) {
     const hourRange = range(props.start ?? 0, props.end ?? 24);
 
     // store calendar height for calculations to allow precise placement of elements within it
-    const [tableRef, tableHeight] = useDivHeight();
+    const [tableRef, tableHeight] = useElementAttribute(
+        'div',
+        'offsetHeight',
+        0
+    );
 
     // converts a time extracted from the given date into a px value distance from the top of the calendar
     const heightOf = (date: Date) => {
