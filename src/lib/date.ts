@@ -219,11 +219,11 @@ export function formatCalendarWeeklyDate(date: Date): string {
 }
 
 /**
- * Formats the time range for displaying in an event on the calendar
+ * Formats the time range
  *
  * Returns in the form HH:MM AM/PM - HH:MM AM/PM
  */
-export function formatCalendarEventTimeRange(start: Date, end: Date): string {
+export function formatCourseTimeRange(start: Date, end: Date): string {
     const format = (d: Date) =>
         d.toLocaleTimeString('en-US', {
             timeZone: 'UTC',
@@ -232,4 +232,13 @@ export function formatCalendarEventTimeRange(start: Date, end: Date): string {
         });
 
     return `${format(start)} — ${format(end)}`;
+}
+
+/**
+ * Formats the array of day indices into a string of abbreviated days, space separated
+ */
+export function formatCourseTimeDays(days: number[]): string {
+    const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+    return days.map((day) => weekdays[day]).join(' ');
 }

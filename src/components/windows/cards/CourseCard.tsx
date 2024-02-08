@@ -3,7 +3,9 @@
 import { Edit, Location, Trash, User } from '@/components/icons';
 import Button from '@/components/Button';
 import { BUTTON_ICON_SIZE } from '.';
+import { formatCourseTimeDays, formatCourseTimeRange } from '@/lib/date';
 import { CoursePayload } from '@/lib/types';
+import { bitfieldToList } from '@/lib/utils';
 import { useState } from 'react';
 import styles from './card.module.css';
 
@@ -44,7 +46,17 @@ export function CourseCard(props: CourseCardProps) {
                     )}
                 </div>
 
-                {/* TODO: course times */}
+                <div className={styles.courseDataSection}>
+                    {props.course.times.map((time) => (
+                        <p key={time.id}>
+                            <span className={styles.white}>
+                                {formatCourseTimeRange(time.start, time.end)}
+                            </span>
+                            {' | '}
+                            {formatCourseTimeDays(bitfieldToList(time.days))}
+                        </p>
+                    ))}
+                </div>
             </div>
 
             {/* TODO: don't really love the location of these buttons, feels awkward */}

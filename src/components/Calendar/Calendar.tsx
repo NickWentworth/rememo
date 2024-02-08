@@ -5,7 +5,7 @@ import Button from '../Button';
 import {
     MS_PER_DAY,
     daysAhead,
-    formatCalendarEventTimeRange,
+    formatCourseTimeRange,
     formatCalendarWeeklyDate,
     formatCalendarWeeklyRange,
     isSameDay,
@@ -158,7 +158,7 @@ export default function Calendar(props: CalendarProps) {
                                         <div className={styles.event}>
                                             <h3>{event.name}</h3>
                                             <p>
-                                                {formatCalendarEventTimeRange(
+                                                {formatCourseTimeRange(
                                                     event.start,
                                                     event.end
                                                 )}

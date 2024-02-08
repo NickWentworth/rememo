@@ -41,12 +41,22 @@ model Course {
     instructor String?
     location   String?
 
-    // TODO: course times
+    times CourseTime[]
 
     tasks Task[]
 
     term   Term   @relation(fields: [termId], references: [id], onDelete: Cascade)
     termId String
+}
+
+model CourseTime {
+    id    String   @id @default(uuid())
+    start DateTime
+    end   DateTime
+    days  Int      @default(0) // store days as a bitfield, where bit i=1 if the time occurs on the ith day
+
+    course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+    courseId String
 }
 
 model Task {

@@ -22,13 +22,19 @@ export function payloadToTerm(payload: TermPayload): TermRaw {
 // ------------------------------ courses ------------------------------ //
 export type CoursePayload = Prisma.CourseGetPayload<typeof COURSE_ARGS>;
 
-export const COURSE_ARGS = {} satisfies Prisma.CourseDefaultArgs;
+export const COURSE_ARGS = {
+    include: {
+        times: true,
+    },
+} satisfies Prisma.CourseDefaultArgs;
 
 /**
  * Converts a frontend `CoursePayload` object to a backend `Course` object
  */
 export function payloadToCourse(payload: CoursePayload): CourseRaw {
-    return payload;
+    const { times, ...course } = payload;
+
+    return course;
 }
 
 // ------------------------------ tasks ------------------------------ //
