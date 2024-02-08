@@ -1,12 +1,16 @@
 'use client';
 
-import { Close } from '@/components/icons';
+import { Close, Plus, Trash } from '@/components/icons';
 import Button from '@/components/Button';
+import { DateTimePicker } from './DateTimePicker';
+import { WeekdaySelector } from './WeekdaySelector';
 import { CoursePayload } from '@/lib/types';
+import { CourseTime } from '@prisma/client';
+import { tonightUTC } from '@/lib/date';
 import { FormState } from '@/lib/hooks/useFormState';
 import { createCourse, updateCourse } from '@/lib/actions/courses';
 import { useTerms } from '@/providers';
-import { useForm } from 'react-hook-form';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import styles from './form.module.css';
 
 const COLORS = [
@@ -28,7 +32,16 @@ const DEFAULT_COURSE = {
     instructor: null,
     location: null,
     termId: '',
+    times: [],
 } satisfies CoursePayload;
+
+const DEFAULT_COURSE_TIME = {
+    id: '',
+    start: tonightUTC('08:00'),
+    end: tonightUTC('10:00'),
+    days: 0,
+    courseId: '',
+} satisfies CourseTime;
 
 type CourseFormProps = {
     state: FormState<CoursePayload>;
@@ -45,6 +58,7 @@ export function CourseForm(props: CourseFormProps) {
     const {
         register,
         handleSubmit,
+        control,
         reset,
         formState: { errors },
     } = useForm<CoursePayload>({
@@ -52,6 +66,12 @@ export function CourseForm(props: CourseFormProps) {
             props.state.mode === 'update'
                 ? props.state.data
                 : { ...DEFAULT_COURSE, termId: props.selectedTermId },
+    });
+
+    // dynamic course times section managed by useFieldArray hook
+    const timesField = useFieldArray({
+        control,
+        name: 'times',
     });
 
     if (props.state.mode === 'closed') {
@@ -73,6 +93,7 @@ export function CourseForm(props: CourseFormProps) {
             instructor:
                 (data.instructor === '' ? null : data.instructor) ?? null,
             location: (data.location === '' ? null : data.location) ?? null,
+            times: data.times ?? [],
         } satisfies Partial<CoursePayload>;
 
         switch (props.state.mode) {
@@ -201,6 +222,85 @@ export function CourseForm(props: CourseFormProps) {
                             type='text'
                             id='location'
                             {...register('location')}
+                        />
+                    </div>
+                </div>
+
+                <hr />
+
+                {/* times */}
+                <div className={styles.formSection}>
+                    <div className={styles.fieldContainer}>
+                        <label>
+                            <p>Course Times</p>
+                        </label>
+
+                        {timesField.fields.map((field, idx) => (
+                            <div key={field.id}>
+                                <hr />
+
+                                <label>
+                                    <p>Start Time</p>
+                                </label>
+
+                                <Controller
+                                    control={control}
+                                    name={`times.${idx}.start`}
+                                    render={({ field }) => (
+                                        <DateTimePicker
+                                            value={field.value}
+                                            onChange={field.onChange}
+                                            hideDate
+                                        />
+                                    )}
+                                />
+
+                                <label>
+                                    <p>End Time</p>
+                                </label>
+
+                                <Controller
+                                    control={control}
+                                    name={`times.${idx}.end`}
+                                    render={({ field }) => (
+                                        <DateTimePicker
+                                            value={field.value}
+                                            onChange={field.onChange}
+                                            hideDate
+                                        />
+                                    )}
+                                />
+
+                                <label>
+                                    <p>Repeated Days</p>
+                                </label>
+
+                                <Controller
+                                    control={control}
+                                    name={`times.${idx}.days`}
+                                    render={({ field }) => (
+                                        <WeekdaySelector
+                                            value={field.value}
+                                            onChange={field.onChange}
+                                        />
+                                    )}
+                                />
+
+                                <Button
+                                    type='transparent'
+                                    onClick={() => timesField.remove(idx)}
+                                    icon={<Trash color='light' size={16} />}
+                                />
+                            </div>
+                        ))}
+
+                        <Button
+                            type='solid'
+                            onClick={() =>
+                                timesField.append(DEFAULT_COURSE_TIME)
+                            }
+                            icon={<Plus size={20} color='dark' />}
+                            border='round'
                         />
                     </div>
                 </div>

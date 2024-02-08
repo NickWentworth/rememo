@@ -5,7 +5,7 @@ import Button from '@/components/Button';
 import { BUTTON_ICON_SIZE } from '.';
 import { formatCourseTimeDays, formatCourseTimeRange } from '@/lib/date';
 import { CoursePayload } from '@/lib/types';
-import { bitfieldToList } from '@/lib/utils';
+import { bitfieldToList } from '@/lib/bitfield';
 import { useState } from 'react';
 import styles from './card.module.css';
 

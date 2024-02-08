@@ -10,7 +10,7 @@ import {
     formatCalendarWeeklyRange,
     isSameDay,
 } from '@/lib/date';
-import { buildClass, inverseLerp } from '@/lib/utils';
+import { buildClass, inverseLerp, range } from '@/lib/utils';
 import { useDivHeight } from '@/lib/hooks/useDivHeight';
 import { useState } from 'react';
 import styles from './calendar.module.css';
@@ -28,9 +28,6 @@ type CalendarEvent = {
     end: Date;
     days: number[];
 };
-
-const range = (a: number, b: number) =>
-    Array.from({ length: b - a }, (_, key) => key + a);
 
 export default function Calendar(props: CalendarProps) {
     const now = new Date();

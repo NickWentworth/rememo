@@ -12,31 +12,14 @@ export function buildClass(...classes: ClassValue[]): string {
 }
 
 /**
- * Converts a bitfield into a list of numbers where the 1-bits occurred
+ * Returns a range of integers from a (inclusive) to b (exclusive)
  *
  * @example
- * // 42 = ...0010_1010
- * bitfieldToList(42) => [1, 3, 5]
+ * range(0, 5) => [0, 1, 2, 3, 4]
+ * range(1, 4) => [1, 2, 3]
  */
-export function bitfieldToList(bitfield: number): number[] {
-    // convert to binary string and filter out the 0 bits
-    return bitfield
-        .toString(2)
-        .split('')
-        .reverse()
-        .map((bit, idx) => [bit, idx] as const)
-        .filter(([bit, _]) => bit === '1')
-        .map(([_, idx]) => idx);
-}
-
-/**
- * Converts a frontend list of indices into a backend bitfield with 1-bits at the indices
- *
- * @example
- * dayListToBitfield([1,2,5]) => ...0010_0110
- */
-export function listToBitfield(list: number[]): number {
-    return list.reduce((bitfield, idx) => (1 << idx) | bitfield, 0);
+export function range(a: number, b: number) {
+    return Array.from({ length: b - a }, (_, key) => key + a);
 }
 
 /**
