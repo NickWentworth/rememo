@@ -40,6 +40,13 @@ export function setBitAt(bitfield: number, at: number, to: boolean): number {
 }
 
 /**
+ * Toggle the bit at the given index
+ */
+export function toggleBitAt(bitfield: number, at: number): number {
+    return bitfield ^ (1 << at);
+}
+
+/**
  * Returns the bit at the given index as a boolean
  */
 export function getBitAt(bitfield: number, at: number): boolean {

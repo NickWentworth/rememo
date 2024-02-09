@@ -236,61 +236,72 @@ export function CourseForm(props: CourseFormProps) {
                         </label>
 
                         {timesField.fields.map((field, idx) => (
-                            <div key={field.id}>
-                                <hr />
+                            <div
+                                key={field.id}
+                                className={styles.courseTimeRow}
+                            >
+                                <div className={styles.courseTimeRowTimes}>
+                                    <label>
+                                        <p>Start Time</p>
+                                    </label>
 
-                                <label>
-                                    <p>Start Time</p>
-                                </label>
+                                    <label>
+                                        <p>End Time</p>
+                                    </label>
 
-                                <Controller
-                                    control={control}
-                                    name={`times.${idx}.start`}
-                                    render={({ field }) => (
-                                        <DateTimePicker
-                                            value={field.value}
-                                            onChange={field.onChange}
-                                            hideDate
+                                    <Controller
+                                        control={control}
+                                        name={`times.${idx}.start`}
+                                        render={({ field }) => (
+                                            <DateTimePicker
+                                                value={field.value}
+                                                onChange={field.onChange}
+                                                hideDate
+                                            />
+                                        )}
+                                    />
+
+                                    <Controller
+                                        control={control}
+                                        name={`times.${idx}.end`}
+                                        render={({ field }) => (
+                                            <DateTimePicker
+                                                value={field.value}
+                                                onChange={field.onChange}
+                                                hideDate
+                                            />
+                                        )}
+                                    />
+                                </div>
+
+                                <div className={styles.courseTimeRowDays}>
+                                    <div
+                                        className={
+                                            styles.courseTimeRowDaySelector
+                                        }
+                                    >
+                                        <label>
+                                            <p>Repeated Days</p>
+                                        </label>
+
+                                        <Controller
+                                            control={control}
+                                            name={`times.${idx}.days`}
+                                            render={({ field }) => (
+                                                <WeekdaySelector
+                                                    value={field.value}
+                                                    onChange={field.onChange}
+                                                />
+                                            )}
                                         />
-                                    )}
-                                />
+                                    </div>
 
-                                <label>
-                                    <p>End Time</p>
-                                </label>
-
-                                <Controller
-                                    control={control}
-                                    name={`times.${idx}.end`}
-                                    render={({ field }) => (
-                                        <DateTimePicker
-                                            value={field.value}
-                                            onChange={field.onChange}
-                                            hideDate
-                                        />
-                                    )}
-                                />
-
-                                <label>
-                                    <p>Repeated Days</p>
-                                </label>
-
-                                <Controller
-                                    control={control}
-                                    name={`times.${idx}.days`}
-                                    render={({ field }) => (
-                                        <WeekdaySelector
-                                            value={field.value}
-                                            onChange={field.onChange}
-                                        />
-                                    )}
-                                />
-
-                                <Button
-                                    type='transparent'
-                                    onClick={() => timesField.remove(idx)}
-                                    icon={<Trash color='light' size={16} />}
-                                />
+                                    <Button
+                                        type='transparent'
+                                        onClick={() => timesField.remove(idx)}
+                                        icon={<Trash color='light' size={16} />}
+                                    />
+                                </div>
                             </div>
                         ))}
 
