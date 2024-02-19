@@ -75,6 +75,26 @@ export async function getServerUser(): Promise<User | undefined> {
     }
 }
 
+/**
+ * Returns an `User` from the database if the request is properly authorized.
+ *
+ * Throws an error if the user is not logged in
+ *
+ * Mainly intended for react-query as it expects an error if fetching went wrong
+ */
+export async function getServerUserOrThrow() {
+    let session = await getServerSession(authOptions);
+    let email = session?.user?.email;
+
+    if (!email) {
+        throw new Error('User is not signed in');
+    }
+
+    return await prisma.user.findUniqueOrThrow({
+        where: { email },
+    });
+}
+
 // TODO: it may be better to pass in a given user id to ensure any modified data is owned by the validated user
 //       although a user is validated, they should not be able to modify other users' data
 /**

@@ -5,8 +5,7 @@ import { TermCard } from './cards';
 import { TermForm } from './forms';
 import Button from '@/components/Button';
 import { TermPayload } from '@/lib/types';
-import { deleteTerm } from '@/lib/actions/terms';
-import { useTerms } from '@/providers';
+import { useTermMutations, useAllTerms } from '@/lib/query/terms';
 import { useFormState } from '@/lib/hooks/useFormState';
 import styles from './window.module.css';
 
@@ -16,30 +15,41 @@ type TermWindowProps = {
 };
 
 export function TermWindow(props: TermWindowProps) {
-    const { data: terms } = useTerms();
+    const { data: terms, status } = useAllTerms();
+    const { remove: deleteTerm } = useTermMutations();
+
     const termFormState = useFormState<TermPayload>();
 
     const list = () => {
+        if (status === 'error') {
+            return <p>Error!</p>;
+        }
+
+        if (status === 'pending') {
+            return <p>Loading...</p>;
+        }
+
         // display message if no terms exist
         if (terms.length == 0) {
             return <p>No terms yet, add one with the button above!</p>;
         }
 
         // by default, return all terms mapped to a card component
-        return terms.map((t) => (
+        return terms.map((term) => (
             <TermCard
-                key={t.id}
-                term={t}
-                onEditClick={() => termFormState.update(t)}
+                key={term.id}
+                term={term}
+                // FIXME: after editing a term, the entire term list is not re-fetched and upon clicking again, the form will be updated with a stale term
+                onEditClick={() => termFormState.update(term)}
                 onDeleteClick={() => {
-                    if (props.selectedTermId === t.id) {
+                    if (props.selectedTermId === term.id) {
                         // TODO: convert term deletion into a dispatch action used by a reducer so this is done automatically
                         props.setSelectedTermId(undefined);
                     }
-                    deleteTerm(t.id);
+                    deleteTerm(term.id);
                 }}
-                selected={t.id === props.selectedTermId}
-                onClick={() => props.setSelectedTermId(t.id)}
+                selected={term.id === props.selectedTermId}
+                onClick={() => props.setSelectedTermId(term.id)}
             />
         ));
     };

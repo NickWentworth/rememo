@@ -1,8 +1,8 @@
+import QueryProvider from './QueryProvider';
 import UserProvider from './UserProvider';
-import TermProvider from './TermProvider';
 import CourseProvider from './CourseProvider';
 import TaskProvider from './TaskProvider';
-import { COURSE_ARGS, TASK_ARGS, TERM_ARGS } from '@/lib/types';
+import { COURSE_ARGS, TASK_ARGS } from '@/lib/types';
 import { authOptions, LOGIN_ROUTE } from '@/lib/auth';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
@@ -36,11 +36,6 @@ export default async function Providers(props: ProviderProps) {
         redirect(LOGIN_ROUTE);
     }
 
-    const terms = await prisma.term.findMany({
-        where: { userId: user.id },
-        ...TERM_ARGS,
-    });
-
     const courses = await prisma.course.findMany({
         where: { term: { userId: user.id } },
         ...COURSE_ARGS,
@@ -52,12 +47,12 @@ export default async function Providers(props: ProviderProps) {
     });
 
     return (
-        <UserProvider user={user}>
-            <TermProvider terms={terms}>
+        <QueryProvider>
+            <UserProvider user={user}>
                 <CourseProvider courses={courses}>
                     <TaskProvider tasks={tasks}>{props.children}</TaskProvider>
                 </CourseProvider>
-            </TermProvider>
-        </UserProvider>
+            </UserProvider>
+        </QueryProvider>
     );
 }

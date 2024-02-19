@@ -3,6 +3,5 @@ export { default } from './Providers';
 
 // hooks for components to use for accessing data
 export { useUser } from './UserProvider';
-export { useTerms } from './TermProvider';
 export { useCourses } from './CourseProvider';
 export { useTasks } from './TaskProvider';

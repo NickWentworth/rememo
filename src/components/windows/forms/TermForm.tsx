@@ -6,7 +6,7 @@ import { DateTimePicker } from './DateTimePicker';
 import { TermPayload } from '@/lib/types';
 import { tonightUTC } from '@/lib/date';
 import { FormState } from '@/lib/hooks/useFormState';
-import { createTerm, updateTerm } from '@/lib/actions/terms';
+import { useTermMutations } from '@/lib/query/terms';
 import { Controller, useForm } from 'react-hook-form';
 import styles from './form.module.css';
 
@@ -24,6 +24,8 @@ type TermFormProps = {
 };
 
 export function TermForm(props: TermFormProps) {
+    const { create: createTerm, update: updateTerm } = useTermMutations();
+
     // form data managed by useForm hook
     const {
         register,
