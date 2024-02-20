@@ -1,7 +1,7 @@
 'use server';
 
 import { PrismaClient } from '@prisma/client';
-import { TermPayload, payloadToTerm } from '../types';
+import { TERM_ARGS, TermPayload, payloadToTerm } from '../types';
 import { getServerUserOrThrow } from '../auth';
 
 const prisma = new PrismaClient();
@@ -10,30 +10,13 @@ const prisma = new PrismaClient();
  * Returns all terms that a user owns or throws an error if unauthenticated
  */
 export async function getTerms() {
-    console.log('Fetching ALL terms');
-
     const user = await getServerUserOrThrow();
 
     return await prisma.term.findMany({
         where: {
             userId: user.id,
         },
-    });
-}
-
-/**
- * Returns the given term by id, if the user owns it
- */
-export async function getTermById(id: string) {
-    console.log(`Fetching term id ${id}`);
-
-    const user = await getServerUserOrThrow();
-
-    return await prisma.term.findUniqueOrThrow({
-        where: {
-            id,
-            userId: user.id,
-        },
+        ...TERM_ARGS,
     });
 }
 

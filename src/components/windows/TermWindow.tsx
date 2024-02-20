@@ -39,7 +39,6 @@ export function TermWindow(props: TermWindowProps) {
             <TermCard
                 key={term.id}
                 term={term}
-                // FIXME: after editing a term, the entire term list is not re-fetched and upon clicking again, the form will be updated with a stale term
                 onEditClick={() => termFormState.update(term)}
                 onDeleteClick={() => {
                     if (props.selectedTermId === term.id) {

@@ -5,7 +5,6 @@ import Button from '@/components/Button';
 import { BUTTON_ICON_SIZE } from '.';
 import { TermPayload } from '@/lib/types';
 import { formatTermDate } from '@/lib/date';
-import { useInitialTerm } from '@/lib/query/terms';
 import { useState } from 'react';
 import styles from './card.module.css';
 
@@ -18,8 +17,6 @@ type TermCardProps = {
 };
 
 export function TermCard(props: TermCardProps) {
-    const { data: term, status } = useInitialTerm(props.term);
-
     const [hovering, setHovering] = useState(false);
 
     const borderColor = props.selected ? 'var(--white)' : 'transparent';
@@ -36,12 +33,12 @@ export function TermCard(props: TermCardProps) {
             onMouseLeave={() => setHovering(false)}
         >
             <div className={styles.body} onClick={props.onClick}>
-                <h1>{term.name}</h1>
+                <h1>{props.term.name}</h1>
 
                 <div className={styles.iconField}>
                     <Calendar size={16} color='light' />
 
-                    <p>{formatTermDate(term.start, term.end)}</p>
+                    <p>{formatTermDate(props.term.start, props.term.end)}</p>
                 </div>
             </div>
 
