@@ -3,14 +3,11 @@
 import { Plus } from '../icons';
 import { TaskCard } from './cards';
 import { TaskForm } from './forms';
-import Button, { FilterButton } from '@/components/Button';
+import Button from '@/components/Button';
 import { TaskPayload } from '@/lib/types';
-import { deleteTask } from '@/lib/actions/tasks';
 import { nowUTC } from '@/lib/date';
-import { search } from '@/lib/search';
-import { useCourses, useTasks } from '@/providers';
+import { useAllTasks, useTaskMutations } from '@/lib/query/tasks';
 import { useFormState } from '@/lib/hooks/useFormState';
-import { useState } from 'react';
 import styles from './window.module.css';
 
 type Filter = {
@@ -30,62 +27,68 @@ const FILTERS = [
 ] satisfies Filter[];
 
 export function TaskWindow() {
-    const { data: tasks } = useTasks();
-    const { get: getCourse } = useCourses();
+    const { data: tasks, status } = useAllTasks();
+    const { remove: removeTask } = useTaskMutations();
+
     const taskFormState = useFormState<TaskPayload>();
+
+    // TODO: re-implement filters and search term through backend options
 
     // TODO: store active filters in local storage or in the database
     // store active filters by their indices in the const filters array
-    const [filterIndices, setFilterIndices] = useState<number[]>([]);
+    // const [filterIndices, setFilterIndices] = useState<number[]>([]);
 
     // store a search term to further filter tasks
-    const [searchTerm, setSearchTerm] = useState('');
+    // const [searchTerm, setSearchTerm] = useState('');
 
-    const filteredTasks = tasks.filter((task) => {
-        // filter tasks by function
-        const filterMatch =
-            filterIndices.length == 0 ||
-            filterIndices.some((idx) => FILTERS[idx].fn(task));
+    // const filteredTasks = tasks.filter((task) => {
+    //     // filter tasks by function
+    //     const filterMatch =
+    //         filterIndices.length == 0 ||
+    //         filterIndices.some((idx) => FILTERS[idx].fn(task));
 
-        // TODO: add course filter dropdown and filter by that instead
-        // search task name, description, subtask names, and course name for user-given search term
-        const courseName = getCourse(task.courseId ?? '')?.name ?? '';
-        const searchMatch = search(searchTerm, [
-            task.name,
-            task.description,
-            ...task.subtasks.map((s) => s.name),
-            courseName,
-        ]);
+    //     // TODO: add course filter dropdown and filter by that instead
+    //     // search task name, description, subtask names, and course name for user-given search term
+    //     const courseName = getCourse(task.courseId ?? '')?.name ?? '';
+    //     const searchMatch = search(searchTerm, [
+    //         task.name,
+    //         task.description,
+    //         ...task.subtasks.map((s) => s.name),
+    //         courseName,
+    //     ]);
 
-        return filterMatch && searchMatch;
-    });
+    //     return filterMatch && searchMatch;
+    // });
 
-    function toggleFilter(idx: number) {
-        setFilterIndices((indices) =>
-            indices.includes(idx)
-                ? indices.filter((i) => i != idx)
-                : [...indices, idx]
-        );
-    }
+    // function toggleFilter(idx: number) {
+    //     setFilterIndices((indices) =>
+    //         indices.includes(idx)
+    //             ? indices.filter((i) => i != idx)
+    //             : [...indices, idx]
+    //     );
+    // }
 
     const list = () => {
-        // display message if there are no tasks in general
+        if (status === 'error') {
+            return <p>Error!</p>;
+        }
+
+        if (status === 'pending') {
+            return <p>Loading...</p>;
+        }
+
+        // display message if there are no tasks
         if (tasks.length == 0) {
             return <p>No tasks yet, create one with the button above!</p>;
         }
 
-        // display message if there are tasks, but none match the filters
-        if (filteredTasks.length == 0) {
-            return <p>No tasks match the given filters</p>;
-        }
-
-        // by default, return all filtered tasks mapped to a card component
-        return filteredTasks.map((t) => (
+        // by default, return all tasks mapped to a card component
+        return tasks.map((t) => (
             <TaskCard
                 key={t.id}
                 task={t}
                 onEditClick={() => taskFormState.update(t)}
-                onDeleteClick={() => deleteTask(t.id)}
+                onDeleteClick={() => removeTask(t.id)}
             />
         ));
     };
@@ -105,7 +108,7 @@ export function TaskWindow() {
                         />
                     </div>
 
-                    <div className={styles.filters}>
+                    {/* <div className={styles.filters}>
                         {FILTERS.map((filter, idx) => (
                             <FilterButton
                                 key={idx}
@@ -118,7 +121,6 @@ export function TaskWindow() {
                     </div>
 
                     <div className={styles.search}>
-                        {/* TODO: fix layout shift when this appears */}
                         <p hidden={searchTerm === ''}>
                             {filteredTasks.length} Match
                             {filteredTasks.length != 1 ? 'es' : ''}
@@ -131,7 +133,7 @@ export function TaskWindow() {
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className={`${styles.list} ${styles.task}`}>{list()}</div>

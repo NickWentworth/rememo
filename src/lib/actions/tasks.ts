@@ -1,20 +1,31 @@
 'use server';
 
 import { PrismaClient } from '@prisma/client';
-import { TaskPayload, payloadToTask } from '../types';
-import { getServerUser, validateServerUser } from '../auth';
+import { TASK_ARGS, TaskPayload, payloadToTask } from '../types';
+import { getServerUserOrThrow, validateServerUser } from '../auth';
 import { revalidatePath } from 'next/cache';
 
 const prisma = new PrismaClient();
 
 /**
+ * Returns all tasks that a user owns or throws an error if unauthenticated
+ */
+export async function getTasks() {
+    const user = await getServerUserOrThrow();
+
+    return await prisma.task.findMany({
+        where: {
+            userId: user.id,
+        },
+        ...TASK_ARGS,
+    });
+}
+
+/**
  * Write a new task into the database, creating new subtasks when needed
  */
 export async function createTask(task: TaskPayload) {
-    const user = await getServerUser();
-    if (!user) {
-        return;
-    }
+    const user = await getServerUserOrThrow();
 
     // create new task
     const createdTask = await prisma.task.create({
@@ -35,8 +46,6 @@ export async function createTask(task: TaskPayload) {
             },
         });
     }
-
-    revalidatePath('/tasks');
 }
 
 /**
@@ -45,9 +54,7 @@ export async function createTask(task: TaskPayload) {
  * Handles creating, updating, and deleting any subtasks as needed
  */
 export async function updateTask(task: TaskPayload) {
-    if (!(await validateServerUser())) {
-        return;
-    }
+    await getServerUserOrThrow();
 
     // update the task
     const updatedTask = await prisma.task.update({
@@ -83,21 +90,15 @@ export async function updateTask(task: TaskPayload) {
             },
         },
     });
-
-    revalidatePath('/tasks');
 }
 
 /**
  * Delete a task in the database, given by task id
  */
 export async function deleteTask(id: string) {
-    if (!(await validateServerUser())) {
-        return;
-    }
+    await getServerUserOrThrow();
 
     await prisma.task.delete({ where: { id } });
-
-    revalidatePath('/tasks');
 }
 
 /**
@@ -107,9 +108,7 @@ export async function deleteTask(id: string) {
  * setting all children to match the parent task's completion state
  */
 export async function setTaskCompletion(id: string, completed: boolean) {
-    if (!(await validateServerUser())) {
-        return;
-    }
+    await getServerUserOrThrow();
 
     await prisma.task.update({
         where: { id },
@@ -121,8 +120,6 @@ export async function setTaskCompletion(id: string, completed: boolean) {
         where: { taskId: id },
         data: { completed },
     });
-
-    revalidatePath('/tasks');
 }
 
 /**
@@ -133,9 +130,7 @@ export async function setTaskCompletion(id: string, completed: boolean) {
  * - If any sibling subtask is not completed, set parent to not completed
  */
 export async function setSubtaskCompletion(id: string, completed: boolean) {
-    if (!(await validateServerUser())) {
-        return;
-    }
+    await getServerUserOrThrow();
 
     // update just this subtask's completion state
     const subtask = await prisma.subtask.update({
@@ -154,6 +149,4 @@ export async function setSubtaskCompletion(id: string, completed: boolean) {
         where: { id: subtask.taskId },
         data: { completed: parentTaskCompletion },
     });
-
-    revalidatePath('/tasks');
 }

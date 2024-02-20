@@ -1,13 +1,25 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { CoursePayload } from '../types';
+'use client';
+
 import {
     createCourse,
     deleteCourse,
+    getCourses,
     getCoursesByTermId,
     updateCourse,
 } from '../actions/courses';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 const COURSE_KEY = 'courses';
+
+/**
+ * Returns a query object for all courses that a user owns
+ */
+export function useAllCourses() {
+    return useQuery({
+        queryKey: [COURSE_KEY],
+        queryFn: () => getCourses(),
+    });
+}
 
 /**
  * Returns a query object for all courses linked to the given termId, if it exists

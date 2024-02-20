@@ -43,6 +43,12 @@ export type TaskPayload = Prisma.TaskGetPayload<typeof TASK_ARGS>;
 export const TASK_ARGS = {
     include: {
         subtasks: true,
+        course: {
+            select: {
+                name: true,
+                color: true,
+            },
+        },
     },
 } satisfies Prisma.TaskDefaultArgs;
 
@@ -50,19 +56,7 @@ export const TASK_ARGS = {
  * Converts a frontend `TaskPayload` object to a backend `Task` object
  */
 export function payloadToTask(payload: TaskPayload): TaskRaw {
-    const { subtasks, ...task } = payload;
+    const { subtasks, course, ...task } = payload;
 
     return task;
-}
-
-/**
- * Converts a backend `Task` object to a frontend `TaskPayload` object
- *
- * This likely shouldn't be used, instead use `TASK_ARGS` when querying prisma
- */
-export function taskToPayload(task: TaskRaw): TaskPayload {
-    return {
-        ...task,
-        subtasks: [],
-    };
 }

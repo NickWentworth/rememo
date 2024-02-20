@@ -7,6 +7,22 @@ import { getServerUserOrThrow } from '../auth';
 const prisma = new PrismaClient();
 
 /**
+ * Returns all courses that a user owns or throws an error if unauthenticated
+ */
+export async function getCourses() {
+    const user = await getServerUserOrThrow();
+
+    return await prisma.course.findMany({
+        where: {
+            term: {
+                userId: user.id,
+            },
+        },
+        ...COURSE_ARGS,
+    });
+}
+
+/**
  * Returns all courses that a user owns that reference the given termId
  *
  * Throws an error if unauthenticated

@@ -6,8 +6,7 @@ import { Subtask } from './Subtask';
 import { BUTTON_ICON_SIZE } from '.';
 import { TaskPayload } from '@/lib/types';
 import { formatTaskDate } from '@/lib/date';
-import { setTaskCompletion } from '@/lib/actions/tasks';
-import { useCourses } from '@/providers';
+import { useTaskMutations } from '@/lib/query/tasks';
 import { useState } from 'react';
 import styles from './card.module.css';
 
@@ -18,8 +17,7 @@ type TaskCardProps = {
 };
 
 export function TaskCard(props: TaskCardProps) {
-    // use course data to get referenced course's name and color
-    const course = useCourses().get(props.task.courseId ?? '');
+    const { setTaskCompletion } = useTaskMutations();
 
     // is the mouse currently hovering over the task card?
     const [hovering, setHovering] = useState(false);
@@ -32,7 +30,7 @@ export function TaskCard(props: TaskCardProps) {
         >
             <div
                 className={styles.banner}
-                style={{ backgroundColor: course?.color }}
+                style={{ backgroundColor: props.task.course?.color }}
             >
                 <Button
                     type='transparent'
@@ -70,10 +68,10 @@ export function TaskCard(props: TaskCardProps) {
                             type='checkbox'
                             checked={props.task.completed}
                             onChange={() =>
-                                setTaskCompletion(
-                                    props.task.id,
-                                    !props.task.completed
-                                )
+                                setTaskCompletion({
+                                    id: props.task.id,
+                                    completed: !props.task.completed,
+                                })
                             }
                             readOnly
                         />
@@ -82,9 +80,9 @@ export function TaskCard(props: TaskCardProps) {
 
                         <h3
                             className={styles.headerCourse}
-                            style={{ color: course?.color }}
+                            style={{ color: props.task.course?.color }}
                         >
-                            {course?.name}
+                            {props.task.course?.name}
                         </h3>
                     </div>
 
