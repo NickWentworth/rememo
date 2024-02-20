@@ -8,10 +8,10 @@ import { CoursePayload } from '@/lib/types';
 import { CourseTime } from '@prisma/client';
 import { tonightUTC } from '@/lib/date';
 import { FormState } from '@/lib/hooks/useFormState';
-import { createCourse, updateCourse } from '@/lib/actions/courses';
-import { useTerms } from '@/providers';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import styles from './form.module.css';
+import { useAllTerms } from '@/lib/query/terms';
+import { useCourseMutations } from '@/lib/query/courses';
 
 const COLORS = [
     '#EFFFFF', // global white color
@@ -52,7 +52,9 @@ type CourseFormProps = {
 
 export function CourseForm(props: CourseFormProps) {
     // reference all terms to link a course to a term
-    const terms = useTerms().data;
+    const { data: terms } = useAllTerms();
+
+    const { create: createCourse, update: updateCourse } = useCourseMutations();
 
     // form data managed by useForm hook
     const {
@@ -74,7 +76,7 @@ export function CourseForm(props: CourseFormProps) {
         name: 'times',
     });
 
-    if (props.state.mode === 'closed') {
+    if (props.state.mode === 'closed' || terms === undefined) {
         // return early if closed and render nothing
         return;
     }

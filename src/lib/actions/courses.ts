@@ -1,19 +1,35 @@
 'use server';
 
 import { PrismaClient } from '@prisma/client';
-import { CoursePayload, payloadToCourse } from '../types';
-import { validateServerUser } from '../auth';
-import { revalidatePath } from 'next/cache';
+import { COURSE_ARGS, CoursePayload, payloadToCourse } from '../types';
+import { getServerUserOrThrow } from '../auth';
 
 const prisma = new PrismaClient();
+
+/**
+ * Returns all courses that a user owns that reference the given termId
+ *
+ * Throws an error if unauthenticated
+ */
+export async function getCoursesByTermId(termId: string) {
+    const user = await getServerUserOrThrow();
+
+    return await prisma.course.findMany({
+        where: {
+            term: {
+                id: termId,
+                userId: user.id,
+            },
+        },
+        ...COURSE_ARGS,
+    });
+}
 
 /**
  * Write a new course into the database, creating new course times when needed
  */
 export async function createCourse(course: CoursePayload) {
-    if (!(await validateServerUser())) {
-        return;
-    }
+    await getServerUserOrThrow();
 
     // create new course
     const createdCourse = await prisma.course.create({
@@ -33,8 +49,6 @@ export async function createCourse(course: CoursePayload) {
             },
         });
     }
-
-    revalidatePath('/courses');
 }
 
 /**
@@ -43,9 +57,7 @@ export async function createCourse(course: CoursePayload) {
  * Handles creating, updating, and deleting any course times as needed
  */
 export async function updateCourse(course: CoursePayload) {
-    if (!(await validateServerUser())) {
-        return;
-    }
+    await getServerUserOrThrow();
 
     // update the course
     const updatedCourse = await prisma.course.update({
@@ -81,19 +93,13 @@ export async function updateCourse(course: CoursePayload) {
             },
         },
     });
-
-    revalidatePath('/courses');
 }
 
 /**
  * Delete a course in the database, given by term id
  */
 export async function deleteCourse(id: string) {
-    if (!(await validateServerUser())) {
-        return;
-    }
+    await getServerUserOrThrow();
 
     await prisma.course.delete({ where: { id } });
-
-    revalidatePath('/courses');
 }

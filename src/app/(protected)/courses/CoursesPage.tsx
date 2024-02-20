@@ -24,8 +24,7 @@ export default function CoursesPage() {
                 }}
             />
 
-            {/* TEMP: commenting out until course queries are setup */}
-            {/* <CourseWindow selectedTermId={selectedTermId} /> */}
+            <CourseWindow selectedTermId={selectedTermId} />
         </>
     );
 }

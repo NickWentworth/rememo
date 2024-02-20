@@ -6,7 +6,7 @@ import { CourseForm } from './forms';
 import Button from '@/components/Button';
 import { CoursePayload } from '@/lib/types';
 import { deleteCourse } from '@/lib/actions/courses';
-import { useCourses, useTerms } from '@/providers';
+import { useCourseMutations, useCoursesByTermId } from '@/lib/query/courses';
 import { useFormState } from '@/lib/hooks/useFormState';
 import styles from './window.module.css';
 
@@ -15,42 +15,37 @@ type CourseWindowProps = {
 };
 
 export function CourseWindow(props: CourseWindowProps) {
-    const { data: courses } = useCourses();
-    const { data: terms } = useTerms();
+    const { data: courses, status } = useCoursesByTermId(props.selectedTermId);
+    const { remove: removeCourse } = useCourseMutations();
 
     const courseFormState = useFormState<CoursePayload>();
 
-    const selectedCourses = courses.filter(
-        (c) => c.termId === props.selectedTermId
-    );
-
     const list = () => {
-        // if no selected term id, there are no terms that exist
-        if (props.selectedTermId === undefined) {
-            return <p>Create a term and select it to add courses to it!</p>;
+        if (status === 'error') {
+            return <p>Error!</p>;
+        }
+
+        if (status === 'pending') {
+            return <p>Loading...</p>;
         }
 
         // display message if there are no courses for the selected term
-        if (selectedCourses.length == 0) {
-            const selectedTermName = terms.find(
-                (t) => props.selectedTermId === t.id
-            )?.name;
-
+        if (courses.length == 0) {
+            // TODO: show the selected term name if it exists
             return (
                 <p>
-                    The selected term <b>{selectedTermName}</b> has no courses,
-                    add one with the button above!
+                    Select a term and add courses to it with the button above!
                 </p>
             );
         }
 
         // by default, return all selected courses mapped to a card component
-        return selectedCourses.map((c) => (
+        return courses.map((course) => (
             <CourseCard
-                key={c.id}
-                course={c}
-                onEditClick={() => courseFormState.update(c)}
-                onDeleteClick={() => deleteCourse(c.id)}
+                key={course.id}
+                course={course}
+                onEditClick={() => courseFormState.update(course)}
+                onDeleteClick={() => removeCourse(course.id)}
             />
         ));
     };
