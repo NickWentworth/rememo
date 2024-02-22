@@ -1,6 +1,7 @@
 'use client';
 
 import {
+    GetTaskOptions,
     createTask,
     deleteTask,
     getTasks,
@@ -15,10 +16,10 @@ const TASK_KEY = 'tasks';
 /**
  * Returns a query object for all tasks that a user owns
  */
-export function useAllTasks() {
+export function useTasksWithOptions(options: GetTaskOptions) {
     return useQuery({
-        queryKey: [TASK_KEY],
-        queryFn: () => getTasks(),
+        queryKey: [TASK_KEY, options.search],
+        queryFn: () => getTasks(options),
     });
 }
 

@@ -1,21 +1,36 @@
 'use server';
 
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 import { TASK_ARGS, TaskPayload, payloadToTask } from '../types';
-import { getServerUserOrThrow, validateServerUser } from '../auth';
-import { revalidatePath } from 'next/cache';
+import { getServerUserOrThrow } from '../auth';
 
 const prisma = new PrismaClient();
 
+export type GetTaskOptions = {
+    search: string;
+    // TODO: pagination
+};
+
 /**
- * Returns all tasks that a user owns or throws an error if unauthenticated
+ * Returns tasks that a user owns according to given options
+ *
+ * Throws an error if unauthenticated
  */
-export async function getTasks() {
+export async function getTasks(options: GetTaskOptions) {
     const user = await getServerUserOrThrow();
+
+    const contains: Prisma.StringFilter = { contains: options.search };
 
     return await prisma.task.findMany({
         where: {
             userId: user.id,
+            OR: [
+                // include task if any fields match the search
+                { name: contains },
+                { description: contains },
+                { course: { name: contains } },
+                { subtasks: { some: { name: contains } } },
+            ],
         },
         ...TASK_ARGS,
     });
