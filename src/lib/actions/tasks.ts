@@ -32,6 +32,14 @@ export async function getTasks(options: GetTaskOptions) {
                 { subtasks: { some: { name: contains } } },
             ],
         },
+        orderBy: [
+            // show with most overdue at the top
+            { due: 'asc' },
+            // then group by course
+            { course: { name: 'asc' } },
+            // finally order by name
+            { name: 'asc' },
+        ],
         ...TASK_ARGS,
     });
 }

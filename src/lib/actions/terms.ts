@@ -16,6 +16,10 @@ export async function getTerms() {
         where: {
             userId: user.id,
         },
+        orderBy: [
+            // show latest term (likely closest to now) at the top of the page
+            { start: 'desc' },
+        ],
         ...TERM_ARGS,
     });
 }

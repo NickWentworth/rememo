@@ -18,6 +18,14 @@ export async function getCourses() {
                 userId: user.id,
             },
         },
+        orderBy: [
+            // TODO: within the select, have term name subsections for easier navigation
+            // TODO: maybe even add user option to only show current semester in select?
+            // this is used for showing courses in task form, order by term date first
+            { term: { start: 'desc' } },
+            // then name in the list
+            { name: 'asc' },
+        ],
         ...COURSE_ARGS,
     });
 }
@@ -37,6 +45,7 @@ export async function getCoursesByTermId(termId: string) {
                 userId: user.id,
             },
         },
+        orderBy: [{ name: 'asc' }],
         ...COURSE_ARGS,
     });
 }
