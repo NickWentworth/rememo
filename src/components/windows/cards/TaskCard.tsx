@@ -6,6 +6,7 @@ import { Subtask } from './Subtask';
 import { BUTTON_ICON_SIZE } from '.';
 import { TaskPayload } from '@/lib/types';
 import { formatTaskDate } from '@/lib/date';
+import { buildClass } from '@/lib/utils';
 import { useTaskMutations } from '@/lib/query/tasks';
 import { useState } from 'react';
 import styles from './card.module.css';
@@ -22,9 +23,16 @@ export function TaskCard(props: TaskCardProps) {
     // is the mouse currently hovering over the task card?
     const [hovering, setHovering] = useState(false);
 
+    const dueFormat = formatTaskDate(props.task.due, props.task.completed);
+
+    const cardClass = buildClass(
+        styles.card,
+        props.task.completed && styles.completed
+    );
+
     return (
         <div
-            className={styles.card}
+            className={cardClass}
             onMouseOver={() => setHovering(true)}
             onMouseLeave={() => setHovering(false)}
         >
@@ -86,7 +94,7 @@ export function TaskCard(props: TaskCardProps) {
                         </h3>
                     </div>
 
-                    <p>{formatTaskDate(props.task.due)}</p>
+                    <p className={styles[dueFormat.status]}>{dueFormat.str}</p>
                 </div>
 
                 {/* Subtasks */}

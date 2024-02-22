@@ -133,10 +133,22 @@ export function formatTermDate(start: Date, end: Date): string {
     return `${format(start)} — ${format(end)}`;
 }
 
+type FormattedTaskDate = {
+    str: string;
+    status: TaskStatus;
+};
+
+type TaskStatus = 'late' | 'soon' | 'ok';
+
 /**
  * Formats the given due date to display on a task card
+ *
+ * Returns an object both containing the formatted string and a status based on completion and due time of the task
  */
-export function formatTaskDate(due: Date): string {
+export function formatTaskDate(
+    due: Date,
+    completed: boolean
+): FormattedTaskDate {
     const now = nowUTC();
 
     const dueDay = Math.floor(due.getTime() / MS_PER_DAY);
@@ -158,28 +170,64 @@ export function formatTaskDate(due: Date): string {
 
     switch (true) {
         case fullDaysAway < -1:
-            return `Overdue by ${-fullDaysAway} days`;
+            return {
+                str: completed
+                    ? `Due ${-fullDaysAway} days ago`
+                    : `Overdue by ${-fullDaysAway} days`,
+                status: completed ? 'ok' : 'late',
+            };
 
         case fullDaysAway == -1:
-            return `Due yesterday @ ${time}`;
+            return {
+                str: `Due yesterday @ ${time}`,
+                status: completed ? 'ok' : 'late',
+            };
 
         case fullDaysAway == 0:
-            return `Due ${overdue ? 'earlier' : ''} today @ ${time}`;
+            let status: TaskStatus;
+
+            if (completed) {
+                status = 'ok';
+            } else if (overdue) {
+                status = 'late';
+            } else {
+                status = 'soon';
+            }
+
+            return {
+                str: `Due ${overdue ? 'earlier' : ''} today @ ${time}`,
+                status,
+            };
 
         case fullDaysAway == 0 && !overdue:
-            return `Due today @ ${time}`;
+            return {
+                str: `Due today @ ${time}`,
+                status: completed ? 'ok' : 'soon',
+            };
 
         case fullDaysAway == 1:
-            return `Due tomorrow @ ${time}`;
+            return {
+                str: `Due tomorrow @ ${time}`,
+                status: 'ok',
+            };
 
         case fullDaysAway < 7:
-            return `Due ${weekday} @ ${time}`;
+            return {
+                str: `Due ${weekday} @ ${time}`,
+                status: 'ok',
+            };
 
         case fullDaysAway < 13:
-            return `Due next ${weekday} @ ${time}`;
+            return {
+                str: `Due next ${weekday} @ ${time}`,
+                status: 'ok',
+            };
 
         default:
-            return `Due in ${fullDaysAway} days`;
+            return {
+                str: `Due in ${fullDaysAway} days`,
+                status: 'ok',
+            };
     }
 }
 
