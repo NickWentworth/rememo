@@ -2,7 +2,7 @@
 
 import { Prisma, PrismaClient } from '@prisma/client';
 import { TASK_ARGS, TaskPayload, payloadToTask } from '../types';
-import { getServerUserOrThrow } from '../auth';
+import { getUserOrThrow } from './user';
 
 const prisma = new PrismaClient();
 
@@ -17,7 +17,7 @@ export type GetTaskOptions = {
  * Throws an error if unauthenticated
  */
 export async function getTasks(options: GetTaskOptions) {
-    const user = await getServerUserOrThrow();
+    const user = await getUserOrThrow();
 
     const contains: Prisma.StringFilter = { contains: options.search };
 
@@ -48,7 +48,7 @@ export async function getTasks(options: GetTaskOptions) {
  * Write a new task into the database, creating new subtasks when needed
  */
 export async function createTask(task: TaskPayload) {
-    const user = await getServerUserOrThrow();
+    const user = await getUserOrThrow();
 
     // create new task
     const createdTask = await prisma.task.create({
@@ -77,7 +77,7 @@ export async function createTask(task: TaskPayload) {
  * Handles creating, updating, and deleting any subtasks as needed
  */
 export async function updateTask(task: TaskPayload) {
-    await getServerUserOrThrow();
+    await getUserOrThrow();
 
     // update the task
     const updatedTask = await prisma.task.update({
@@ -119,7 +119,7 @@ export async function updateTask(task: TaskPayload) {
  * Delete a task in the database, given by task id
  */
 export async function deleteTask(id: string) {
-    await getServerUserOrThrow();
+    await getUserOrThrow();
 
     await prisma.task.delete({ where: { id } });
 }
@@ -131,7 +131,7 @@ export async function deleteTask(id: string) {
  * setting all children to match the parent task's completion state
  */
 export async function setTaskCompletion(id: string, completed: boolean) {
-    await getServerUserOrThrow();
+    await getUserOrThrow();
 
     await prisma.task.update({
         where: { id },
@@ -153,7 +153,7 @@ export async function setTaskCompletion(id: string, completed: boolean) {
  * - If any sibling subtask is not completed, set parent to not completed
  */
 export async function setSubtaskCompletion(id: string, completed: boolean) {
-    await getServerUserOrThrow();
+    await getUserOrThrow();
 
     // update just this subtask's completion state
     const subtask = await prisma.subtask.update({

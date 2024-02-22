@@ -2,7 +2,7 @@
 
 import { PrismaClient } from '@prisma/client';
 import { TERM_ARGS, TermPayload, payloadToTerm } from '../types';
-import { getServerUserOrThrow } from '../auth';
+import { getUserOrThrow } from './user';
 
 const prisma = new PrismaClient();
 
@@ -10,7 +10,7 @@ const prisma = new PrismaClient();
  * Returns all terms that a user owns or throws an error if unauthenticated
  */
 export async function getTerms() {
-    const user = await getServerUserOrThrow();
+    const user = await getUserOrThrow();
 
     return await prisma.term.findMany({
         where: {
@@ -28,7 +28,7 @@ export async function getTerms() {
  * Write a new term into the database
  */
 export async function createTerm(term: TermPayload) {
-    const user = await getServerUserOrThrow();
+    const user = await getUserOrThrow();
 
     await prisma.term.create({
         data: {
@@ -43,7 +43,7 @@ export async function createTerm(term: TermPayload) {
  * Update an existing term in the database, matched by id
  */
 export async function updateTerm(term: TermPayload) {
-    await getServerUserOrThrow();
+    await getUserOrThrow();
 
     await prisma.term.update({
         where: { id: term.id },
@@ -55,7 +55,7 @@ export async function updateTerm(term: TermPayload) {
  * Delete a term in the database, given by term id
  */
 export async function deleteTerm(id: string) {
-    await getServerUserOrThrow();
+    await getUserOrThrow();
 
     await prisma.term.delete({ where: { id } });
 }

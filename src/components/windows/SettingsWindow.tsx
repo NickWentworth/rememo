@@ -2,7 +2,7 @@
 
 import { Info } from '../icons';
 import Button from '@/components/Button';
-import { useUser } from '@/providers';
+import { useUser } from '@/lib/query/user';
 import { signOut } from 'next-auth/react';
 import { useState } from 'react';
 import styles from './window.module.css';
@@ -18,9 +18,17 @@ function onDeleteClick() {
 }
 
 export function SettingsWindow() {
-    const user = useUser();
+    const { data: user, status } = useUser();
 
     const [hideTooltip, setHideTooltip] = useState(true);
+
+    if (status === 'error') {
+        return <p>Error!</p>;
+    }
+
+    if (status === 'pending') {
+        return <p>Loading...</p>;
+    }
 
     return (
         <div className={`${styles.window} ${styles.settings}`}>

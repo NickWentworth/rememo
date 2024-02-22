@@ -1,5 +1,5 @@
 import { SIDEBAR_ICON_SIZE } from './Sidebar';
-import { useUser } from '@/providers';
+import { useUser } from '@/lib/query/user';
 import Link from 'next/link';
 import styles from './sidebar.module.css';
 
@@ -8,9 +8,9 @@ type UserButtonProps = {
 };
 
 export function UserButton(props: UserButtonProps) {
-    const user = useUser();
+    const { data: user } = useUser();
 
-    if (!user) {
+    if (user === undefined) {
         return;
     }
 
@@ -18,7 +18,7 @@ export function UserButton(props: UserButtonProps) {
         <Link className={styles.button} href='/settings'>
             <img
                 className={styles.userImage}
-                src={user?.image ?? undefined}
+                src={user.image ?? undefined}
                 width={SIDEBAR_ICON_SIZE}
                 height={SIDEBAR_ICON_SIZE}
             />

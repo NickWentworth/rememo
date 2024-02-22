@@ -2,7 +2,7 @@
 
 import { PrismaClient } from '@prisma/client';
 import { COURSE_ARGS, CoursePayload, payloadToCourse } from '../types';
-import { getServerUserOrThrow } from '../auth';
+import { getUserOrThrow } from './user';
 
 const prisma = new PrismaClient();
 
@@ -10,7 +10,7 @@ const prisma = new PrismaClient();
  * Returns all courses that a user owns or throws an error if unauthenticated
  */
 export async function getCourses() {
-    const user = await getServerUserOrThrow();
+    const user = await getUserOrThrow();
 
     return await prisma.course.findMany({
         where: {
@@ -36,7 +36,7 @@ export async function getCourses() {
  * Throws an error if unauthenticated
  */
 export async function getCoursesByTermId(termId: string) {
-    const user = await getServerUserOrThrow();
+    const user = await getUserOrThrow();
 
     return await prisma.course.findMany({
         where: {
@@ -54,7 +54,7 @@ export async function getCoursesByTermId(termId: string) {
  * Write a new course into the database, creating new course times when needed
  */
 export async function createCourse(course: CoursePayload) {
-    await getServerUserOrThrow();
+    await getUserOrThrow();
 
     // create new course
     const createdCourse = await prisma.course.create({
@@ -82,7 +82,7 @@ export async function createCourse(course: CoursePayload) {
  * Handles creating, updating, and deleting any course times as needed
  */
 export async function updateCourse(course: CoursePayload) {
-    await getServerUserOrThrow();
+    await getUserOrThrow();
 
     // update the course
     const updatedCourse = await prisma.course.update({
@@ -124,7 +124,7 @@ export async function updateCourse(course: CoursePayload) {
  * Delete a course in the database, given by term id
  */
 export async function deleteCourse(id: string) {
-    await getServerUserOrThrow();
+    await getUserOrThrow();
 
     await prisma.course.delete({ where: { id } });
 }
