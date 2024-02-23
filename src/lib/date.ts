@@ -105,6 +105,15 @@ export function isSameDay(a: Date, b: Date): boolean {
 }
 
 /**
+ * Returns `true` if the time segment of the given date is between start and end
+ */
+export function isBetweenTimes(date: Date, start: Date, end: Date) {
+    const time = (d: Date) => d.getTime() % MS_PER_DAY;
+
+    return time(date) > time(start) && time(date) < time(end);
+}
+
+/**
  * Returns the date of the given `Date` in YYYY-MM-DD format
  */
 export function dateISO(date: Date): string {
@@ -116,6 +125,17 @@ export function dateISO(date: Date): string {
  */
 export function timeISO(date: Date): string {
     return date.toISOString().split('T')[1].replace('Z', '');
+}
+
+/**
+ * Returns the given date in HH:MM AM/PM format
+ */
+export function formatTime(date: Date): string {
+    return date.toLocaleTimeString('en-US', {
+        timeZone: 'UTC',
+        hour: 'numeric',
+        minute: 'numeric',
+    });
 }
 
 /**
@@ -154,11 +174,7 @@ export function formatTaskDate(
     const dueDay = Math.floor(due.getTime() / MS_PER_DAY);
     const nowDay = Math.floor(now.getTime() / MS_PER_DAY);
 
-    const time = due.toLocaleTimeString('en-US', {
-        timeZone: 'UTC',
-        hour: 'numeric',
-        minute: 'numeric',
-    });
+    const time = formatTime(due);
 
     const weekday = due.toLocaleDateString('en-US', {
         timeZone: 'UTC',
@@ -272,14 +288,7 @@ export function formatCalendarWeeklyDate(date: Date): string {
  * Returns in the form HH:MM AM/PM - HH:MM AM/PM
  */
 export function formatCourseTimeRange(start: Date, end: Date): string {
-    const format = (d: Date) =>
-        d.toLocaleTimeString('en-US', {
-            timeZone: 'UTC',
-            hour: 'numeric',
-            minute: 'numeric',
-        });
-
-    return `${format(start)} — ${format(end)}`;
+    return `${formatTime(start)} — ${formatTime(end)}`;
 }
 
 /**

@@ -9,10 +9,13 @@ import {
     formatCalendarWeeklyDate,
     formatCalendarWeeklyRange,
     isSameDay,
+    formatTime,
+    isBetweenTimes,
 } from '@/lib/date';
 import { buildClass, inverseLerp, range } from '@/lib/utils';
 import { useElementAttribute } from '@/lib/hooks/useElementAttribute';
 import { useCourseTimesByWeek } from '@/lib/query/courses';
+import { useCurrentTime } from '@/lib/hooks/useCurrentTime';
 import { useState } from 'react';
 import styles from './calendar.module.css';
 
@@ -31,8 +34,7 @@ type CalendarEvent = {
 };
 
 export default function Calendar(props: CalendarProps) {
-    const now = new Date();
-
+    const now = useCurrentTime();
     const [weekStart, setWeekStart] = useState(daysAhead(now, -now.getDay()));
 
     // query all course times for the given week
@@ -133,15 +135,17 @@ export default function Calendar(props: CalendarProps) {
                 {/* days of the week */}
                 {dayRange.map((d) => {
                     const day = daysAhead(weekStart, d);
-                    const cn = buildClass(
+                    const isToday = isSameDay(day, now);
+
+                    const dayClass = buildClass(
                         styles.day,
-                        isSameDay(day, now) && styles.today
+                        isToday && styles.today
                     );
 
                     const courseTimes = courseTimeQueries.at(d)?.data ?? [];
 
                     return (
-                        <div key={d} className={cn}>
+                        <div key={d} className={dayClass}>
                             {hourRange
                                 .flatMap((h) => [h, h])
                                 .map((_, idx) => (
@@ -157,13 +161,22 @@ export default function Calendar(props: CalendarProps) {
                                 const top = Math.floor(start);
                                 const height = Math.floor(end - start) - 1;
 
+                                const isActive =
+                                    isToday &&
+                                    isBetweenTimes(now, time.start, time.end);
+
+                                const timeClass = buildClass(
+                                    styles.event,
+                                    isActive && styles.active
+                                );
+
                                 return (
                                     <div
                                         key={idx}
                                         className={styles.eventContainer}
                                         style={{ top, height }}
                                     >
-                                        <div className={styles.event}>
+                                        <div className={timeClass}>
                                             <h3
                                                 style={{
                                                     color: time.course.color,
@@ -195,7 +208,20 @@ export default function Calendar(props: CalendarProps) {
                         </div>
                     );
                 })}
+
+                {/* current time indicator */}
+                <div
+                    className={styles.currentTime}
+                    style={{ top: heightOf(now) }}
+                >
+                    <p className={styles.currentTimeText}>
+                        <b>{formatTime(now)}</b>
+                    </p>
+                    <hr className={styles.currentTimeLine} />
+                </div>
             </div>
+
+            {/* TODO: spinner */}
             <p hidden={!isLoading}>Loading...</p>
         </div>
     );
