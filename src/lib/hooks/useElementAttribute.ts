@@ -14,12 +14,12 @@ export function useElementAttribute<E extends Element, K extends keyof Ref<E>>(
     const ref = useRef<React.ElementRef<E>>(null);
     const [attr, setAttr] = useState(initial);
 
-    // update attribute with the ref
+    // update attribute with the ref each re-render, as attribute could have changed since
     useEffect(() => {
         if (ref.current) {
             setAttr(ref.current[attribute]);
         }
-    }, [ref]);
+    });
 
     return [ref, attr] as const;
 }

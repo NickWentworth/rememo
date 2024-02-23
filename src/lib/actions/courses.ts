@@ -3,6 +3,7 @@
 import { PrismaClient } from '@prisma/client';
 import { COURSE_ARGS, CoursePayload, payloadToCourse } from '../types';
 import { getUserOrThrow } from './user';
+import { bitfieldToList } from '../bitfield';
 
 const prisma = new PrismaClient();
 
@@ -48,6 +49,47 @@ export async function getCoursesByTermId(termId: string) {
         orderBy: [{ name: 'asc' }],
         ...COURSE_ARGS,
     });
+}
+
+/**
+ * Returns a list of course times that take place on a given day, checking for term ranges as well
+ *
+ * Includes course data used for the calendar, such as name, color, and location
+ */
+export async function getCourseTimesByDate(date: Date) {
+    const user = await getUserOrThrow();
+
+    // FIXME: seems like terms should just store dates at 00:00 instead
+    // terms store dates at 23:59 or 11:59 PM, so align time the same
+    const endOfDay = new Date(`${date.toISOString().split('T')[0]}T23:59:00Z`);
+    const dayOfWeek = date.getDay();
+
+    // get all times for courses that are in the correct time range
+    const times = await prisma.courseTime.findMany({
+        where: {
+            course: {
+                term: {
+                    start: { lte: endOfDay },
+                    end: { gte: endOfDay },
+                    userId: user.id,
+                },
+            },
+        },
+        include: {
+            course: {
+                select: {
+                    name: true,
+                    color: true,
+                    location: true,
+                },
+            },
+        },
+    });
+
+    // and manually filter out any that do not occur on this day of the week
+    return times.filter((time) =>
+        bitfieldToList(time.days).includes(dayOfWeek)
+    );
 }
 
 /**

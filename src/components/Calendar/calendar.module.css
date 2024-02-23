@@ -67,3 +67,13 @@
 .event {
     padding: 0.5rem;
 }
+
+.eventTime {
+    color: var(--white);
+}
+
+.eventLocation {
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
+}

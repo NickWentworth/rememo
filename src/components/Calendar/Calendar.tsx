@@ -1,6 +1,6 @@
 'use client';
 
-import { Left, Right } from '../icons';
+import { Left, Location, Right } from '../icons';
 import Button from '../Button';
 import {
     MS_PER_DAY,
@@ -12,6 +12,7 @@ import {
 } from '@/lib/date';
 import { buildClass, inverseLerp, range } from '@/lib/utils';
 import { useElementAttribute } from '@/lib/hooks/useElementAttribute';
+import { useCourseTimesByWeek } from '@/lib/query/courses';
 import { useState } from 'react';
 import styles from './calendar.module.css';
 
@@ -33,6 +34,9 @@ export default function Calendar(props: CalendarProps) {
     const now = new Date();
 
     const [weekStart, setWeekStart] = useState(daysAhead(now, -now.getDay()));
+
+    // query all course times for the given week
+    const courseTimeQueries = useCourseTimesByWeek(weekStart);
 
     // onClick functions for calendar controls
     const prevWeek = () => setWeekStart((c) => daysAhead(c, -7));
@@ -60,6 +64,11 @@ export default function Calendar(props: CalendarProps) {
 
         return inverseLerp(calendarStart, calendarEnd, t) * tableHeight;
     };
+
+    // TODO: show loading state overlay until all course times are fetched
+    const isLoading = courseTimeQueries.some(
+        (query) => query.status !== 'success'
+    );
 
     return (
         <div className={styles.calendar}>
@@ -129,9 +138,7 @@ export default function Calendar(props: CalendarProps) {
                         isSameDay(day, now) && styles.today
                     );
 
-                    const events = props.events.filter((event) =>
-                        event.days.includes(d)
-                    );
+                    const courseTimes = courseTimeQueries.at(d)?.data ?? [];
 
                     return (
                         <div key={d} className={cn}>
@@ -141,10 +148,10 @@ export default function Calendar(props: CalendarProps) {
                                     <div key={idx} className={styles.cell} />
                                 ))}
 
-                            {events.map((event, idx) => {
+                            {courseTimes.map((time, idx) => {
                                 // calculate start and end percentages to display this event
-                                const start = heightOf(event.start);
-                                const end = heightOf(event.end);
+                                const start = heightOf(time.start);
+                                const end = heightOf(time.end);
 
                                 // scale by total table height (subtract 1 to show borders between events)
                                 const top = Math.floor(start);
@@ -157,13 +164,30 @@ export default function Calendar(props: CalendarProps) {
                                         style={{ top, height }}
                                     >
                                         <div className={styles.event}>
-                                            <h3>{event.name}</h3>
-                                            <p>
+                                            <h3
+                                                style={{
+                                                    color: time.course.color,
+                                                }}
+                                            >
+                                                {time.course.name}
+                                            </h3>
+
+                                            <p className={styles.eventTime}>
                                                 {formatCourseTimeRange(
-                                                    event.start,
-                                                    event.end
+                                                    time.start,
+                                                    time.end
                                                 )}
                                             </p>
+
+                                            <div
+                                                className={styles.eventLocation}
+                                            >
+                                                <Location
+                                                    size={14}
+                                                    color='light'
+                                                />
+                                                <p>{time.course.location}</p>
+                                            </div>
                                         </div>
                                     </div>
                                 );
@@ -172,6 +196,7 @@ export default function Calendar(props: CalendarProps) {
                     );
                 })}
             </div>
+            <p hidden={!isLoading}>Loading...</p>
         </div>
     );
 }

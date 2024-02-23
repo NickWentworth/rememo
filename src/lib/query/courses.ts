@@ -3,11 +3,19 @@
 import {
     createCourse,
     deleteCourse,
+    getCourseTimesByDate,
     getCourses,
     getCoursesByTermId,
     updateCourse,
 } from '../actions/courses';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { range } from '../utils';
+import { daysAhead } from '../date';
+import {
+    useMutation,
+    useQueries,
+    useQuery,
+    useQueryClient,
+} from '@tanstack/react-query';
 
 const COURSE_KEY = 'courses';
 
@@ -36,6 +44,28 @@ export function useCoursesByTermId(termId?: string) {
                 return [];
             }
         },
+    });
+}
+
+/**
+ * Returns a list of exactly 7 course time query objects, corresponding to each day of the week
+ *
+ * Backend route is designed to only return the times that happen on a specific day,
+ * so any components using this hook should not need to do any filtering
+ */
+export function useCourseTimesByWeek(startOfWeek: Date) {
+    const days = range(0, 7).map((i) => daysAhead(startOfWeek, i));
+
+    // TODO: instead of having 7 different queries, combine them all into one and index into that list
+    return useQueries({
+        queries: days.map((day) => {
+            const dayKey = day.toISOString().split('T')[0];
+
+            return {
+                queryKey: [COURSE_KEY, dayKey],
+                queryFn: () => getCourseTimesByDate(day),
+            };
+        }),
     });
 }
 
