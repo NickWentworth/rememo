@@ -16,6 +16,7 @@ export function TaskWindow() {
     // store a options to further filter tasks
     const [options, setOptions] = useState<GetTaskOptions>({
         search: '',
+        show: 'current',
     });
 
     const { data: tasks, status } = useTasksWithOptions(options);
@@ -73,7 +74,29 @@ export function TaskWindow() {
                         onTypingStop={(term) => {
                             setOptions((curr) => ({ ...curr, search: term }));
                         }}
+                        placeholder={`Search ${options.show} tasks`}
                     />
+
+                    <div className={styles.taskShowing}>
+                        <p>Showing</p>
+
+                        <select
+                            value={options.show}
+                            onChange={(e) =>
+                                // TODO: implement better type checking here
+                                setOptions((curr) => ({
+                                    ...curr,
+                                    show: e.target
+                                        .value as GetTaskOptions['show'],
+                                }))
+                            }
+                        >
+                            <option value='current'>Current</option>
+                            <option value='past'>Past</option>
+                        </select>
+
+                        <p>tasks</p>
+                    </div>
                 </div>
 
                 <div className={`${styles.list} ${styles.task}`}>{list()}</div>

@@ -18,7 +18,7 @@ const TASK_KEY = 'tasks';
  */
 export function useTasksWithOptions(options: GetTaskOptions) {
     return useQuery({
-        queryKey: [TASK_KEY, options.search],
+        queryKey: [TASK_KEY, JSON.stringify(options)],
         queryFn: () => getTasks(options),
     });
 }

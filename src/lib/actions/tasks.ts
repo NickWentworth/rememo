@@ -3,11 +3,13 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 import { TASK_ARGS, TaskPayload, payloadToTask } from '../types';
 import { getUserOrThrow } from './user';
+import { nowUTC } from '../date';
 
 const prisma = new PrismaClient();
 
 export type GetTaskOptions = {
     search: string;
+    show: 'current' | 'past';
     // TODO: pagination
 };
 
@@ -19,22 +21,43 @@ export type GetTaskOptions = {
 export async function getTasks(options: GetTaskOptions) {
     const user = await getUserOrThrow();
 
-    const contains: Prisma.StringFilter = { contains: options.search };
+    const search: Prisma.TaskWhereInput = {
+        OR: [
+            // include task if any fields match the search
+            { name: { contains: options.search } },
+            { description: { contains: options.search } },
+            { course: { name: { contains: options.search } } },
+            { subtasks: { some: { name: { contains: options.search } } } },
+        ],
+    };
+
+    // input filter to only include current tasks (incomplete or not yet due)
+    const currentTasks: Prisma.TaskWhereInput = {
+        OR: [{ completed: false }, { due: { gt: nowUTC() } }],
+    };
+
+    // change include filter and outputted order based on include option
+    let include: Prisma.TaskWhereInput;
+    let dueOrder: Prisma.SortOrder;
+    switch (options.show) {
+        case 'current':
+            include = currentTasks;
+            dueOrder = 'asc';
+            break;
+
+        case 'past':
+            include = { NOT: currentTasks };
+            dueOrder = 'desc';
+            break;
+    }
 
     return await prisma.task.findMany({
         where: {
             userId: user.id,
-            OR: [
-                // include task if any fields match the search
-                { name: contains },
-                { description: contains },
-                { course: { name: contains } },
-                { subtasks: { some: { name: contains } } },
-            ],
+            AND: [search, include],
         },
         orderBy: [
-            // show with most overdue at the top
-            { due: 'asc' },
+            { due: dueOrder },
             // then group by course
             { course: { name: 'asc' } },
             // finally order by name

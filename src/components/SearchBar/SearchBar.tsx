@@ -9,6 +9,9 @@ type SearchBarProps = {
 
     /** How long to wait before calling `onTypingStop`? */
     waitTimeMs?: number;
+
+    /** Optional placeholder to be passed to the input element */
+    placeholder?: string;
 };
 
 const DEFAULT_TIMEOUT_MS = 500;
@@ -30,7 +33,7 @@ export default function SearchBar(props: SearchBarProps) {
         <input
             type='text'
             className={styles.searchBar}
-            placeholder='Search'
+            placeholder={props.placeholder ?? 'Search'}
             value={term}
             onChange={(e) => setTerm(e.target.value)}
         />

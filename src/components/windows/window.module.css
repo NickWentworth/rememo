@@ -56,6 +56,22 @@
     grid-template-columns: 1fr minmax(20%, 200px) 1fr;
 }
 
+.taskShowing {
+    display: flex;
+    justify-content: flex-end;
+    align-items: baseline;
+    gap: 0.25rem;
+}
+
+.taskShowing select {
+    background-color: var(--medium);
+    color: var(--white);
+    border: 0;
+    border-radius: 0.25rem;
+    padding: 0.25rem;
+    font-family: 'Inter';
+}
+
 /* -------------------- calendar window -------------------- */
 
 .window.calendar {
