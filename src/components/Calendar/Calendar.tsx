@@ -14,7 +14,7 @@ import {
 } from '@/lib/date';
 import { buildClass, inverseLerp, range } from '@/lib/utils';
 import { useElementAttribute } from '@/lib/hooks/useElementAttribute';
-import { useCourseTimesByWeek } from '@/lib/query/courses';
+import { useCourseTimesByDates } from '@/lib/query/courses';
 import { useCurrentTime } from '@/lib/hooks/useCurrentTime';
 import { useState } from 'react';
 import styles from './calendar.module.css';
@@ -37,16 +37,16 @@ export default function Calendar(props: CalendarProps) {
     const now = useCurrentTime();
     const [weekStart, setWeekStart] = useState(daysAhead(now, -now.getDay()));
 
+    // ranges used when building calendar
+    const dayRange = range(0, 7).map((d) => daysAhead(weekStart, d));
+    const hourRange = range(props.start ?? 0, props.end ?? 24);
+
     // query all course times for the given week
-    const courseTimeQueries = useCourseTimesByWeek(weekStart);
+    const courseTimesQuery = useCourseTimesByDates(dayRange);
 
     // onClick functions for calendar controls
     const prevWeek = () => setWeekStart((c) => daysAhead(c, -7));
     const nextWeek = () => setWeekStart((c) => daysAhead(c, 7));
-
-    // ranges used when building calendar
-    const dayRange = range(0, 7);
-    const hourRange = range(props.start ?? 0, props.end ?? 24);
 
     // store calendar height for calculations to allow precise placement of elements within it
     const [tableRef, tableHeight] = useElementAttribute(
@@ -68,9 +68,7 @@ export default function Calendar(props: CalendarProps) {
     };
 
     // TODO: show loading state overlay until all course times are fetched
-    const isLoading = courseTimeQueries.some(
-        (query) => query.status !== 'success'
-    );
+    const isLoading = courseTimesQuery.data === undefined;
 
     return (
         <div className={styles.calendar}>
@@ -98,15 +96,14 @@ export default function Calendar(props: CalendarProps) {
                 {/* labels for each day of the week */}
                 <h4 className={styles.tableDate} />
 
-                {dayRange.map((i) => {
-                    const day = daysAhead(weekStart, i);
+                {dayRange.map((day, idx) => {
                     const cn = buildClass(
                         styles.tableDate,
                         isSameDay(day, now) && styles.today
                     );
 
                     return (
-                        <h3 key={i} className={cn}>
+                        <h3 key={idx} className={cn}>
                             {formatCalendarWeeklyDate(day)}
                         </h3>
                     );
@@ -133,8 +130,7 @@ export default function Calendar(props: CalendarProps) {
                 </div>
 
                 {/* days of the week */}
-                {dayRange.map((d) => {
-                    const day = daysAhead(weekStart, d);
+                {dayRange.map((day, idx) => {
                     const isToday = isSameDay(day, now);
 
                     const dayClass = buildClass(
@@ -142,10 +138,10 @@ export default function Calendar(props: CalendarProps) {
                         isToday && styles.today
                     );
 
-                    const courseTimes = courseTimeQueries.at(d)?.data ?? [];
+                    const courseTimes = courseTimesQuery.data?.at(idx) ?? [];
 
                     return (
-                        <div key={d} className={dayClass}>
+                        <div key={idx} className={dayClass}>
                             {hourRange
                                 .flatMap((h) => [h, h])
                                 .map((_, idx) => (

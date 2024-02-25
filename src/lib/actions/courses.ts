@@ -52,11 +52,22 @@ export async function getCoursesByTermId(termId: string) {
 }
 
 /**
+ * Returns a list of course times for each `Date` in dates list
+ *
+ * Allows for multiple dates to be fetched in a single request
+ */
+export async function getCourseTimesByDates(dates: Date[]) {
+    const times = dates.map((date) => getCourseTimesByDate(date));
+
+    return await Promise.all(times);
+}
+
+/**
  * Returns a list of course times that take place on a given day, checking for term ranges as well
  *
  * Includes course data used for the calendar, such as name, color, and location
  */
-export async function getCourseTimesByDate(date: Date) {
+async function getCourseTimesByDate(date: Date) {
     const user = await getUserOrThrow();
 
     // FIXME: seems like terms should just store dates at 00:00 instead
