@@ -4,23 +4,37 @@ import {
     GetTaskOptions,
     createTask,
     deleteTask,
-    getTasks,
+    getPaginatedTasks,
     setSubtaskCompletion,
     setTaskCompletion,
     updateTask,
 } from '../actions/tasks';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+    useInfiniteQuery,
+    useMutation,
+    useQueryClient,
+} from '@tanstack/react-query';
 
 const TASK_KEY = 'tasks';
 
 /**
- * Returns a query object for all tasks that a user owns
+ * Returns an query object that is filtered based on the given options
+ *
+ * To use the data, access the included `tasks` property that is returned
  */
 export function useTasksWithOptions(options: GetTaskOptions) {
-    return useQuery({
+    const query = useInfiniteQuery({
         queryKey: [TASK_KEY, JSON.stringify(options)],
-        queryFn: () => getTasks(options),
+        queryFn: ({ pageParam }) =>
+            getPaginatedTasks({ ...options, page: pageParam }),
+        initialPageParam: 0,
+        getNextPageParam: (lastPage) => lastPage.next,
     });
+
+    return {
+        query,
+        tasks: query.data?.pages.flatMap((page) => page.tasks) ?? [],
+    };
 }
 
 /**

@@ -19,7 +19,8 @@ export function TaskWindow() {
         show: 'current',
     });
 
-    const { data: tasks, status } = useTasksWithOptions(options);
+    const { tasks, query } = useTasksWithOptions(options);
+    const { status, fetchNextPage, isFetchingNextPage, hasNextPage } = query;
     const { remove: removeTask } = useTaskMutations();
 
     const taskFormState = useFormState<TaskPayload>();
@@ -44,15 +45,34 @@ export function TaskWindow() {
             }
         }
 
-        // by default, return all tasks mapped to a card component
-        return tasks.map((t) => (
-            <TaskCard
-                key={t.id}
-                task={t}
-                onEditClick={() => taskFormState.update(t)}
-                onDeleteClick={() => removeTask(t.id)}
-            />
-        ));
+        return (
+            <>
+                {/* return all tasks mapped to a card component */}
+                {tasks.map((t) => (
+                    <TaskCard
+                        key={t.id}
+                        task={t}
+                        onEditClick={() => taskFormState.update(t)}
+                        onDeleteClick={() => removeTask(t.id)}
+                    />
+                ))}
+
+                {/* TODO: automatically fetch when scrolling down to the end of the list */}
+                {/* as well as either a button to fetch more or a message if no more remain */}
+                {hasNextPage ? (
+                    <Button
+                        type='outline'
+                        onClick={fetchNextPage}
+                        disabled={isFetchingNextPage}
+                    >
+                        {/* TODO: display how many more tasks are remaining to the user */}
+                        Fetch More Tasks
+                    </Button>
+                ) : (
+                    <p>That's all!</p>
+                )}
+            </>
+        );
     };
 
     return (

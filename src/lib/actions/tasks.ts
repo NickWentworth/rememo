@@ -10,24 +10,30 @@ const prisma = new PrismaClient();
 export type GetTaskOptions = {
     search: string;
     show: 'current' | 'past';
-    // TODO: pagination
 };
 
+type GetTaskParams = GetTaskOptions & {
+    page: number;
+};
+
+const PAGE_SIZE = 10;
+
 /**
- * Returns tasks that a user owns according to given options
+ * Returns a paginated list of tasks that a user owns according to given options, along with
+ * a number to use for fetching the next list of tasks, or `undefined` if no more exist
  *
  * Throws an error if unauthenticated
  */
-export async function getTasks(options: GetTaskOptions) {
+export async function getPaginatedTasks(params: GetTaskParams) {
     const user = await getUserOrThrow();
 
     const search: Prisma.TaskWhereInput = {
         OR: [
             // include task if any fields match the search
-            { name: { contains: options.search } },
-            { description: { contains: options.search } },
-            { course: { name: { contains: options.search } } },
-            { subtasks: { some: { name: { contains: options.search } } } },
+            { name: { contains: params.search } },
+            { description: { contains: params.search } },
+            { course: { name: { contains: params.search } } },
+            { subtasks: { some: { name: { contains: params.search } } } },
         ],
     };
 
@@ -39,7 +45,7 @@ export async function getTasks(options: GetTaskOptions) {
     // change include filter and outputted order based on include option
     let include: Prisma.TaskWhereInput;
     let dueOrder: Prisma.SortOrder;
-    switch (options.show) {
+    switch (params.show) {
         case 'current':
             include = currentTasks;
             dueOrder = 'asc';
@@ -51,20 +57,42 @@ export async function getTasks(options: GetTaskOptions) {
             break;
     }
 
-    return await prisma.task.findMany({
-        where: {
-            userId: user.id,
-            AND: [search, include],
-        },
-        orderBy: [
-            { due: dueOrder },
-            // then group by course
-            { course: { name: 'asc' } },
-            // finally order by name
-            { name: 'asc' },
-        ],
+    // pre-build where and orderBy as they are used multiple times
+    const where: Prisma.TaskWhereInput = {
+        userId: user.id,
+        AND: [search, include],
+    };
+
+    const orderBy: Prisma.TaskOrderByWithRelationInput[] = [
+        { due: dueOrder },
+        // then group by course
+        { course: { name: 'asc' } },
+        // finally order by name
+        { name: 'asc' },
+    ];
+
+    // fetch the paginated list of tasks
+    const tasks = await prisma.task.findMany({
+        where,
+        orderBy,
         ...TASK_ARGS,
+        take: PAGE_SIZE,
+        skip: params.page * PAGE_SIZE,
     });
+
+    // and determine whether there are more tasks remaining
+    const areMoreTasks =
+        tasks.length === PAGE_SIZE &&
+        (await prisma.task.findFirst({
+            where,
+            orderBy,
+            skip: (params.page + 1) * PAGE_SIZE,
+        })) !== null;
+
+    return {
+        tasks,
+        next: areMoreTasks ? params.page + 1 : undefined,
+    };
 }
 
 /**
