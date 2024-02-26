@@ -42,7 +42,6 @@ export function TermWindow(props: TermWindowProps) {
                 onEditClick={() => termFormState.update(term)}
                 onDeleteClick={() => {
                     if (props.selectedTermId === term.id) {
-                        // TODO: convert term deletion into a dispatch action used by a reducer so this is done automatically
                         props.setSelectedTermId(undefined);
                     }
                     deleteTerm(term.id);

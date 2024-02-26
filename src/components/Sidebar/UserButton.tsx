@@ -23,11 +23,8 @@ export function UserButton(props: UserButtonProps) {
                 height={SIDEBAR_ICON_SIZE}
             />
 
-            {/* TODO: handle overflowing name */}
             {props.expanded && (
-                <div className={styles.userName}>
-                    <h4 className={styles.userName}>{user?.name}</h4>
-                </div>
+                <h4 className={styles.userName}>{user?.name}</h4>
             )}
         </Link>
     );

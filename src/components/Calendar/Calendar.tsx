@@ -20,17 +20,8 @@ import { useState } from 'react';
 import styles from './calendar.module.css';
 
 type CalendarProps = {
-    events: CalendarEvent[];
     start?: number;
     end?: number;
-};
-
-// TODO: use courses instead after courseTimes are implemented
-type CalendarEvent = {
-    name: string;
-    start: Date;
-    end: Date;
-    days: number[];
 };
 
 export default function Calendar(props: CalendarProps) {

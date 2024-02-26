@@ -54,3 +54,12 @@
 .userImage {
     border-radius: 9999px;
 }
+
+.userName {
+    /* source: https://stackoverflow.com/a/49755622 */
+    /* solution to allow username to fill width of sidebar but still clip if overflowing */
+    width: 0px;
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
