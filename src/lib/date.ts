@@ -275,7 +275,7 @@ export function formatCalendarWeeklyRange(weekStart: Date): string {
 export function formatCalendarWeeklyDate(date: Date): string {
     return date
         .toLocaleDateString('en-US', {
-            weekday: 'long',
+            weekday: 'short',
             month: 'numeric',
             day: 'numeric',
         })

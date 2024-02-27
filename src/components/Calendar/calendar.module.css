@@ -40,7 +40,7 @@
 }
 
 .tableDate {
-    padding: 0.25rem;
+    padding: 0.25rem 0.5rem;
     border-right: 1px solid var(--light);
 }
 

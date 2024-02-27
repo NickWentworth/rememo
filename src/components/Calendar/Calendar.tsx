@@ -121,14 +121,12 @@ export default function Calendar(props: CalendarProps) {
                     {/* times */}
                     <div className={styles.times}>
                         {hourRange.flatMap((h) => {
-                            const hour = ((h + 11) % 12) + 1;
-                            const display = `${hour}:00 ${
-                                h >= 1 && h <= 12 ? 'AM' : 'PM'
-                            }`;
+                            const hour = new Date();
+                            hour.setUTCHours(h, 0, 0, 0);
 
                             return [
                                 <div key={h} className={styles.cell}>
-                                    <p>{display}</p>
+                                    <p>{formatTime(hour)}</p>
                                 </div>,
                                 <div
                                     key={`${h}empty`}
@@ -206,19 +204,24 @@ export default function Calendar(props: CalendarProps) {
                                                     )}
                                                 </p>
 
-                                                <div
-                                                    className={
-                                                        styles.eventLocation
-                                                    }
-                                                >
-                                                    <Location
-                                                        size={14}
-                                                        color='light'
-                                                    />
-                                                    <p>
-                                                        {time.course.location}
-                                                    </p>
-                                                </div>
+                                                {time.course.location && (
+                                                    <div
+                                                        className={
+                                                            styles.eventLocation
+                                                        }
+                                                    >
+                                                        <Location
+                                                            size={14}
+                                                            color='light'
+                                                        />
+                                                        <p>
+                                                            {
+                                                                time.course
+                                                                    .location
+                                                            }
+                                                        </p>
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                     );
