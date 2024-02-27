@@ -16,12 +16,18 @@ import { buildClass, inverseLerp, range } from '@/lib/utils';
 import { useElementAttribute } from '@/lib/hooks/useElementAttribute';
 import { useCourseTimesByDates } from '@/lib/query/courses';
 import { useCurrentTime } from '@/lib/hooks/useCurrentTime';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from './calendar.module.css';
 
 type CalendarProps = {
+    /** Start hour to display, defaults to 0 */
     start?: number;
+
+    /** End hour to display, defaults to 24 */
     end?: number;
+
+    /** Initial time to scroll to */
+    initialTime?: number;
 };
 
 export default function Calendar(props: CalendarProps) {
@@ -40,11 +46,18 @@ export default function Calendar(props: CalendarProps) {
     const nextWeek = () => setWeekStart((c) => daysAhead(c, 7));
 
     // store calendar height for calculations to allow precise placement of elements within it
-    const [tableRef, tableHeight] = useElementAttribute(
-        'div',
-        'offsetHeight',
-        0
-    );
+    const [bodyRef, bodyHeight] = useElementAttribute('div', 'offsetHeight', 0);
+
+    // store scrollable calendar container to scroll to an initial given height
+    const scrollRef = useRef<React.ElementRef<'div'>>(null);
+    useEffect(() => {
+        if (scrollRef.current && props.initialTime) {
+            const time = new Date();
+            time.setUTCHours(props.initialTime, 0, 0, 0);
+
+            scrollRef.current.scrollTo({ top: heightOf(time) });
+        }
+    }, [scrollRef, bodyHeight]);
 
     // converts a time extracted from the given date into a px value distance from the top of the calendar
     const heightOf = (date: Date) => {
@@ -55,12 +68,13 @@ export default function Calendar(props: CalendarProps) {
         const calendarStart = (props.start ?? 0) / 24;
         const calendarEnd = (props.end ?? 24) / 24;
 
-        return inverseLerp(calendarStart, calendarEnd, t) * tableHeight;
+        return inverseLerp(calendarStart, calendarEnd, t) * bodyHeight;
     };
 
     // TODO: show loading state overlay until all course times are fetched
     const isLoading = courseTimesQuery.data === undefined;
 
+    // TODO: break this up into components, waaaaay too much here
     return (
         <div className={styles.calendar}>
             {/* main header for calendar with week and controls */}
@@ -82,129 +96,147 @@ export default function Calendar(props: CalendarProps) {
                 />
             </div>
 
-            {/* calendar weekly header row */}
-            <div className={styles.tabular}>
-                {/* labels for each day of the week */}
-                <h4 className={styles.tableDate} />
+            <div className={styles.table} ref={scrollRef}>
+                {/* calendar weekly header row */}
+                <div className={styles.calendarHeader}>
+                    {/* labels for each day of the week */}
+                    <h4 className={styles.tableDate} />
 
-                {dayRange.map((day, idx) => {
-                    const cn = buildClass(
-                        styles.tableDate,
-                        isSameDay(day, now) && styles.today
-                    );
+                    {dayRange.map((day, idx) => {
+                        const cn = buildClass(
+                            styles.tableDate,
+                            isSameDay(day, now) && styles.today
+                        );
 
-                    return (
-                        <h3 key={idx} className={cn}>
-                            {formatCalendarWeeklyDate(day)}
-                        </h3>
-                    );
-                })}
-            </div>
-
-            {/* calendar body section */}
-            <div className={styles.tabular} ref={tableRef}>
-                {/* times */}
-                <div className={styles.times}>
-                    {hourRange.flatMap((h) => {
-                        const hour = ((h + 11) % 12) + 1;
-                        const display = `${hour}:00 ${
-                            h >= 1 && h <= 12 ? 'AM' : 'PM'
-                        }`;
-
-                        return [
-                            <div key={h} className={styles.cell}>
-                                <p>{display}</p>
-                            </div>,
-                            <div key={`${h}empty`} className={styles.cell} />,
-                        ];
+                        return (
+                            <h3 key={idx} className={cn}>
+                                {formatCalendarWeeklyDate(day)}
+                            </h3>
+                        );
                     })}
                 </div>
 
-                {/* days of the week */}
-                {dayRange.map((day, idx) => {
-                    const isToday = isSameDay(day, now);
+                {/* calendar body section */}
+                <div className={styles.calendarBody} ref={bodyRef}>
+                    {/* times */}
+                    <div className={styles.times}>
+                        {hourRange.flatMap((h) => {
+                            const hour = ((h + 11) % 12) + 1;
+                            const display = `${hour}:00 ${
+                                h >= 1 && h <= 12 ? 'AM' : 'PM'
+                            }`;
 
-                    const dayClass = buildClass(
-                        styles.day,
-                        isToday && styles.today
-                    );
+                            return [
+                                <div key={h} className={styles.cell}>
+                                    <p>{display}</p>
+                                </div>,
+                                <div
+                                    key={`${h}empty`}
+                                    className={styles.cell}
+                                />,
+                            ];
+                        })}
+                    </div>
 
-                    const courseTimes = courseTimesQuery.data?.at(idx) ?? [];
+                    {/* days of the week */}
+                    {dayRange.map((day, idx) => {
+                        const isToday = isSameDay(day, now);
 
-                    return (
-                        <div key={idx} className={dayClass}>
-                            {hourRange
-                                .flatMap((h) => [h, h])
-                                .map((_, idx) => (
-                                    <div key={idx} className={styles.cell} />
-                                ))}
+                        const dayClass = buildClass(
+                            styles.day,
+                            isToday && styles.today
+                        );
 
-                            {courseTimes.map((time, idx) => {
-                                // calculate start and end percentages to display this event
-                                const start = heightOf(time.start);
-                                const end = heightOf(time.end);
+                        const courseTimes =
+                            courseTimesQuery.data?.at(idx) ?? [];
 
-                                // scale by total table height (subtract 1 to show borders between events)
-                                const top = Math.floor(start);
-                                const height = Math.floor(end - start) - 1;
+                        return (
+                            <div key={idx} className={dayClass}>
+                                {hourRange
+                                    .flatMap((h) => [h, h])
+                                    .map((_, idx) => (
+                                        <div
+                                            key={idx}
+                                            className={styles.cell}
+                                        />
+                                    ))}
 
-                                const isActive =
-                                    isToday &&
-                                    isBetweenTimes(now, time.start, time.end);
+                                {courseTimes.map((time, idx) => {
+                                    // calculate start and end percentages to display this event
+                                    const start = heightOf(time.start);
+                                    const end = heightOf(time.end);
 
-                                const timeClass = buildClass(
-                                    styles.event,
-                                    isActive && styles.active
-                                );
+                                    // scale by total table height (subtract 1 to show borders between events)
+                                    const top = Math.floor(start);
+                                    const height = Math.floor(end - start) - 1;
 
-                                return (
-                                    <div
-                                        key={idx}
-                                        className={styles.eventContainer}
-                                        style={{ top, height }}
-                                    >
-                                        <div className={timeClass}>
-                                            <h3
-                                                style={{
-                                                    color: time.course.color,
-                                                }}
-                                            >
-                                                {time.course.name}
-                                            </h3>
+                                    const isActive =
+                                        isToday &&
+                                        isBetweenTimes(
+                                            now,
+                                            time.start,
+                                            time.end
+                                        );
 
-                                            <p className={styles.eventTime}>
-                                                {formatCourseTimeRange(
-                                                    time.start,
-                                                    time.end
-                                                )}
-                                            </p>
+                                    const timeClass = buildClass(
+                                        styles.event,
+                                        isActive && styles.active
+                                    );
 
-                                            <div
-                                                className={styles.eventLocation}
-                                            >
-                                                <Location
-                                                    size={14}
-                                                    color='light'
-                                                />
-                                                <p>{time.course.location}</p>
+                                    return (
+                                        <div
+                                            key={idx}
+                                            className={styles.eventContainer}
+                                            style={{ top, height }}
+                                        >
+                                            <div className={timeClass}>
+                                                <h3
+                                                    style={{
+                                                        color: time.course
+                                                            .color,
+                                                    }}
+                                                >
+                                                    {time.course.name}
+                                                </h3>
+
+                                                <p className={styles.eventTime}>
+                                                    {formatCourseTimeRange(
+                                                        time.start,
+                                                        time.end
+                                                    )}
+                                                </p>
+
+                                                <div
+                                                    className={
+                                                        styles.eventLocation
+                                                    }
+                                                >
+                                                    <Location
+                                                        size={14}
+                                                        color='light'
+                                                    />
+                                                    <p>
+                                                        {time.course.location}
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    );
-                })}
+                                    );
+                                })}
+                            </div>
+                        );
+                    })}
 
-                {/* current time indicator */}
-                <div
-                    className={styles.currentTime}
-                    style={{ top: heightOf(now) }}
-                >
-                    <p className={styles.currentTimeText}>
-                        <b>{formatTime(now)}</b>
-                    </p>
-                    <hr className={styles.currentTimeLine} />
+                    {/* current time indicator */}
+                    <div
+                        className={styles.currentTime}
+                        style={{ top: heightOf(now) }}
+                    >
+                        <p className={styles.currentTimeText}>
+                            <b>{formatTime(now)}</b>
+                        </p>
+                        <hr className={styles.currentTimeLine} />
+                    </div>
                 </div>
             </div>
 
