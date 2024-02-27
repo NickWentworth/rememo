@@ -6,7 +6,7 @@ export const metadata = buildMetadata({ title: 'Dashboard' });
 export default function Dashboard() {
     return (
         <>
-            <CalendarWindow display='today' />
+            <CalendarWindow display='day' />
 
             {/* TODO: maybe automate this divider between sections */}
             <div

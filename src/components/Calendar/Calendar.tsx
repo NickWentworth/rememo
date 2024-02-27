@@ -8,6 +8,7 @@ import {
     formatCourseTimeRange,
     formatCalendarWeeklyDate,
     formatCalendarWeeklyRange,
+    formatCalendarDailyRange,
     isSameDay,
     formatTime,
     isBetweenTimes,
@@ -19,7 +20,11 @@ import { useCurrentTime } from '@/lib/hooks/useCurrentTime';
 import { useEffect, useRef, useState } from 'react';
 import styles from './calendar.module.css';
 
+export type CalendarDisplayMode = 'day' | 'week';
+
 type CalendarProps = {
+    display: CalendarDisplayMode;
+
     /** Start hour to display, defaults to 0 */
     start?: number;
 
@@ -30,20 +35,51 @@ type CalendarProps = {
     initialTime?: number;
 };
 
+type CalendarDisplayData = {
+    // how to generate the start date of the calendar
+    start: (now: Date) => Date;
+    // how many days are displayed
+    range: number;
+    // how to format the calendar header based on the start date
+    title: (start: Date) => string;
+    // show dates above columns?
+    showDates: boolean;
+};
+
+/** Holds varying data for the calendar that depends upon its display mode */
+const DISPLAY_DATA: Record<CalendarDisplayMode, CalendarDisplayData> = {
+    day: {
+        start: (now) => now,
+        range: 1,
+        title: (start) => formatCalendarDailyRange(start),
+        showDates: false,
+    },
+    week: {
+        start: (now) => daysAhead(now, -now.getDay()),
+        range: 7,
+        title: (start) => formatCalendarWeeklyRange(start),
+        showDates: true,
+    },
+};
+
 export default function Calendar(props: CalendarProps) {
+    const display = DISPLAY_DATA[props.display];
+
     const now = useCurrentTime();
-    const [weekStart, setWeekStart] = useState(daysAhead(now, -now.getDay()));
+    const [calendarStart, setCalendarStart] = useState(display.start(now));
 
     // ranges used when building calendar
-    const dayRange = range(0, 7).map((d) => daysAhead(weekStart, d));
+    const dayRange = range(0, display.range).map((d) =>
+        daysAhead(calendarStart, d)
+    );
     const hourRange = range(props.start ?? 0, props.end ?? 24);
 
     // query all course times for the given week
     const courseTimesQuery = useCourseTimesByDates(dayRange);
 
     // onClick functions for calendar controls
-    const prevWeek = () => setWeekStart((c) => daysAhead(c, -7));
-    const nextWeek = () => setWeekStart((c) => daysAhead(c, 7));
+    const prev = () => setCalendarStart((c) => daysAhead(c, -display.range));
+    const next = () => setCalendarStart((c) => daysAhead(c, display.range));
 
     // store calendar height for calculations to allow precise placement of elements within it
     const [bodyRef, bodyHeight] = useElementAttribute('div', 'offsetHeight', 0);
@@ -83,38 +119,40 @@ export default function Calendar(props: CalendarProps) {
                     type='transparent'
                     icon={<Left size={30} color='light' />}
                     border='round'
-                    onClick={prevWeek}
+                    onClick={prev}
                 />
 
-                <h1>{formatCalendarWeeklyRange(weekStart)}</h1>
+                <h1>{display.title(calendarStart)}</h1>
 
                 <Button
                     type='transparent'
                     icon={<Right size={30} color='light' />}
                     border='round'
-                    onClick={nextWeek}
+                    onClick={next}
                 />
             </div>
 
             <div className={styles.table} ref={scrollRef}>
                 {/* calendar weekly header row */}
-                <div className={styles.calendarHeader}>
-                    {/* labels for each day of the week */}
-                    <h4 className={styles.tableDate} />
+                {display.showDates && (
+                    <div className={styles.calendarHeader}>
+                        {/* labels for each day of the week */}
+                        <h4 className={styles.tableDate} />
 
-                    {dayRange.map((day, idx) => {
-                        const cn = buildClass(
-                            styles.tableDate,
-                            isSameDay(day, now) && styles.today
-                        );
+                        {dayRange.map((day, idx) => {
+                            const cn = buildClass(
+                                styles.tableDate,
+                                isSameDay(day, now) && styles.today
+                            );
 
-                        return (
-                            <h3 key={idx} className={cn}>
-                                {formatCalendarWeeklyDate(day)}
-                            </h3>
-                        );
-                    })}
-                </div>
+                            return (
+                                <h3 key={idx} className={cn}>
+                                    {formatCalendarWeeklyDate(day)}
+                                </h3>
+                            );
+                        })}
+                    </div>
+                )}
 
                 {/* calendar body section */}
                 <div className={styles.calendarBody} ref={bodyRef}>

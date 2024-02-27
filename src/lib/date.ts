@@ -248,7 +248,7 @@ export function formatTaskDate(
 }
 
 /**
- * Formats the given start of the week date for displaying in the calendar's header
+ * Formats the given start of the week date for displaying in the weekly calendar's header
  *
  * Returns in the form Month DD, YYYY - Month DD YYYY with first YYYY omitted if the week is in the same year
  */
@@ -265,6 +265,20 @@ export function formatCalendarWeeklyRange(weekStart: Date): string {
         });
 
     return `${format(weekStart, !sameYear)} — ${format(weekEnd, true)}`;
+}
+
+/**
+ * Formats the given datefor displaying in the daily calendar's header
+ *
+ * Returns in the form Weekday, Month DD, YYYY
+ */
+export function formatCalendarDailyRange(date: Date): string {
+    return date.toLocaleDateString('en-US', {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+    });
 }
 
 /**
