@@ -42,6 +42,8 @@ type CalendarDisplayData = {
     range: number;
     // how to format the calendar header based on the start date
     title: (start: Date) => string;
+    // calendar start button label
+    startButtonLabel: string;
     // show dates above columns?
     showDates: boolean;
 };
@@ -52,12 +54,14 @@ const DISPLAY_DATA: Record<CalendarDisplayMode, CalendarDisplayData> = {
         start: (now) => now,
         range: 1,
         title: (start) => formatCalendarDailyRange(start),
+        startButtonLabel: 'Today',
         showDates: false,
     },
     week: {
         start: (now) => daysAhead(now, -now.getDay()),
         range: 7,
         title: (start) => formatCalendarWeeklyRange(start),
+        startButtonLabel: 'This Week',
         showDates: true,
     },
 };
@@ -80,6 +84,7 @@ export default function Calendar(props: CalendarProps) {
     // onClick functions for calendar controls
     const prev = () => setCalendarStart((c) => daysAhead(c, -display.range));
     const next = () => setCalendarStart((c) => daysAhead(c, display.range));
+    const today = () => setCalendarStart(display.start(now));
 
     // store calendar height for calculations to allow precise placement of elements within it
     const [bodyRef, bodyHeight] = useElementAttribute('div', 'offsetHeight', 0);
@@ -115,21 +120,27 @@ export default function Calendar(props: CalendarProps) {
         <div className={styles.calendar}>
             {/* main header for calendar with week and controls */}
             <div className={styles.header}>
+                {/* back to today button */}
+                <Button type='outline' onClick={today} border='round'>
+                    {display.startButtonLabel}
+                </Button>
+
+                {/* calendar navigation buttons */}
                 <Button
                     type='transparent'
-                    icon={<Left size={30} color='light' />}
+                    icon={<Left size={28} color='light' />}
                     border='round'
                     onClick={prev}
                 />
-
-                <h1>{display.title(calendarStart)}</h1>
-
                 <Button
                     type='transparent'
-                    icon={<Right size={30} color='light' />}
+                    icon={<Right size={28} color='light' />}
                     border='round'
                     onClick={next}
                 />
+
+                {/* calendar title */}
+                <h1>{display.title(calendarStart)}</h1>
             </div>
 
             <div className={styles.table} ref={scrollRef}>
