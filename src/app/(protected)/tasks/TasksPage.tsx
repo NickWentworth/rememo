@@ -3,8 +3,8 @@
 import Button, { AddButton } from '@/components/Button';
 import Panel from '@/components/Panel';
 import SearchBar from '@/components/SearchBar';
-import { TaskCard } from '@/components/windows/cards';
-import { TaskForm } from '@/components/windows/forms';
+import { TaskCard } from '@/components/cards';
+import { TaskForm } from '@/components/forms';
 import { TaskPayload } from '@/lib/types';
 import { GetTaskOptions } from '@/lib/actions/tasks';
 import { useTaskMutations, useTasksWithOptions } from '@/lib/query/tasks';

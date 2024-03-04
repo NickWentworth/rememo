@@ -2,8 +2,8 @@
 
 import { AddButton } from '@/components/Button';
 import Panel from '@/components/Panel';
-import { CourseCard, TermCard } from '@/components/windows/cards';
-import { CourseForm, TermForm } from '@/components/windows/forms';
+import { CourseCard, TermCard } from '@/components/cards';
+import { CourseForm, TermForm } from '@/components/forms';
 import { useFormState } from '@/lib/hooks/useFormState';
 import { useCourseMutations, useCoursesByTermId } from '@/lib/query/courses';
 import { useAllTerms, useTermMutations } from '@/lib/query/terms';

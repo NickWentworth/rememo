@@ -2,8 +2,8 @@
 
 import Panel from '@/components/Panel';
 import Calendar from '@/components/Calendar';
-import { TaskCard } from '@/components/windows/cards';
-import { TaskForm } from '@/components/windows/forms';
+import { TaskCard } from '@/components/cards';
+import { TaskForm } from '@/components/forms';
 import { useFormState } from '@/lib/hooks/useFormState';
 import { useTaskMutations, useTasksWithOptions } from '@/lib/query/tasks';
 import { TaskPayload } from '@/lib/types';
