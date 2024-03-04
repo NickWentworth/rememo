@@ -1,0 +1,30 @@
+.vr {
+    width: 1px;
+    background-color: var(--dark);
+}
+
+.panel {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    height: 4rem;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    background-color: var(--dark);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0 1rem;
+}
+
+.body {
+    overflow: auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+}

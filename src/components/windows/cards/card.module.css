@@ -1,8 +1,9 @@
+/* TODO: fix task card styling */
+
 .card {
     background-color: var(--dark);
     border-radius: 0.5rem;
-    width: 100%;
-    overflow: hidden;
+    /* overflow: hidden; */
     display: flex;
     transition: 0.2s;
 }

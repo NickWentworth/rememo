@@ -1,8 +1,6 @@
-import { SettingsWindow } from '@/components/windows';
+import SettingsPage from './SettingsPage';
 import { buildMetadata } from '@/lib/metadata';
 
 export const metadata = buildMetadata({ title: 'Settings' });
 
-export default async function Settings() {
-    return <SettingsWindow />;
-}
+export default () => <SettingsPage />;

@@ -1,8 +1,6 @@
-import { TaskWindow } from '@/components/windows';
+import TasksPage from './TasksPage';
 import { buildMetadata } from '@/lib/metadata';
 
 export const metadata = buildMetadata({ title: 'Tasks' });
 
-export default function Tasks() {
-    return <TaskWindow />;
-}
+export default () => <TasksPage />;

@@ -1,11 +1,12 @@
 'use client';
 
-import { Info } from '../icons';
+import { Info } from '@/components/icons';
 import Button from '@/components/Button';
+import Panel from '@/components/Panel';
 import { useUser } from '@/lib/query/user';
 import { signOut } from 'next-auth/react';
 import { useState } from 'react';
-import styles from './window.module.css';
+import styles from './settings.module.css';
 
 function onDeleteClick() {
     if (
@@ -13,30 +14,27 @@ function onDeleteClick() {
             'Are you sure you want to delete your account?\nThis action is not reversible and all data will be deleted.'
         )
     ) {
+        // TODO: delete account
         alert('TODO: delete account here');
     }
 }
 
-export function SettingsWindow() {
+export default function SettingsPage() {
     const { data: user, status } = useUser();
 
     const [hideTooltip, setHideTooltip] = useState(true);
 
-    if (status === 'error') {
-        return <p>Error!</p>;
-    }
+    const body = (() => {
+        if (status === 'error') {
+            return <p>Error!</p>;
+        }
 
-    if (status === 'pending') {
-        return <p>Loading...</p>;
-    }
+        if (status === 'pending') {
+            return <p>Loading...</p>;
+        }
 
-    return (
-        <div className={`${styles.window} ${styles.settings}`}>
-            <div className={styles.header}>
-                <h1>Settings</h1>
-            </div>
-
-            <div className={`${styles.list} ${styles.settings}`}>
+        return (
+            <>
                 <div className={styles.userProfile}>
                     <div
                         className={styles.userProfileLabel}
@@ -63,17 +61,30 @@ export function SettingsWindow() {
                     </div>
                 </div>
 
-                <hr />
+                <hr className={styles.hr} />
 
-                <Button type='outline' onClick={signOut}>
-                    Sign Out
-                </Button>
+                <div>
+                    <Button type='outline' onClick={signOut}>
+                        Sign Out
+                    </Button>
+                </div>
 
-                {/* TODO: add red warning variant for buttons */}
-                <Button type='solid' onClick={onDeleteClick}>
-                    Delete Account
-                </Button>
-            </div>
-        </div>
+                <div>
+                    {/* TODO: add red warning variant for buttons */}
+                    <Button type='solid' onClick={onDeleteClick}>
+                        Delete Account
+                    </Button>
+                </div>
+            </>
+        );
+    })();
+
+    return (
+        <Panel
+            header={<h1>Settings</h1>}
+            body={body}
+            flex={1}
+            align='flex-start'
+        />
     );
 }
