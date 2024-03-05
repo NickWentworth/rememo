@@ -112,7 +112,7 @@ export default function TasksPage() {
 
     return (
         <>
-            <Panel header={header} body={list} flex={1} align='center' />
+            <Panel header={header} body={list} flex={1} width={800} />
 
             <TaskForm
                 state={taskFormState.formState}

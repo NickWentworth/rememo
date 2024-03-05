@@ -79,12 +79,5 @@ export default function SettingsPage() {
         );
     })();
 
-    return (
-        <Panel
-            header={<h1>Settings</h1>}
-            body={body}
-            flex={1}
-            align='flex-start'
-        />
-    );
+    return <Panel header={<h1>Settings</h1>} body={body} flex={1} />;
 }

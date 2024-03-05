@@ -3,7 +3,8 @@
 .card {
     background-color: var(--dark);
     border-radius: 0.5rem;
-    /* overflow: hidden; */
+    flex-shrink: 0;
+    overflow: hidden;
     display: flex;
     transition: 0.2s;
 }
