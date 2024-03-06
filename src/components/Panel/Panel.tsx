@@ -1,8 +1,8 @@
 import styles from './panel.module.css';
 
 type PanelProps = {
-    header: React.ReactElement | React.ReactElement[];
-    body: React.ReactElement | React.ReactElement[];
+    header: React.ReactElement;
+    body: React.ReactElement;
 
     /** relative width of the panel compared to other panels */
     flex: number;

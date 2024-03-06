@@ -34,21 +34,25 @@ export default function CoursesPage() {
         }
 
         // by default, return all terms mapped to a card component
-        return terms.map((term) => (
-            <TermCard
-                key={term.id}
-                term={term}
-                onEditClick={() => termFormState.update(term)}
-                onDeleteClick={() => {
-                    if (selectedTermId === term.id) {
-                        setSelectedTermId(undefined);
-                    }
-                    removeTerm(term.id);
-                }}
-                selected={term.id === selectedTermId}
-                onClick={() => setSelectedTermId(term.id)}
-            />
-        ));
+        return (
+            <>
+                {terms.map((term) => (
+                    <TermCard
+                        key={term.id}
+                        term={term}
+                        onEditClick={() => termFormState.update(term)}
+                        onDeleteClick={() => {
+                            if (selectedTermId === term.id) {
+                                setSelectedTermId(undefined);
+                            }
+                            removeTerm(term.id);
+                        }}
+                        selected={term.id === selectedTermId}
+                        onClick={() => setSelectedTermId(term.id)}
+                    />
+                ))}
+            </>
+        );
     })();
 
     // courses
@@ -78,14 +82,18 @@ export default function CoursesPage() {
         }
 
         // by default, return all selected courses mapped to a card component
-        return courses.map((course) => (
-            <CourseCard
-                key={course.id}
-                course={course}
-                onEditClick={() => courseFormState.update(course)}
-                onDeleteClick={() => removeCourse(course.id)}
-            />
-        ));
+        return (
+            <>
+                {courses.map((course) => (
+                    <CourseCard
+                        key={course.id}
+                        course={course}
+                        onEditClick={() => courseFormState.update(course)}
+                        onDeleteClick={() => removeCourse(course.id)}
+                    />
+                ))}
+            </>
+        );
     })();
 
     return (

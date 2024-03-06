@@ -25,40 +25,42 @@ export default function TasksPage() {
     const taskFormState = useFormState<TaskPayload>();
 
     // TODO: fix styling for task header
-    const header = [
-        <div>
-            <h1>Tasks</h1>
-            <AddButton onClick={taskFormState.create} />
-        </div>,
-        <SearchBar
-            onTypingStop={(term) =>
-                setOptions((curr) => ({
-                    ...curr,
-                    search: term,
-                }))
-            }
-            placeholder={`Search ${options.show} terms`}
-        />,
-        <div>
-            <p>Showing</p>
-
-            <select
-                value={options.show}
-                onChange={(e) =>
-                    // TODO: implement better type checking here
+    const header = (
+        <>
+            <div>
+                <h1>Tasks</h1>
+                <AddButton onClick={taskFormState.create} />
+            </div>
+            <SearchBar
+                onTypingStop={(term) =>
                     setOptions((curr) => ({
                         ...curr,
-                        show: e.target.value as GetTaskOptions['show'],
+                        search: term,
                     }))
                 }
-            >
-                <option value='current'>Current</option>
-                <option value='past'>Past</option>
-            </select>
+                placeholder={`Search ${options.show} terms`}
+            />
+            <div>
+                <p>Showing</p>
 
-            <p>tasks</p>
-        </div>,
-    ];
+                <select
+                    value={options.show}
+                    onChange={(e) =>
+                        // TODO: implement better type checking here
+                        setOptions((curr) => ({
+                            ...curr,
+                            show: e.target.value as GetTaskOptions['show'],
+                        }))
+                    }
+                >
+                    <option value='current'>Current</option>
+                    <option value='past'>Past</option>
+                </select>
+
+                <p>tasks</p>
+            </div>
+        </>
+    );
 
     const list = (() => {
         if (status === 'error') {
