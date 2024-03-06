@@ -1,7 +1,7 @@
 'use client';
 
 import { AddButton } from '@/components/Button';
-import Panel from '@/components/Panel';
+import Panel, { Centered } from '@/components/Panel';
 import { CourseCard, TermCard } from '@/components/cards';
 import { CourseForm, TermForm } from '@/components/forms';
 import { useFormState } from '@/lib/hooks/useFormState';
@@ -21,16 +21,20 @@ export default function CoursesPage() {
 
     const termList = (() => {
         if (termStatus === 'error') {
-            return <p>Error!</p>;
+            return <Centered>Error!</Centered>;
         }
 
         if (termStatus === 'pending') {
-            return <p>Loading...</p>;
+            return <Centered>Loading...</Centered>;
         }
 
         // display message if no terms exist
         if (terms.length == 0) {
-            return <p>No terms yet, add one with the button above!</p>;
+            return (
+                <Centered>
+                    No terms yet, add one with the button above!
+                </Centered>
+            );
         }
 
         // by default, return all terms mapped to a card component
@@ -64,20 +68,20 @@ export default function CoursesPage() {
 
     const courseList = (() => {
         if (courseStatus === 'error') {
-            return <p>Error!</p>;
+            return <Centered>Error!</Centered>;
         }
 
         if (courseStatus === 'pending') {
-            return <p>Loading...</p>;
+            return <Centered>Loading...</Centered>;
         }
 
         // display message if there are no courses for the selected term
         if (courses.length == 0) {
             // TODO: show the selected term name if it exists
             return (
-                <p>
+                <Centered>
                     Select a term and add courses to it with the button above!
-                </p>
+                </Centered>
             );
         }
 

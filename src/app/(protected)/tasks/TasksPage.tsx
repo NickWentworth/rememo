@@ -1,7 +1,7 @@
 'use client';
 
 import Button, { AddButton } from '@/components/Button';
-import Panel from '@/components/Panel';
+import Panel, { Centered } from '@/components/Panel';
 import SearchBar from '@/components/SearchBar';
 import { TaskCard } from '@/components/cards';
 import { TaskForm } from '@/components/forms';
@@ -64,21 +64,25 @@ export default function TasksPage() {
 
     const list = (() => {
         if (status === 'error') {
-            return <p>Error!</p>;
+            return <Centered>Error!</Centered>;
         }
 
         if (status === 'pending') {
-            return <p>Loading...</p>;
+            return <Centered>Loading...</Centered>;
         }
 
         // display message if there are no tasks
         if (tasks.length == 0) {
             if (options.search) {
                 // filtering options are being used
-                return <p>No tasks match the given filters</p>;
+                return <Centered>No tasks match the given filters</Centered>;
             } else {
                 // no filters, just no tasks exist
-                return <p>No tasks exist, create one with the button above!</p>;
+                return (
+                    <Centered>
+                        No tasks exist, create one with the button above!
+                    </Centered>
+                );
             }
         }
 
@@ -106,7 +110,7 @@ export default function TasksPage() {
                         Fetch More Tasks
                     </Button>
                 ) : (
-                    <p>That's all!</p>
+                    <Centered>That's all!</Centered>
                 )}
             </>
         );
