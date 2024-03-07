@@ -10,10 +10,10 @@ import { TaskPayload } from '@/lib/types';
 import Button from '@/components/Button';
 
 export default function DashboardPage() {
+    // only include tasks for this week
     const { tasks, query } = useTasksWithOptions({
         search: '',
-        // TODO: only show tasks due this week
-        show: 'current',
+        show: 'this week',
     });
     const { status, fetchNextPage, isFetchingNextPage, hasNextPage } = query;
     const { remove: removeTask } = useTaskMutations();

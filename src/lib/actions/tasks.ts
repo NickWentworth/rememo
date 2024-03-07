@@ -3,13 +3,13 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 import { TASK_ARGS, TaskPayload, payloadToTask } from '../types';
 import { getUserOrThrow } from './user';
-import { nowUTC } from '../date';
+import { endOfWeek, nowUTC } from '../date';
 
 const prisma = new PrismaClient();
 
 export type GetTaskOptions = {
     search: string;
-    show: 'current' | 'past';
+    show: 'current' | 'past' | 'this week';
 };
 
 type GetTaskParams = GetTaskOptions & {
@@ -39,7 +39,7 @@ export async function getPaginatedTasks(params: GetTaskParams) {
 
     // input filter to only include current tasks (incomplete or not yet due)
     const currentTasks: Prisma.TaskWhereInput = {
-        OR: [{ completed: false }, { due: { gt: nowUTC() } }],
+        OR: [{ completed: false }, { due: { gte: nowUTC() } }],
     };
 
     // change include filter and outputted order based on include option
@@ -54,6 +54,13 @@ export async function getPaginatedTasks(params: GetTaskParams) {
         case 'past':
             include = { NOT: currentTasks };
             dueOrder = 'desc';
+            break;
+
+        case 'this week':
+            include = {
+                AND: [currentTasks, { due: { lte: endOfWeek() } }],
+            };
+            dueOrder = 'asc';
             break;
     }
 

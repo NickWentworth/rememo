@@ -95,6 +95,14 @@ export function daysAhead(from: Date, days: number): Date {
 }
 
 /**
+ * Returns a `Date` object set to 11:59 PM this Saturday
+ */
+export function endOfWeek() {
+    const midnight = tonightUTC('23:59');
+    return daysAhead(midnight, 6 - midnight.getDay());
+}
+
+/**
  * Returns `true` if both of the given dates are a part of the same day
  */
 export function isSameDay(a: Date, b: Date): boolean {
