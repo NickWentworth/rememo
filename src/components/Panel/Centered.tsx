@@ -1,9 +1,17 @@
 import styles from './panel.module.css';
 
-type CenteredProps = {
-    children: string;
-};
+export function Centered(props: React.PropsWithChildren) {
+    let element;
 
-export function Centered(props: CenteredProps) {
-    return <p className={styles.centered}>{props.children}</p>;
+    switch (typeof props.children) {
+        case 'string':
+            element = <p>{props.children}</p>;
+            break;
+
+        default:
+            element = <>{props.children}</>;
+            break;
+    }
+
+    return <div className={styles.centered}>{element}</div>;
 }

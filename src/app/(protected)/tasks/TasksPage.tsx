@@ -98,20 +98,22 @@ export default function TasksPage() {
                     />
                 ))}
 
-                {/* TODO: automatically fetch when scrolling down to the end of the list */}
                 {/* as well as either a button to fetch more or a message if no more remain */}
-                {hasNextPage ? (
-                    <Button
-                        type='outline'
-                        onClick={fetchNextPage}
-                        disabled={isFetchingNextPage}
-                    >
-                        {/* TODO: display how many more tasks are remaining to the user */}
-                        Fetch More Tasks
-                    </Button>
-                ) : (
-                    <Centered>That's all!</Centered>
-                )}
+                <Centered>
+                    {/* TODO: automatically fetch when scrolling down to the end of the list */}
+                    {hasNextPage ? (
+                        <Button
+                            type='outline'
+                            onClick={fetchNextPage}
+                            disabled={isFetchingNextPage}
+                        >
+                            {/* TODO: display how many more tasks are remaining to the user */}
+                            Fetch More Tasks
+                        </Button>
+                    ) : (
+                        "That's all!"
+                    )}
+                </Centered>
             </>
         );
     })();
