@@ -10,6 +10,7 @@ import { GetTaskOptions } from '@/lib/actions/tasks';
 import { useTaskMutations, useTasksWithOptions } from '@/lib/query/tasks';
 import { useFormState } from '@/lib/hooks/useFormState';
 import { useState } from 'react';
+import styles from './tasks.module.css';
 
 export default function TasksPage() {
     // store options to filter tasks
@@ -24,13 +25,13 @@ export default function TasksPage() {
 
     const taskFormState = useFormState<TaskPayload>();
 
-    // TODO: fix styling for task header
     const header = (
-        <>
-            <div>
+        <div className={styles.header}>
+            <div className={styles.title}>
                 <h1>Tasks</h1>
                 <AddButton onClick={taskFormState.create} />
             </div>
+
             <SearchBar
                 onTypingStop={(term) =>
                     setOptions((curr) => ({
@@ -40,7 +41,8 @@ export default function TasksPage() {
                 }
                 placeholder={`Search ${options.show} terms`}
             />
-            <div>
+
+            <div className={styles.showing}>
                 <p>Showing</p>
 
                 <select
@@ -59,7 +61,7 @@ export default function TasksPage() {
 
                 <p>tasks</p>
             </div>
-        </>
+        </div>
     );
 
     const list = (() => {
