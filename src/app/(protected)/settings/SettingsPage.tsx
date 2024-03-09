@@ -3,26 +3,26 @@
 import { Info } from '@/components/icons';
 import Button from '@/components/Button';
 import Panel from '@/components/Panel';
-import { useUser } from '@/lib/query/user';
+import { useUser, useUserMutations } from '@/lib/query/user';
 import { signOut } from 'next-auth/react';
 import { useState } from 'react';
 import styles from './settings.module.css';
 
-function onDeleteClick() {
-    if (
-        confirm(
-            'Are you sure you want to delete your account?\nThis action is not reversible and all data will be deleted.'
-        )
-    ) {
-        // TODO: delete account
-        alert('TODO: delete account here');
-    }
-}
-
 export default function SettingsPage() {
     const { data: user, status } = useUser();
+    const { deleteUser } = useUserMutations();
 
     const [hideTooltip, setHideTooltip] = useState(true);
+
+    function onDeleteClick() {
+        if (
+            confirm(
+                'Are you sure you want to delete your account?\nThis action is irreversible and all data will be permanently deleted.'
+            )
+        ) {
+            deleteUser();
+        }
+    }
 
     const body = (() => {
         if (status === 'error') {
