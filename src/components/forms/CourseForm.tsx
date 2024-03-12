@@ -254,6 +254,10 @@ export function CourseForm(props: CourseFormProps) {
                                     <Controller
                                         control={control}
                                         name={`times.${idx}.start`}
+                                        rules={{
+                                            validate: (value, form) =>
+                                                value < form.times.at(idx)!.end,
+                                        }}
                                         render={({ field }) => (
                                             <DateTimePicker
                                                 value={field.value}
@@ -266,6 +270,11 @@ export function CourseForm(props: CourseFormProps) {
                                     <Controller
                                         control={control}
                                         name={`times.${idx}.end`}
+                                        rules={{
+                                            validate: (value, form) =>
+                                                value >
+                                                form.times.at(idx)!.start,
+                                        }}
                                         render={({ field }) => (
                                             <DateTimePicker
                                                 value={field.value}
@@ -275,6 +284,13 @@ export function CourseForm(props: CourseFormProps) {
                                         )}
                                     />
                                 </div>
+
+                                {/* start and end time errors are related, so check for either */}
+                                <p className={styles.error}>
+                                    {(errors.times?.at?.(idx)?.start ||
+                                        errors.times?.at?.(idx)?.end) &&
+                                        'End time must come after start time'}
+                                </p>
 
                                 <div className={styles.courseTimeRowDays}>
                                     <div
@@ -289,6 +305,11 @@ export function CourseForm(props: CourseFormProps) {
                                         <Controller
                                             control={control}
                                             name={`times.${idx}.days`}
+                                            rules={{
+                                                validate: (value) =>
+                                                    value != 0 ||
+                                                    'Select the day(s) this course time repeats',
+                                            }}
                                             render={({ field }) => (
                                                 <WeekdaySelector
                                                     value={field.value}
@@ -304,6 +325,10 @@ export function CourseForm(props: CourseFormProps) {
                                         icon={<Trash color='light' size={16} />}
                                     />
                                 </div>
+
+                                <p className={styles.error}>
+                                    {errors.times?.at?.(idx)?.days?.message}
+                                </p>
                             </div>
                         ))}
 
