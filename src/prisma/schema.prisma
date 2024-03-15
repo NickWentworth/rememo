@@ -26,12 +26,22 @@ model Term {
     start DateTime
     end   DateTime
 
-    // TODO: vacations
+    vacations TermVacation[]
 
     courses Course[]
 
     user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId String
+}
+
+model TermVacation {
+    id    String   @id @default(uuid())
+    name  String
+    start DateTime
+    end   DateTime
+
+    term   Term   @relation(fields: [termId], references: [id], onDelete: Cascade)
+    termId String
 }
 
 model Course {
