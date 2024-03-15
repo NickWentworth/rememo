@@ -1,13 +1,14 @@
 'use client';
 
-import { Close } from '@/components/icons';
+import { Close, Plus, Trash } from '@/components/icons';
 import Button from '@/components/Button';
 import { DateTimePicker } from './DateTimePicker';
 import { TermPayload } from '@/lib/types';
+import { TermVacation } from '@prisma/client';
 import { tonightUTC } from '@/lib/date';
 import { FormState } from '@/lib/hooks/useFormState';
 import { useTermMutations } from '@/lib/query/terms';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import styles from './form.module.css';
 
 const DEFAULT_TERM = {
@@ -15,8 +16,17 @@ const DEFAULT_TERM = {
     name: '',
     start: tonightUTC(),
     end: tonightUTC(),
+    vacations: [],
     userId: '',
 } satisfies TermPayload;
+
+const DEFAULT_TERM_VACATION = {
+    id: '',
+    name: '',
+    start: tonightUTC(),
+    end: tonightUTC(),
+    termId: '',
+} satisfies TermVacation;
 
 type TermFormProps = {
     state: FormState<TermPayload>;
@@ -37,6 +47,12 @@ export function TermForm(props: TermFormProps) {
         values: props.state.mode === 'update' ? props.state.data : DEFAULT_TERM,
     });
 
+    // dynamic vacations section managed by useFieldArray hook
+    const vacationsField = useFieldArray({
+        control,
+        name: 'vacations',
+    });
+
     if (props.state.mode === 'closed') {
         // return early if closed and render nothing
         return;
@@ -51,6 +67,7 @@ export function TermForm(props: TermFormProps) {
             name: data.name!,
             start: data.start!,
             end: data.end!,
+            vacations: data.vacations ?? [],
         } satisfies Partial<TermPayload>;
 
         switch (props.state.mode) {
@@ -165,6 +182,139 @@ export function TermForm(props: TermFormProps) {
                             {(errors.start || errors.end) &&
                                 'End date must come after start date'}
                         </p>
+                    </div>
+                </div>
+
+                <hr />
+
+                {/* TODO: forms get waaaaaay complicated when working with field arrays */}
+                {/* TODO: break this and other field arrays into components  */}
+                {/* vacations */}
+                <div className={styles.formSection}>
+                    <div className={styles.fieldContainer}>
+                        <label>
+                            <p>Vacations</p>
+                        </label>
+
+                        {/* TODO: adjust styling of term vacation field */}
+                        {vacationsField.fields.map((field, idx) => (
+                            <div
+                                key={field.id}
+                                className={styles.termVacationRow}
+                            >
+                                <div className={styles.termVacationRowName}>
+                                    <div
+                                        className={
+                                            styles.termVacationRowNameLabel
+                                        }
+                                    >
+                                        <label>
+                                            <p>Name</p>
+                                        </label>
+
+                                        <Button
+                                            type='transparent'
+                                            onClick={() =>
+                                                vacationsField.remove(idx)
+                                            }
+                                            icon={
+                                                <Trash
+                                                    color='light'
+                                                    size={16}
+                                                />
+                                            }
+                                        />
+                                    </div>
+
+                                    <input
+                                        type='text'
+                                        {...register(`vacations.${idx}.name`, {
+                                            required:
+                                                'Vacation must include a name',
+                                        })}
+                                    />
+
+                                    <p className={styles.error}>
+                                        {
+                                            errors.vacations?.at?.(idx)?.name
+                                                ?.message
+                                        }
+                                    </p>
+                                </div>
+
+                                <div className={styles.termVacationRowDates}>
+                                    <label>
+                                        <p>Start Date</p>
+                                    </label>
+
+                                    <label>
+                                        <p>End Date</p>
+                                    </label>
+
+                                    <Controller
+                                        control={control}
+                                        name={`vacations.${idx}.start`}
+                                        rules={{
+                                            validate: {
+                                                chrono: (v, f) =>
+                                                    v <= f.vacations[idx].end ||
+                                                    'Vacation end date must be on or after start date',
+                                                between: (v, f) =>
+                                                    v >= f.start ||
+                                                    'Vacation must come between term start and end dates',
+                                            },
+                                        }}
+                                        render={({ field }) => (
+                                            <DateTimePicker
+                                                value={field.value}
+                                                onChange={field.onChange}
+                                                hideTime
+                                            />
+                                        )}
+                                    />
+
+                                    <Controller
+                                        control={control}
+                                        name={`vacations.${idx}.end`}
+                                        rules={{
+                                            validate: {
+                                                chrono: (v, f) =>
+                                                    v >=
+                                                        f.vacations[idx]
+                                                            .start ||
+                                                    'Vacation end date must be on or after start date',
+                                                between: (v, f) =>
+                                                    v <= f.end ||
+                                                    'Vacation must lie between term start and end dates',
+                                            },
+                                        }}
+                                        render={({ field }) => (
+                                            <DateTimePicker
+                                                value={field.value}
+                                                onChange={field.onChange}
+                                                hideTime
+                                            />
+                                        )}
+                                    />
+                                </div>
+
+                                <p className={styles.error}>
+                                    {errors.vacations?.at?.(idx)?.start
+                                        ?.message ||
+                                        errors.vacations?.at?.(idx)?.end
+                                            ?.message}
+                                </p>
+                            </div>
+                        ))}
+
+                        <Button
+                            type='solid'
+                            onClick={() =>
+                                vacationsField.append(DEFAULT_TERM_VACATION)
+                            }
+                            icon={<Plus size={20} color='dark' />}
+                            border='round'
+                        />
                     </div>
                 </div>
 

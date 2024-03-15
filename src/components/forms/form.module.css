@@ -122,6 +122,7 @@
     flex-basis: 100%;
 }
 
+.termVacationRow,
 .courseTimeRow {
     border: 1px solid var(--dark);
     border-radius: 0.5rem;
@@ -129,10 +130,22 @@
     margin-bottom: 0.25rem;
 }
 
+.termVacationRowDates,
 .courseTimeRowTimes {
     display: grid;
     grid-template-columns: 1fr 1fr;
     column-gap: 0.25rem;
+}
+
+.termVacationRowName {
+    display: flex;
+    flex-direction: column;
+}
+
+.termVacationRowNameLabel {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
 }
 
 .courseTimeRowDays {

@@ -10,13 +10,19 @@ import type {
 // ------------------------------ terms ------------------------------ //
 export type TermPayload = Prisma.TermGetPayload<typeof TERM_ARGS>;
 
-export const TERM_ARGS = {} satisfies Prisma.TermDefaultArgs;
+export const TERM_ARGS = {
+    include: {
+        vacations: true,
+    },
+} satisfies Prisma.TermDefaultArgs;
 
 /**
  * Converts a frontend `TermPayload` object to a backend `Term` object
  */
 export function payloadToTerm(payload: TermPayload): TermRaw {
-    return payload;
+    const { vacations, ...term } = payload;
+
+    return term;
 }
 
 // ------------------------------ courses ------------------------------ //
