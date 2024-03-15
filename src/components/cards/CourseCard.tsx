@@ -30,33 +30,44 @@ export function CourseCard(props: CourseCardProps) {
                     {props.course.name}
                 </h1>
 
-                <div className={styles.courseDataSection}>
-                    {props.course.instructor && (
-                        <div className={styles.iconField}>
-                            <User size={16} color='light' />
-                            <p>{props.course.instructor}</p>
-                        </div>
-                    )}
+                {(props.course.instructor || props.course.location) && (
+                    <div className={styles.courseDataSection}>
+                        {props.course.instructor && (
+                            <div className={styles.iconField}>
+                                <User size={16} color='light' />
+                                <p>{props.course.instructor}</p>
+                            </div>
+                        )}
 
-                    {props.course.location && (
-                        <div className={styles.iconField}>
-                            <Location size={16} color='light' />
-                            <p>{props.course.location}</p>
-                        </div>
-                    )}
-                </div>
+                        {props.course.location && (
+                            <div className={styles.iconField}>
+                                <Location size={16} color='light' />
+                                <p>{props.course.location}</p>
+                            </div>
+                        )}
+                    </div>
+                )}
 
-                <div className={styles.courseDataSection}>
-                    {props.course.times.map((time) => (
-                        <p key={time.id}>
-                            <span className={styles.white}>
-                                {formatCourseTimeRange(time.start, time.end)}
-                            </span>
-                            {' | '}
-                            {formatCourseTimeDays(bitfieldToList(time.days))}
-                        </p>
-                    ))}
-                </div>
+                {props.course.times.length > 0 && (
+                    <div className={styles.courseDataSection}>
+                        {props.course.times.map((time) => (
+                            <p key={time.id}>
+                                <span className={styles.white}>
+                                    {formatCourseTimeRange(
+                                        time.start,
+                                        time.end
+                                    )}
+                                </span>
+
+                                {' | '}
+
+                                {formatCourseTimeDays(
+                                    bitfieldToList(time.days)
+                                )}
+                            </p>
+                        ))}
+                    </div>
+                )}
             </div>
 
             {/* TODO: don't really love the location of these buttons, feels awkward */}
