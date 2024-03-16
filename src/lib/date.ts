@@ -161,6 +161,28 @@ export function formatTermDate(start: Date, end: Date): string {
     return `${format(start)} — ${format(end)}`;
 }
 
+/**
+ * Formats the given start and end date to display as a vacation date on a term card
+ */
+export function formatTermVacationDate(start: Date, end: Date): string {
+    const format = (d: Date) =>
+        d.toLocaleDateString('en-US', {
+            timeZone: 'UTC',
+            month: 'short',
+            day: 'numeric',
+            // year: 'numeric',
+        });
+
+    // calculate number of full days between start and end (inclusive, count an extra day)
+    const days = Math.ceil((end.getTime() - start.getTime()) / MS_PER_DAY) + 1;
+
+    if (days === 1) {
+        return `${format(start)} (1 day)`;
+    } else {
+        return `${format(start)} — ${format(end)} (${days} days)`;
+    }
+}
+
 type FormattedTaskDate = {
     str: string;
     status: TaskStatus;

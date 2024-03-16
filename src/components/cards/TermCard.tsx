@@ -4,7 +4,7 @@ import { Calendar, Edit, Trash } from '@/components/icons';
 import Button from '@/components/Button';
 import { BUTTON_ICON_SIZE } from '.';
 import { TermPayload } from '@/lib/types';
-import { formatTermDate } from '@/lib/date';
+import { formatTermDate, formatTermVacationDate } from '@/lib/date';
 import { useState } from 'react';
 import styles from './card.module.css';
 
@@ -40,6 +40,25 @@ export function TermCard(props: TermCardProps) {
 
                     <p>{formatTermDate(props.term.start, props.term.end)}</p>
                 </div>
+
+                {props.term.vacations.length > 0 && (
+                    <div className={styles.termVacations}>
+                        {props.term.vacations.map((vacation) => (
+                            <p key={vacation.id}>
+                                <span className={styles.white}>
+                                    {vacation.name}
+                                </span>
+
+                                {' | '}
+
+                                {formatTermVacationDate(
+                                    vacation.start,
+                                    vacation.end
+                                )}
+                            </p>
+                        ))}
+                    </div>
+                )}
             </div>
 
             <div className={styles.buttons}>

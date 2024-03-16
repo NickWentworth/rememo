@@ -77,6 +77,12 @@
     border: 2px solid;
 }
 
+.termVacations {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
 .courseDataSection {
     display: flex;
     flex-direction: column;
