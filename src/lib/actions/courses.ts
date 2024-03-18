@@ -83,6 +83,15 @@ async function getCourseTimesByDate(date: Date) {
                     start: { lte: endOfDay },
                     end: { gte: endOfDay },
                     userId: user.id,
+
+                    // TODO: signal in the calendar that a vacation is occurring on these days
+                    // ignore course times that occur during term vacations
+                    vacations: {
+                        none: {
+                            start: { lte: endOfDay },
+                            end: { gte: endOfDay },
+                        },
+                    },
                 },
             },
         },
