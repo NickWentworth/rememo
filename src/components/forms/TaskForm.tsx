@@ -1,7 +1,7 @@
 'use client';
 
-import { Close, Plus, Trash } from '@/components/icons';
-import Button from '@/components/Button';
+import { Close, Trash } from '@/components/icons';
+import Button, { AddButton } from '@/components/Button';
 import { DateTimePicker } from './DateTimePicker';
 import { TaskPayload } from '@/lib/types';
 import { tonightUTC } from '@/lib/date';
@@ -231,14 +231,13 @@ export function TaskForm(props: TaskFormProps) {
                             </div>
                         ))}
 
-                        <Button
-                            type='solid'
-                            onClick={() =>
-                                subtasksField.append(DEFAULT_SUBTASK)
-                            }
-                            icon={<Plus size={20} color='dark' />}
-                            border='round'
-                        />
+                        <div className={styles.alignCenter}>
+                            <AddButton
+                                onClick={() =>
+                                    subtasksField.append(DEFAULT_SUBTASK)
+                                }
+                            />
+                        </div>
                     </div>
                 </div>
 
@@ -261,9 +260,11 @@ export function TaskForm(props: TaskFormProps) {
 
                 <hr />
 
-                <Button type='solid' submit>
-                    Submit
-                </Button>
+                <div className={styles.alignCenter}>
+                    <Button type='solid' submit>
+                        Submit
+                    </Button>
+                </div>
             </form>
         </div>
     );

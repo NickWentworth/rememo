@@ -156,3 +156,7 @@
 .courseTimeRowDaySelector {
     flex-grow: 1;
 }
+
+.alignCenter {
+    align-self: center;
+}

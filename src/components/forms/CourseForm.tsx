@@ -1,7 +1,7 @@
 'use client';
 
-import { Close, Plus, Trash } from '@/components/icons';
-import Button from '@/components/Button';
+import { Close, Trash } from '@/components/icons';
+import Button, { AddButton } from '@/components/Button';
 import { DateTimePicker } from './DateTimePicker';
 import { WeekdaySelector } from './WeekdaySelector';
 import { CoursePayload } from '@/lib/types';
@@ -332,22 +332,23 @@ export function CourseForm(props: CourseFormProps) {
                             </div>
                         ))}
 
-                        <Button
-                            type='solid'
-                            onClick={() =>
-                                timesField.append(DEFAULT_COURSE_TIME)
-                            }
-                            icon={<Plus size={20} color='dark' />}
-                            border='round'
-                        />
+                        <div className={styles.alignCenter}>
+                            <AddButton
+                                onClick={() =>
+                                    timesField.append(DEFAULT_COURSE_TIME)
+                                }
+                            />
+                        </div>
                     </div>
                 </div>
 
                 <hr />
 
-                <Button type='solid' submit>
-                    Submit
-                </Button>
+                <div className={styles.alignCenter}>
+                    <Button type='solid' submit>
+                        Submit
+                    </Button>
+                </div>
             </form>
         </div>
     );

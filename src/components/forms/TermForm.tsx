@@ -1,7 +1,7 @@
 'use client';
 
-import { Close, Plus, Trash } from '@/components/icons';
-import Button from '@/components/Button';
+import { Close, Trash } from '@/components/icons';
+import Button, { AddButton } from '@/components/Button';
 import { DateTimePicker } from './DateTimePicker';
 import { TermPayload } from '@/lib/types';
 import { TermVacation } from '@prisma/client';
@@ -307,22 +307,23 @@ export function TermForm(props: TermFormProps) {
                             </div>
                         ))}
 
-                        <Button
-                            type='solid'
-                            onClick={() =>
-                                vacationsField.append(DEFAULT_TERM_VACATION)
-                            }
-                            icon={<Plus size={20} color='dark' />}
-                            border='round'
-                        />
+                        <div className={styles.alignCenter}>
+                            <AddButton
+                                onClick={() =>
+                                    vacationsField.append(DEFAULT_TERM_VACATION)
+                                }
+                            />
+                        </div>
                     </div>
                 </div>
 
                 <hr />
 
-                <Button type='solid' submit>
-                    Submit
-                </Button>
+                <div className={styles.alignCenter}>
+                    <Button type='solid' submit>
+                        Submit
+                    </Button>
+                </div>
             </form>
         </div>
     );
