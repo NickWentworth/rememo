@@ -3,6 +3,7 @@
 import Button, { AddButton } from '@/components/Button';
 import Panel, { Centered } from '@/components/Panel';
 import SearchBar from '@/components/SearchBar';
+import TypedSelect from '@/components/forms/TypedSelect';
 import { TaskCard } from '@/components/cards';
 import { TaskForm } from '@/components/forms';
 import { TaskPayload } from '@/lib/types';
@@ -45,19 +46,18 @@ export default function TasksPage() {
             <div className={styles.showing}>
                 <p>Showing</p>
 
-                <select
-                    value={options.show}
-                    onChange={(e) =>
-                        // TODO: implement better type checking here
+                <TypedSelect<GetTaskOptions['show']>
+                    options={[
+                        { value: 'current', display: 'Current' },
+                        { value: 'past', display: 'Past' },
+                    ]}
+                    onChange={(show) =>
                         setOptions((curr) => ({
                             ...curr,
-                            show: e.target.value as GetTaskOptions['show'],
+                            show,
                         }))
                     }
-                >
-                    <option value='current'>Current</option>
-                    <option value='past'>Past</option>
-                </select>
+                />
 
                 <p>tasks</p>
             </div>
