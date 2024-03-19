@@ -6,13 +6,14 @@ Rememo is a modern planner application that allows you to track your tasks, cour
 
 -   Secure OAuth2 authentication using NextAuth
 -   Full support to track terms, courses, and tasks
+    -   Filter and search for tasks based on name, description, course, and more
+    -   Daily and weekly calendar views to keep track of course times
 -   User data stored and accessed using Prisma ORM
 -   Beautiful user interface designed and developed from scratch
 
 ### Planned
 
--   Calendar view with course times and term vacations
-    -   Support both weekly-based and cycle-based course scheduling
+-   Improved mobile support
 -   Canvas and Blackboard API integration
     -   Allow sign-in or account linking through Canvas/Blackboard
     -   Import courses and assignments into Rememo
