@@ -5,7 +5,7 @@ import Button, { AddButton } from '@/components/Button';
 import { DateTimePicker } from './DateTimePicker';
 import { TermPayload } from '@/lib/types';
 import { TermVacation } from '@prisma/client';
-import { tonightUTC } from '@/lib/date';
+import { daysAhead, todayUTC } from '@/lib/date';
 import { FormState } from '@/lib/hooks/useFormState';
 import { useTermMutations } from '@/lib/query/terms';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
@@ -14,8 +14,8 @@ import styles from './form.module.css';
 const DEFAULT_TERM = {
     id: '',
     name: '',
-    start: tonightUTC(),
-    end: tonightUTC(),
+    start: todayUTC(),
+    end: todayUTC(),
     vacations: [],
     userId: '',
 } satisfies TermPayload;
@@ -23,8 +23,8 @@ const DEFAULT_TERM = {
 const DEFAULT_TERM_VACATION = {
     id: '',
     name: '',
-    start: tonightUTC(),
-    end: tonightUTC(),
+    start: todayUTC(),
+    end: todayUTC(),
     termId: '',
 } satisfies TermVacation;
 

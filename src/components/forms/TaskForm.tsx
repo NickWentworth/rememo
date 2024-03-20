@@ -4,7 +4,7 @@ import { Close, Trash } from '@/components/icons';
 import Button, { AddButton } from '@/components/Button';
 import { DateTimePicker } from './DateTimePicker';
 import { TaskPayload } from '@/lib/types';
-import { tonightUTC } from '@/lib/date';
+import { todayUTC } from '@/lib/date';
 import { FormState } from '@/lib/hooks/useFormState';
 import { useAllCourses } from '@/lib/query/courses';
 import { useTaskMutations } from '@/lib/query/tasks';
@@ -16,7 +16,7 @@ const DEFAULT_TASK = {
     id: '',
     name: '',
     completed: false,
-    due: tonightUTC(),
+    due: todayUTC('23:59'),
     description: '',
     subtasks: [],
     courseId: null,
@@ -28,7 +28,7 @@ const DEFAULT_SUBTASK = {
     id: '',
     name: '',
     completed: false,
-    due: tonightUTC(),
+    due: todayUTC('23:59'),
     taskId: '',
 } satisfies Subtask;
 

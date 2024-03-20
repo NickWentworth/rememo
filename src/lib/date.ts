@@ -57,16 +57,6 @@ export function updateTime(current: Date, time: string): Date {
     }
 }
 
-// TODO: enable user to give custom default time
-/**
- * Returns a `Date` object representing tonight at 11:59 PM
- */
-export function tonightUTC(time?: string): Date {
-    const tonight = new Date().toISOString().split('T')[0];
-
-    return new Date(`${tonight}T${time ?? '23:59'}Z`);
-}
-
 /**
  * Returns a `Date` object set to the local timezone's time, but with a timezone offset of 0
  *
@@ -88,6 +78,50 @@ export function nowUTC(): Date {
 }
 
 /**
+ * Returns a `Date` object set to today at the given time, passed as a string in HH:MM format or a `Date` object
+ *
+ * If no time is passed, the returned `Date`'s time is defaulted to 00:00
+ */
+export function todayUTC(time?: string | Date): Date {
+    let hours: number;
+    let minutes: number;
+
+    switch (typeof time) {
+        case 'undefined':
+            hours = 0;
+            minutes = 0;
+            break;
+
+        case 'string':
+            const split = time.split(':');
+
+            try {
+                hours = Number.parseInt(split.at(0) ?? '0');
+                minutes = Number.parseInt(split.at(1) ?? '0');
+            } catch {
+                console.error(
+                    `Given time string '${time}' is not in accepted form HH:MM`
+                );
+                hours = 0;
+                minutes = 0;
+            }
+
+            break;
+
+        default:
+            // time is given as Date, just take minutes and hours
+            hours = time.getUTCHours();
+            minutes = time.getUTCMinutes();
+            break;
+    }
+
+    const now = nowUTC();
+    now.setUTCHours(hours, minutes, 0, 0);
+
+    return now;
+}
+
+/**
  * Returns a new `Date` object that is `day`s ahead from the given `from` date
  */
 export function daysAhead(from: Date, days: number): Date {
@@ -98,7 +132,7 @@ export function daysAhead(from: Date, days: number): Date {
  * Returns a `Date` object set to 11:59 PM this Saturday
  */
 export function endOfWeek() {
-    const midnight = tonightUTC('23:59');
+    const midnight = todayUTC('23:59');
     return daysAhead(midnight, 6 - midnight.getDay());
 }
 

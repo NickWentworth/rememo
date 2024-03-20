@@ -6,7 +6,7 @@ import { DateTimePicker } from './DateTimePicker';
 import { WeekdaySelector } from './WeekdaySelector';
 import { CoursePayload } from '@/lib/types';
 import { CourseTime } from '@prisma/client';
-import { tonightUTC } from '@/lib/date';
+import { todayUTC } from '@/lib/date';
 import { FormState } from '@/lib/hooks/useFormState';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import styles from './form.module.css';
@@ -37,8 +37,8 @@ const DEFAULT_COURSE = {
 
 const DEFAULT_COURSE_TIME = {
     id: '',
-    start: tonightUTC('08:00'),
-    end: tonightUTC('10:00'),
+    start: todayUTC('8:00'),
+    end: todayUTC('10:00'),
     days: 0,
     courseId: '',
 } satisfies CourseTime;
