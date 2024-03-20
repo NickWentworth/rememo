@@ -87,19 +87,15 @@ export async function getPaginatedTasks(params: GetTaskParams) {
         skip: params.page * PAGE_SIZE,
     });
 
-    // and determine whether there are more tasks remaining
-    const areMoreTasks =
-        tasks.length === PAGE_SIZE &&
-        (await prisma.task.findFirst({
-            where,
-            orderBy,
-            skip: (params.page + 1) * PAGE_SIZE,
-        })) !== null;
+    // and count the remaining tasks to be paginated
+    const remaining = await prisma.task.count({
+        where,
+        orderBy,
+        // count from the next page onward
+        skip: (params.page + 1) * PAGE_SIZE,
+    });
 
-    return {
-        tasks,
-        next: areMoreTasks ? params.page + 1 : undefined,
-    };
+    return { tasks, remaining };
 }
 
 /**

@@ -28,12 +28,14 @@ export function useTasksWithOptions(options: GetTaskOptions) {
         queryFn: ({ pageParam }) =>
             getPaginatedTasks({ ...options, page: pageParam }),
         initialPageParam: 0,
-        getNextPageParam: (lastPage) => lastPage.next,
+        getNextPageParam: (lastPage, _, lastPageParam) =>
+            lastPage.remaining > 0 ? lastPageParam + 1 : undefined,
     });
 
     return {
         query,
         tasks: query.data?.pages.flatMap((page) => page.tasks) ?? [],
+        remainingTasks: query.data?.pages.at(-1)?.remaining ?? 0,
     };
 }
 

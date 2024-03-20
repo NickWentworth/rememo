@@ -20,7 +20,7 @@ export default function TasksPage() {
         show: 'current',
     });
 
-    const { tasks, query } = useTasksWithOptions(options);
+    const { tasks, remainingTasks, query } = useTasksWithOptions(options);
     const { status, fetchNextPage, isFetchingNextPage, hasNextPage } = query;
     const { remove: removeTask } = useTaskMutations();
 
@@ -109,11 +109,10 @@ export default function TasksPage() {
                             onClick={fetchNextPage}
                             disabled={isFetchingNextPage}
                         >
-                            {/* TODO: display how many more tasks are remaining to the user */}
-                            Fetch More Tasks
+                            Fetch More Tasks ({remainingTasks} remaining)
                         </Button>
                     ) : (
-                        "That's all!"
+                        'No more remaining tasks'
                     )}
                 </Centered>
             </>

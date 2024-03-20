@@ -17,9 +17,12 @@ type ButtonProps = {
 
     /** Icon to display to the left of the text */
     icon?: React.ReactElement;
+
     /** Main text component displayed by the button */
-    children?: string | string[];
+    children?: ButtonChildren | ButtonChildren[];
 };
+
+type ButtonChildren = string | number;
 
 export default function Button(props: ButtonProps) {
     const className = buildClass(

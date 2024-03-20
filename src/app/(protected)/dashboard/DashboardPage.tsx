@@ -11,7 +11,7 @@ import Button from '@/components/Button';
 
 export default function DashboardPage() {
     // only include tasks for this week
-    const { tasks, query } = useTasksWithOptions({
+    const { tasks, remainingTasks, query } = useTasksWithOptions({
         search: '',
         show: 'this week',
     });
@@ -59,11 +59,10 @@ export default function DashboardPage() {
                             onClick={fetchNextPage}
                             disabled={isFetchingNextPage}
                         >
-                            {/* TODO: display how many more tasks are remaining to the user */}
-                            Fetch More Tasks
+                            Fetch More Tasks ({remainingTasks} remaining)
                         </Button>
                     ) : (
-                        "That's all!"
+                        'No more remaining tasks this week'
                     )}
                 </Centered>
             </>
