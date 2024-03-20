@@ -70,9 +70,12 @@ export async function getCourseTimesByDates(dates: Date[]) {
 async function getCourseTimesByDate(date: Date) {
     const user = await getUserOrThrow();
 
-    // FIXME: seems like terms should just store dates at 00:00 instead
-    // terms store dates at 23:59 or 11:59 PM, so align time the same
-    const endOfDay = new Date(`${date.toISOString().split('T')[0]}T23:59:00Z`);
+    const startOfDay = new Date(date);
+    startOfDay.setUTCHours(0, 0, 0, 0);
+
+    const endOfDay = new Date(date);
+    endOfDay.setUTCHours(23, 59, 0, 0);
+
     const dayOfWeek = date.getDay();
 
     // get all times for courses that are in the correct time range
@@ -81,7 +84,7 @@ async function getCourseTimesByDate(date: Date) {
             course: {
                 term: {
                     start: { lte: endOfDay },
-                    end: { gte: endOfDay },
+                    end: { gte: startOfDay },
                     userId: user.id,
 
                     // TODO: signal in the calendar that a vacation is occurring on these days
@@ -89,7 +92,7 @@ async function getCourseTimesByDate(date: Date) {
                     vacations: {
                         none: {
                             start: { lte: endOfDay },
-                            end: { gte: endOfDay },
+                            end: { gte: startOfDay },
                         },
                     },
                 },
