@@ -49,6 +49,7 @@ export function TaskForm(props: TaskFormProps) {
         handleSubmit,
         control,
         reset,
+        watch,
         formState: { errors },
     } = useForm<TaskPayload>({
         values: props.state.mode === 'update' ? props.state.data : DEFAULT_TASK,
@@ -66,6 +67,12 @@ export function TaskForm(props: TaskFormProps) {
     }
 
     const title = props.state.mode === 'create' ? 'Add Task' : 'Modify Task';
+
+    // get selected course color (or default to white) for displaying in course select
+    const selectedCourseId = watch('courseId');
+    const selectedCourseColor =
+        courses.find((course) => course.id === selectedCourseId)?.color ??
+        'var(--white)';
 
     function onSubmit(data: Partial<TaskPayload>) {
         // common task data used when either creating or updating
@@ -151,9 +158,15 @@ export function TaskForm(props: TaskFormProps) {
                             <p>Course</p>
                         </label>
 
-                        <select id='course' {...register('courseId')}>
+                        <select
+                            id='course'
+                            style={{ color: selectedCourseColor }}
+                            {...register('courseId')}
+                        >
                             {/* IMPORTANT: remember to convert (null <=> '') */}
-                            <option value=''>None</option>
+                            <option value='' style={{ color: 'var(--white) ' }}>
+                                None
+                            </option>
 
                             {courses.map((c) => (
                                 <option
