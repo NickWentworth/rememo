@@ -19,6 +19,20 @@ export async function getUserOrThrow() {
 }
 
 /**
+ * Returns `boolean` based on if the user is logged in
+ *
+ * Wraps `getUserOrThrow` but does not throw an error when unauthenticated
+ */
+export async function isAuthenticated() {
+    try {
+        await getUserOrThrow();
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+/**
  * Deletes the currently logged in user
  */
 export async function deleteLoggedInUser() {

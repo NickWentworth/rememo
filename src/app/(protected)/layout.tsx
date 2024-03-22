@@ -2,7 +2,7 @@ import Providers from './Providers';
 import Sidebar from '@/components/Sidebar';
 import { buildMetadata } from '@/lib/metadata';
 import { LOGIN_ROUTE } from '@/lib/auth';
-import { getUserOrThrow } from '@/lib/actions/user';
+import { isAuthenticated } from '@/lib/actions/user';
 import { redirect } from 'next/navigation';
 import '../global.css';
 
@@ -17,10 +17,8 @@ type LayoutProps = {
 };
 
 export default async function Layout(props: LayoutProps) {
-    // redirect is user does not exist
-    try {
-        await getUserOrThrow();
-    } catch {
+    // redirect is user is unauthenticated
+    if (!(await isAuthenticated())) {
         redirect(LOGIN_ROUTE);
     }
 
