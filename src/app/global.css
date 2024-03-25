@@ -40,7 +40,8 @@ h4,
 p,
 input,
 textarea,
-select {
+select,
+label {
     margin: 0;
     font-family: 'Inter';
 }
@@ -63,7 +64,8 @@ h4 {
     font-weight: 300;
     color: var(--light);
 }
-p {
+p,
+label {
     font-size: 14px;
     font-weight: 300;
     color: var(--light);

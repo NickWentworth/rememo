@@ -13,22 +13,25 @@ type DateTimePickerProps = {
 export function DateTimePicker(props: DateTimePickerProps) {
     return (
         <div className={styles.dateTimePicker}>
-            <input
-                type='date'
-                value={dateISO(props.value)}
-                onChange={(e) =>
-                    props.onChange(updateDate(props.value, e.target.value))
-                }
-                hidden={props.hideDate}
-            />
-            <input
-                type='time'
-                value={timeISO(props.value)}
-                onChange={(e) =>
-                    props.onChange(updateTime(props.value, e.target.value))
-                }
-                hidden={props.hideTime}
-            />
+            {!props.hideDate && (
+                <input
+                    type='date'
+                    value={dateISO(props.value)}
+                    onChange={(e) =>
+                        props.onChange(updateDate(props.value, e.target.value))
+                    }
+                />
+            )}
+
+            {!props.hideTime && (
+                <input
+                    type='time'
+                    value={timeISO(props.value)}
+                    onChange={(e) =>
+                        props.onChange(updateTime(props.value, e.target.value))
+                    }
+                />
+            )}
         </div>
     );
 }

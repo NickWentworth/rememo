@@ -2,7 +2,7 @@
 
 import { Trash } from '../icons';
 import Button, { AddButton } from '../Button';
-import { Form, FormSection, Spacer } from './structure';
+import { Form, FormSection, FormField, Spacer } from './structure';
 import { DateTimePicker } from './comps';
 import { TaskPayload } from '@/lib/types';
 import { todayUTC } from '@/lib/date';
@@ -120,55 +120,60 @@ export function TaskForm(props: TaskFormProps) {
             sections={[
                 // main task data
                 <FormSection>
-                    <p>Name</p>
-                    <input
-                        type='text'
-                        {...register('name', {
-                            required: 'Task must have a name',
-                        })}
-                    />
+                    <FormField label='Name'>
+                        <input
+                            type='text'
+                            {...register('name', {
+                                required: 'Task must have a name',
+                            })}
+                        />
+                    </FormField>
                     <p className={styles.error}>{errors.name?.message}</p>
 
                     <Spacer />
 
-                    <p>Course</p>
-                    <select
-                        style={{ color: selectedCourseColor }}
-                        {...register('courseId')}
-                    >
-                        <option value='' style={{ color: 'var(--white)' }}>
-                            None
-                        </option>
-
-                        {courses?.map((course) => (
-                            <option
-                                key={course.id}
-                                value={course.id}
-                                style={{ color: course.color }}
-                            >
-                                {course.name}
+                    <FormField label='Course'>
+                        <select
+                            style={{ color: selectedCourseColor }}
+                            id='courseId'
+                            {...register('courseId')}
+                        >
+                            <option value='' style={{ color: 'var(--white)' }}>
+                                None
                             </option>
-                        ))}
-                    </select>
+
+                            {courses?.map((course) => (
+                                <option
+                                    key={course.id}
+                                    value={course.id}
+                                    style={{ color: course.color }}
+                                >
+                                    {course.name}
+                                </option>
+                            ))}
+                        </select>
+                    </FormField>
 
                     <Spacer />
 
-                    <p>Due</p>
-                    <Controller
-                        control={control}
-                        name='due'
-                        render={({ field }) => (
-                            <DateTimePicker
-                                value={field.value}
-                                onChange={field.onChange}
-                            />
-                        )}
-                    />
+                    <FormField label='Due'>
+                        <Controller
+                            control={control}
+                            name='due'
+                            render={({ field }) => (
+                                <DateTimePicker
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                />
+                            )}
+                        />
+                    </FormField>
                 </FormSection>,
 
                 // subtasks field array
                 <FormSection>
                     <p>Subtasks</p>
+
                     {subtasksField.fields.flatMap((field, idx) => [
                         <div key={field.id} className={styles.subtaskRow}>
                             <input
@@ -211,8 +216,9 @@ export function TaskForm(props: TaskFormProps) {
 
                 // description
                 <FormSection>
-                    <p>Description (optional)</p>
-                    <textarea {...register('description')} rows={4} />
+                    <FormField label='Description' optional>
+                        <textarea {...register('description')} rows={4} />
+                    </FormField>
                 </FormSection>,
             ]}
         />

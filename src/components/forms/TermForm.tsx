@@ -2,7 +2,7 @@
 
 import { Trash } from '@/components/icons';
 import Button, { AddButton } from '@/components/Button';
-import { Form, FormSection, Spacer } from './structure';
+import { Form, FormSection, FormField, Spacer } from './structure';
 import { DateTimePicker } from './comps';
 import { TermPayload } from '@/lib/types';
 import { TermVacation } from '@prisma/client';
@@ -103,50 +103,53 @@ export function TermForm(props: TermFormProps) {
             sections={[
                 // main term data
                 <FormSection>
-                    <p>Name</p>
-                    <input
-                        type='text'
-                        {...register('name', {
-                            required: 'Term must have a name',
-                        })}
-                    />
+                    <FormField label='Name'>
+                        <input
+                            type='text'
+                            {...register('name', {
+                                required: 'Term must have a name',
+                            })}
+                        />
+                    </FormField>
                     <p className={styles.error}>{errors.name?.message}</p>
 
                     <Spacer />
 
                     <div className={styles.termDates}>
-                        <p>Start Date</p>
-                        <p>End Date</p>
+                        <FormField label='Start Date'>
+                            <Controller
+                                control={control}
+                                name='start'
+                                rules={{
+                                    validate: (value, form) => value < form.end,
+                                }}
+                                render={({ field }) => (
+                                    <DateTimePicker
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                        hideTime
+                                    />
+                                )}
+                            />
+                        </FormField>
 
-                        <Controller
-                            control={control}
-                            name='start'
-                            rules={{
-                                validate: (value, form) => value < form.end,
-                            }}
-                            render={({ field }) => (
-                                <DateTimePicker
-                                    value={field.value}
-                                    onChange={field.onChange}
-                                    hideTime
-                                />
-                            )}
-                        />
-
-                        <Controller
-                            control={control}
-                            name='end'
-                            rules={{
-                                validate: (value, form) => value > form.start,
-                            }}
-                            render={({ field }) => (
-                                <DateTimePicker
-                                    value={field.value}
-                                    onChange={field.onChange}
-                                    hideTime
-                                />
-                            )}
-                        />
+                        <FormField label='End Date'>
+                            <Controller
+                                control={control}
+                                name='end'
+                                rules={{
+                                    validate: (value, form) =>
+                                        value > form.start,
+                                }}
+                                render={({ field }) => (
+                                    <DateTimePicker
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                        hideTime
+                                    />
+                                )}
+                            />
+                        </FormField>
                     </div>
                     <p className={styles.error}>
                         {(errors.start || errors.end) &&
@@ -161,22 +164,25 @@ export function TermForm(props: TermFormProps) {
                     {/* TODO: adjust styling of term vacation field */}
                     {vacationsField.fields.map((field, idx) => (
                         <div key={field.id} className={styles.termVacation}>
-                            <p>Name</p>
+                            <FormField label='Vacation Name'>
+                                <div className={styles.termVacationNameRow}>
+                                    <input
+                                        type='text'
+                                        {...register(`vacations.${idx}.name`, {
+                                            required:
+                                                'Vacation must have a name',
+                                        })}
+                                    />
 
-                            <div className={styles.termVacationNameRow}>
-                                <input
-                                    type='text'
-                                    {...register(`vacations.${idx}.name`, {
-                                        required: 'Vacation must have a name',
-                                    })}
-                                />
-                                <Button
-                                    type='transparent'
-                                    onClick={() => vacationsField.remove(idx)}
-                                    icon={<Trash color='white' size={16} />}
-                                />
-                            </div>
-
+                                    <Button
+                                        type='transparent'
+                                        onClick={() =>
+                                            vacationsField.remove(idx)
+                                        }
+                                        icon={<Trash color='light' size={16} />}
+                                    />
+                                </div>
+                            </FormField>
                             <p className={styles.error}>
                                 {errors.vacations?.at?.(idx)?.name?.message}
                             </p>
@@ -184,52 +190,55 @@ export function TermForm(props: TermFormProps) {
                             {/* <Spacer /> */}
 
                             <div className={styles.termDates}>
-                                <p>Start Date</p>
-                                <p>End Date</p>
+                                <FormField label='Start Date'>
+                                    <Controller
+                                        control={control}
+                                        name={`vacations.${idx}.start`}
+                                        rules={{
+                                            validate: {
+                                                chrono: (v, f) =>
+                                                    v <= f.vacations[idx].end ||
+                                                    'Vacation end date must be on or after start date',
+                                                between: (v, f) =>
+                                                    v >= f.start ||
+                                                    'Vacation must come between term start and end dates',
+                                            },
+                                        }}
+                                        render={({ field }) => (
+                                            <DateTimePicker
+                                                value={field.value}
+                                                onChange={field.onChange}
+                                                hideTime
+                                            />
+                                        )}
+                                    />
+                                </FormField>
 
-                                <Controller
-                                    control={control}
-                                    name={`vacations.${idx}.start`}
-                                    rules={{
-                                        validate: {
-                                            chrono: (v, f) =>
-                                                v <= f.vacations[idx].end ||
-                                                'Vacation end date must be on or after start date',
-                                            between: (v, f) =>
-                                                v >= f.start ||
-                                                'Vacation must come between term start and end dates',
-                                        },
-                                    }}
-                                    render={({ field }) => (
-                                        <DateTimePicker
-                                            value={field.value}
-                                            onChange={field.onChange}
-                                            hideTime
-                                        />
-                                    )}
-                                />
-
-                                <Controller
-                                    control={control}
-                                    name={`vacations.${idx}.end`}
-                                    rules={{
-                                        validate: {
-                                            chrono: (v, f) =>
-                                                v >= f.vacations[idx].start ||
-                                                'Vacation end date must be on or after start date',
-                                            between: (v, f) =>
-                                                v <= f.end ||
-                                                'Vacation must lie between term start and end dates',
-                                        },
-                                    }}
-                                    render={({ field }) => (
-                                        <DateTimePicker
-                                            value={field.value}
-                                            onChange={field.onChange}
-                                            hideTime
-                                        />
-                                    )}
-                                />
+                                <FormField label='End Date'>
+                                    <Controller
+                                        control={control}
+                                        name={`vacations.${idx}.end`}
+                                        rules={{
+                                            validate: {
+                                                chrono: (v, f) =>
+                                                    v >=
+                                                        f.vacations[idx]
+                                                            .start ||
+                                                    'Vacation end date must be on or after start date',
+                                                between: (v, f) =>
+                                                    v <= f.end ||
+                                                    'Vacation must lie between term start and end dates',
+                                            },
+                                        }}
+                                        render={({ field }) => (
+                                            <DateTimePicker
+                                                value={field.value}
+                                                onChange={field.onChange}
+                                                hideTime
+                                            />
+                                        )}
+                                    />
+                                </FormField>
                             </div>
 
                             {/* <Spacer /> */}

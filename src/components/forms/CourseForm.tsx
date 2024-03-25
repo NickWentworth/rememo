@@ -2,7 +2,7 @@
 
 import { Trash } from '@/components/icons';
 import Button, { AddButton } from '@/components/Button';
-import { Form, FormSection, Spacer } from './structure';
+import { Form, FormSection, FormField, Spacer } from './structure';
 import { DateTimePicker, WeekdaySelector } from './comps';
 import { useAllTerms } from '@/lib/query/terms';
 import { useCourseMutations } from '@/lib/query/courses';
@@ -125,25 +125,27 @@ export function CourseForm(props: CourseFormProps) {
             sections={[
                 // main course data
                 <FormSection>
-                    <p>Name</p>
-                    <input
-                        type='text'
-                        {...register('name', {
-                            required: 'Course must have a name',
-                        })}
-                    />
+                    <FormField label='Name'>
+                        <input
+                            type='text'
+                            {...register('name', {
+                                required: 'Course must have a name',
+                            })}
+                        />
+                    </FormField>
                     <p className={styles.error}>{errors.name?.message}</p>
 
                     <Spacer />
 
-                    <p>Term</p>
-                    <select id='term' {...register('termId')}>
-                        {terms?.map((term) => (
-                            <option key={term.id} value={term.id}>
-                                {term.name}
-                            </option>
-                        ))}
-                    </select>
+                    <FormField label='Term'>
+                        <select id='term' {...register('termId')}>
+                            {terms?.map((term) => (
+                                <option key={term.id} value={term.id}>
+                                    {term.name}
+                                </option>
+                            ))}
+                        </select>
+                    </FormField>
                 </FormSection>,
 
                 // course color
@@ -168,13 +170,15 @@ export function CourseForm(props: CourseFormProps) {
 
                 // optional course data
                 <FormSection>
-                    <p>Instructor (optional)</p>
-                    <input type='text' {...register('instructor')} />
+                    <FormField label='Instructor' optional>
+                        <input type='text' {...register('instructor')} />
+                    </FormField>
 
                     <Spacer />
 
-                    <p>Location (optional)</p>
-                    <input type='text' {...register('location')} />
+                    <FormField label='Location' optional>
+                        <input type='text' {...register('location')} />
+                    </FormField>
                 </FormSection>,
 
                 // course times
@@ -184,40 +188,41 @@ export function CourseForm(props: CourseFormProps) {
                     {timesField.fields.map((field, idx) => (
                         <div key={field.id} className={styles.courseTime}>
                             <div className={styles.termDates}>
-                                <p>Start Time</p>
-                                <p>End Time</p>
+                                <FormField label='Start Time'>
+                                    <Controller
+                                        control={control}
+                                        name={`times.${idx}.start`}
+                                        rules={{
+                                            validate: (v, f) =>
+                                                v < f.times[idx].end,
+                                        }}
+                                        render={({ field }) => (
+                                            <DateTimePicker
+                                                value={field.value}
+                                                onChange={field.onChange}
+                                                hideDate
+                                            />
+                                        )}
+                                    />
+                                </FormField>
 
-                                <Controller
-                                    control={control}
-                                    name={`times.${idx}.start`}
-                                    rules={{
-                                        validate: (v, f) =>
-                                            v < f.times[idx].end,
-                                    }}
-                                    render={({ field }) => (
-                                        <DateTimePicker
-                                            value={field.value}
-                                            onChange={field.onChange}
-                                            hideDate
-                                        />
-                                    )}
-                                />
-
-                                <Controller
-                                    control={control}
-                                    name={`times.${idx}.end`}
-                                    rules={{
-                                        validate: (v, f) =>
-                                            v > f.times[idx].start,
-                                    }}
-                                    render={({ field }) => (
-                                        <DateTimePicker
-                                            value={field.value}
-                                            onChange={field.onChange}
-                                            hideDate
-                                        />
-                                    )}
-                                />
+                                <FormField label='End Time'>
+                                    <Controller
+                                        control={control}
+                                        name={`times.${idx}.end`}
+                                        rules={{
+                                            validate: (v, f) =>
+                                                v > f.times[idx].start,
+                                        }}
+                                        render={({ field }) => (
+                                            <DateTimePicker
+                                                value={field.value}
+                                                onChange={field.onChange}
+                                                hideDate
+                                            />
+                                        )}
+                                    />
+                                </FormField>
                             </div>
                             <p className={styles.error}>
                                 {(errors.times?.at?.(idx)?.start ||
