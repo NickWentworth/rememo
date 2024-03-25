@@ -15,6 +15,7 @@ export function WeekdaySelector(props: WeekdaySelectorProps) {
         <div className={styles.weekdaySelector}>
             {WEEKDAYS.map((day, idx) => (
                 <Button
+                    key={idx}
                     type={getBitAt(props.value, idx) ? 'solid' : 'outline'}
                     border='square'
                     onClick={() =>
