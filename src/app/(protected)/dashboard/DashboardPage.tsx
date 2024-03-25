@@ -1,11 +1,11 @@
 'use client';
 
+import Button, { AddButton } from '@/components/Button';
 import Panel, { Centered } from '@/components/Panel';
 import Calendar from '@/components/Calendar';
 import { TaskCard } from '@/components/cards';
 import { TaskForm, useTaskFormController } from '@/components/forms';
 import { useTaskMutations, useTasksWithOptions } from '@/lib/query/tasks';
-import Button from '@/components/Button';
 
 export default function DashboardPage() {
     // only include tasks for this week
@@ -76,7 +76,16 @@ export default function DashboardPage() {
                 flex={2}
             />
 
-            <Panel header={<h1>This Week's Tasks</h1>} body={list} flex={3} />
+            <Panel
+                header={
+                    <>
+                        <h1>This Week's Tasks</h1>{' '}
+                        <AddButton onClick={taskFormController.create} />
+                    </>
+                }
+                body={list}
+                flex={3}
+            />
 
             <TaskForm controller={taskFormController} />
         </>
