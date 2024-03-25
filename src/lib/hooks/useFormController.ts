@@ -1,19 +1,16 @@
 import { useState } from 'react';
 
-export type FormState<T> = FormClosed | FormCreate | FormUpdate<T>;
-
-type FormClosed = {
-    mode: 'closed';
+export type FormController<T> = {
+    state: FormState<T>;
+    close: () => void;
+    create: () => void;
+    update: (initial: T) => void;
 };
 
-type FormCreate = {
-    mode: 'create';
-};
-
-type FormUpdate<T> = {
-    mode: 'update';
-    data: T;
-};
+type FormState<T> =
+    | { mode: 'closed' }
+    | { mode: 'create' }
+    | { mode: 'update'; data: T };
 
 /**
  * Provides a form state and methods to interact with the form state. The form state should be provided to
@@ -25,8 +22,8 @@ type FormUpdate<T> = {
  *
  * `update(initial)`: open the form in update mode, taking in some initial data that can be modified
  */
-export function useFormState<T>() {
-    const [formState, setFormState] = useState<FormState<T>>({
+export function useFormController<T>(): FormController<T> {
+    const [state, setFormState] = useState<FormState<T>>({
         mode: 'closed',
     });
 
@@ -49,5 +46,5 @@ export function useFormState<T>() {
         });
     }
 
-    return { formState, close, create, update };
+    return { state, close, create, update };
 }

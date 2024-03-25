@@ -1,17 +1,20 @@
 'use client';
 
-import { Close, Trash } from '@/components/icons';
+import { Trash } from '@/components/icons';
 import Button, { AddButton } from '@/components/Button';
+import Form from './Form';
+import FormSection from './FormSection';
+import Spacer from './Spacer';
 import { DateTimePicker } from './DateTimePicker';
 import { WeekdaySelector } from './WeekdaySelector';
+import { useAllTerms } from '@/lib/query/terms';
+import { useCourseMutations } from '@/lib/query/courses';
+import { useFormController } from '@/lib/hooks/useFormController';
 import { CoursePayload } from '@/lib/types';
 import { CourseTime } from '@prisma/client';
 import { todayUTC } from '@/lib/date';
-import { FormState } from '@/lib/hooks/useFormState';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import styles from './form.module.css';
-import { useAllTerms } from '@/lib/query/terms';
-import { useCourseMutations } from '@/lib/query/courses';
 
 const COLORS = [
     '#EFFFFF', // global white color
@@ -43,9 +46,11 @@ const DEFAULT_COURSE_TIME = {
     courseId: '',
 } satisfies CourseTime;
 
+export const useCourseFormController = useFormController<CoursePayload>;
+
 type CourseFormProps = {
-    state: FormState<CoursePayload>;
-    onCloseClick?: () => void;
+    controller: ReturnType<typeof useCourseFormController>;
+
     // a selected term is required for a course to be added/updated
     selectedTermId: string;
 };
@@ -65,8 +70,8 @@ export function CourseForm(props: CourseFormProps) {
         formState: { errors },
     } = useForm<CoursePayload>({
         values:
-            props.state.mode === 'update'
-                ? props.state.data
+            props.controller.state.mode === 'update'
+                ? props.controller.state.data
                 : { ...DEFAULT_COURSE, termId: props.selectedTermId },
     });
 
@@ -75,14 +80,6 @@ export function CourseForm(props: CourseFormProps) {
         control,
         name: 'times',
     });
-
-    if (props.state.mode === 'closed' || terms === undefined) {
-        // return early if closed and render nothing
-        return;
-    }
-
-    const title =
-        props.state.mode === 'create' ? 'Add Course' : 'Modify Course';
 
     function onSubmit(data: Partial<CoursePayload>) {
         // common course data used when either creating or updating
@@ -98,7 +95,7 @@ export function CourseForm(props: CourseFormProps) {
             times: data.times ?? [],
         } satisfies Partial<CoursePayload>;
 
-        switch (props.state.mode) {
+        switch (props.controller.state.mode) {
             case 'closed':
                 console.error('Term form is being submitted in closed state');
                 break;
@@ -111,7 +108,7 @@ export function CourseForm(props: CourseFormProps) {
                 break;
 
             case 'update':
-                const initial = props.state.data;
+                const initial = props.controller.state.data;
                 updateCourse({
                     ...partialCourse,
                     id: initial.id,
@@ -119,237 +116,156 @@ export function CourseForm(props: CourseFormProps) {
                 break;
         }
 
-        props.onCloseClick?.();
+        props.controller.close();
         reset();
     }
 
     return (
-        <div className={styles.fillPage}>
-            <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-                {/* header section */}
-                <div className={styles.formHeader}>
-                    <h1>{title}</h1>
-
-                    <Button
-                        type='transparent'
-                        onClick={props.onCloseClick}
-                        icon={<Close size={30} color='white' />}
+        <Form
+            controller={props.controller}
+            onSubmit={handleSubmit(onSubmit)}
+            title='Course'
+            sections={[
+                // main course data
+                <FormSection>
+                    <p>Name</p>
+                    <input
+                        type='text'
+                        {...register('name', {
+                            required: 'Course must have a name',
+                        })}
                     />
-                </div>
+                    <p className={styles.error}>{errors.name?.message}</p>
 
-                <hr />
+                    <Spacer />
 
-                {/* main course data */}
-                <div className={styles.formSection}>
-                    {/* name */}
-                    <div className={styles.fieldContainer}>
-                        <label htmlFor='name'>
-                            <p>Name</p>
-                        </label>
-
-                        <input
-                            type='text'
-                            id='name'
-                            {...register('name', {
-                                required: 'Course must include a name',
-                            })}
-                        />
-
-                        <p className={styles.error}>{errors.name?.message}</p>
-                    </div>
-
-                    {/* term */}
-                    <div className={styles.fieldContainer}>
-                        <label htmlFor='term'>
-                            <p>Term</p>
-                        </label>
-
-                        <select id='term' {...register('termId')}>
-                            {terms.map((t) => (
-                                <option key={t.id} value={t.id}>
-                                    {t.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                </div>
-
-                <hr />
-
-                {/* course color */}
-                <div className={styles.formSection}>
-                    <div className={styles.fieldContainer}>
-                        <label htmlFor='color'>
-                            <p>Course Color</p>
-                        </label>
-
-                        <div className={styles.colorSection}>
-                            {COLORS.map((c) => (
-                                <input
-                                    key={c}
-                                    {...register('color')}
-                                    type='radio'
-                                    value={c}
-                                    style={{ color: c }}
-                                />
-                            ))}
-                        </div>
-                    </div>
-                </div>
-
-                <hr />
-
-                {/* optional course data */}
-                <div className={styles.formSection}>
-                    {/* instructor */}
-                    <div className={styles.fieldContainer}>
-                        <label htmlFor='instructor'>
-                            <p>Instructor (optional)</p>
-                        </label>
-
-                        <input
-                            type='text'
-                            id='instructor'
-                            {...register('instructor')}
-                        />
-                    </div>
-
-                    {/* location */}
-                    <div className={styles.fieldContainer}>
-                        <label htmlFor='location'>
-                            <p>Location (optional)</p>
-                        </label>
-
-                        <input
-                            type='text'
-                            id='location'
-                            {...register('location')}
-                        />
-                    </div>
-                </div>
-
-                <hr />
-
-                {/* times */}
-                <div className={styles.formSection}>
-                    <div className={styles.fieldContainer}>
-                        <label>
-                            <p>Course Times</p>
-                        </label>
-
-                        {timesField.fields.map((field, idx) => (
-                            <div
-                                key={field.id}
-                                className={styles.courseTimeRow}
-                            >
-                                <div className={styles.courseTimeRowTimes}>
-                                    <label>
-                                        <p>Start Time</p>
-                                    </label>
-
-                                    <label>
-                                        <p>End Time</p>
-                                    </label>
-
-                                    <Controller
-                                        control={control}
-                                        name={`times.${idx}.start`}
-                                        rules={{
-                                            validate: (value, form) =>
-                                                value < form.times.at(idx)!.end,
-                                        }}
-                                        render={({ field }) => (
-                                            <DateTimePicker
-                                                value={field.value}
-                                                onChange={field.onChange}
-                                                hideDate
-                                            />
-                                        )}
-                                    />
-
-                                    <Controller
-                                        control={control}
-                                        name={`times.${idx}.end`}
-                                        rules={{
-                                            validate: (value, form) =>
-                                                value >
-                                                form.times.at(idx)!.start,
-                                        }}
-                                        render={({ field }) => (
-                                            <DateTimePicker
-                                                value={field.value}
-                                                onChange={field.onChange}
-                                                hideDate
-                                            />
-                                        )}
-                                    />
-                                </div>
-
-                                {/* start and end time errors are related, so check for either */}
-                                <p className={styles.error}>
-                                    {(errors.times?.at?.(idx)?.start ||
-                                        errors.times?.at?.(idx)?.end) &&
-                                        'End time must come after start time'}
-                                </p>
-
-                                <div className={styles.courseTimeRowDays}>
-                                    <div
-                                        className={
-                                            styles.courseTimeRowDaySelector
-                                        }
-                                    >
-                                        <label>
-                                            <p>Repeated Days</p>
-                                        </label>
-
-                                        <Controller
-                                            control={control}
-                                            name={`times.${idx}.days`}
-                                            rules={{
-                                                validate: (value) =>
-                                                    value != 0 ||
-                                                    'Select the day(s) this course time repeats',
-                                            }}
-                                            render={({ field }) => (
-                                                <WeekdaySelector
-                                                    value={field.value}
-                                                    onChange={field.onChange}
-                                                />
-                                            )}
-                                        />
-                                    </div>
-
-                                    <Button
-                                        type='transparent'
-                                        onClick={() => timesField.remove(idx)}
-                                        icon={<Trash color='light' size={16} />}
-                                    />
-                                </div>
-
-                                <p className={styles.error}>
-                                    {errors.times?.at?.(idx)?.days?.message}
-                                </p>
-                            </div>
+                    <p>Term</p>
+                    <select id='term' {...register('termId')}>
+                        {terms?.map((term) => (
+                            <option key={term.id} value={term.id}>
+                                {term.name}
+                            </option>
                         ))}
+                    </select>
+                </FormSection>,
 
-                        <div className={styles.alignCenter}>
-                            <AddButton
-                                onClick={() =>
-                                    timesField.append(DEFAULT_COURSE_TIME)
-                                }
+                // course color
+                <FormSection>
+                    <p>Course Color</p>
+
+                    <Spacer />
+
+                    <div className={styles.courseColorPicker}>
+                        {COLORS.map((color) => (
+                            <input
+                                key={color}
+                                className={styles.courseColor}
+                                type='radio'
+                                value={color}
+                                style={{ color }}
+                                {...register('color')}
                             />
-                        </div>
+                        ))}
                     </div>
-                </div>
+                </FormSection>,
 
-                <hr />
+                // optional course data
+                <FormSection>
+                    <p>Instructor (optional)</p>
+                    <input type='text' {...register('instructor')} />
 
-                <div className={styles.alignCenter}>
-                    <Button type='solid' submit>
-                        Submit
-                    </Button>
-                </div>
-            </form>
-        </div>
+                    <Spacer />
+
+                    <p>Location (optional)</p>
+                    <input type='text' {...register('location')} />
+                </FormSection>,
+
+                // course times
+                <FormSection>
+                    <p>Course Times</p>
+
+                    {timesField.fields.map((field, idx) => (
+                        <div key={field.id} className={styles.courseTime}>
+                            <div className={styles.termDates}>
+                                <p>Start Time</p>
+                                <p>End Time</p>
+
+                                <Controller
+                                    control={control}
+                                    name={`times.${idx}.start`}
+                                    rules={{
+                                        validate: (v, f) =>
+                                            v < f.times[idx].end,
+                                    }}
+                                    render={({ field }) => (
+                                        <DateTimePicker
+                                            value={field.value}
+                                            onChange={field.onChange}
+                                            hideDate
+                                        />
+                                    )}
+                                />
+
+                                <Controller
+                                    control={control}
+                                    name={`times.${idx}.end`}
+                                    rules={{
+                                        validate: (v, f) =>
+                                            v > f.times[idx].start,
+                                    }}
+                                    render={({ field }) => (
+                                        <DateTimePicker
+                                            value={field.value}
+                                            onChange={field.onChange}
+                                            hideDate
+                                        />
+                                    )}
+                                />
+                            </div>
+                            <p className={styles.error}>
+                                {(errors.times?.at?.(idx)?.start ||
+                                    errors.times?.at?.(idx)?.end) &&
+                                    'End time must come after start time'}
+                            </p>
+
+                            <p>Repeated Days</p>
+                            <div className={styles.courseTimeDaysRow}>
+                                <Controller
+                                    control={control}
+                                    name={`times.${idx}.days`}
+                                    rules={{
+                                        validate: (v) =>
+                                            v !== 0 ||
+                                            'Select the day(s) this course time repeats',
+                                    }}
+                                    render={({ field }) => (
+                                        <WeekdaySelector
+                                            value={field.value}
+                                            onChange={field.onChange}
+                                        />
+                                    )}
+                                />
+                                <Button
+                                    type='transparent'
+                                    onClick={() => timesField.remove(idx)}
+                                    icon={<Trash color='light' size={16} />}
+                                />
+                            </div>
+                            <p className={styles.error}>
+                                {errors.times?.at?.(idx)?.days?.message}
+                            </p>
+                        </div>
+                    ))}
+
+                    <div className={styles.alignCenter}>
+                        <AddButton
+                            onClick={() =>
+                                timesField.append(DEFAULT_COURSE_TIME)
+                            }
+                        />
+                    </div>
+                </FormSection>,
+            ]}
+        />
     );
 }

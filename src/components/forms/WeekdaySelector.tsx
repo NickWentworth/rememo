@@ -1,6 +1,6 @@
 import Button from '@/components/Button';
 import { getBitAt, toggleBitAt } from '@/lib/bitfield';
-import styles from './form.module.css';
+import styles from './comps.module.css';
 
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 

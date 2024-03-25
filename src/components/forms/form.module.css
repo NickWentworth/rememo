@@ -1,92 +1,113 @@
-.fillPage {
-    background-color: #000000dd;
+.fill {
+    z-index: 100;
+    background-color: #000d;
+
     position: absolute;
-    width: 100vw;
-    height: 100vh;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    overflow: hidden;
 }
 
 .form {
     background-color: var(--medium);
-    width: 500px;
-    border-radius: 0.5rem;
-    display: flex;
-    flex-direction: column;
     padding: 1rem;
-    gap: 0.5rem;
-}
+    border-radius: 0.5rem;
 
-.form input,
-.form select,
-.form textarea {
-    background-color: var(--dark);
-    color: var(--white);
-    border: 1px solid var(--medium);
-    border-radius: 0.25rem;
-    padding: 0.125rem 0.25rem;
-    font-family: 'Inter';
-}
-
-.form select {
-    cursor: pointer;
-}
-
-.form textarea {
-    resize: vertical;
-}
-
-.formHeader {
+    width: 600px;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    gap: 0.5rem;
+    overflow: hidden;
+}
+
+.header {
+    display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
-.formSection {
+.footer {
+    display: flex;
+    justify-content: center;
+}
+
+.body {
     display: flex;
     flex-direction: column;
-    padding: 0.25rem;
     gap: 0.5rem;
+    overflow: auto;
 }
 
-.fieldContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
+.body hr {
+    flex-shrink: 0;
 }
 
 .error {
-    /* FIXME: color changes whenever a text input element is selected */
     color: red;
 }
 
+.alignCenter {
+    align-self: center;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    padding: 0.25rem;
+}
+
+.spacer {
+    height: 0.5rem;
+    flex-shrink: 0;
+}
+
+/* task form fields */
 .subtaskRow {
     display: grid;
-    grid-template-columns: 1fr auto auto;
-    grid-template-rows: auto auto;
+    grid-template-columns: 1fr 1fr auto;
 }
 
-.subtaskRowName {
-    flex-grow: 1;
-    text-overflow: ellipsis;
+/* term form fields */
+.termDates {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 }
 
-.dateTimePicker {
+.termVacation,
+.courseTime {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--dark);
+    border-radius: 0.5rem;
+    padding: 0.25rem;
+}
+
+.termVacationNameRow {
     display: flex;
 }
 
-.dateTimePicker input {
+.termVacationNameRow :first-child {
     flex-grow: 1;
 }
 
-.colorSection {
-    padding-top: 0.5rem;
-    display: flex;
-    justify-content: space-around;
+/* course form fields */
+.courseColorPicker {
+    display: grid;
+    grid-auto-columns: 1fr;
+    grid-auto-flow: column;
+    justify-items: center;
 }
 
-.colorSection input {
+.courseColor {
     appearance: none;
     background-color: transparent;
     margin: 0;
@@ -101,11 +122,7 @@
     place-content: center;
 }
 
-.colorSection input:hover {
-    background-color: #ffffff20;
-}
-
-.colorSection input:checked::after {
+.courseColor:checked::after {
     content: '';
     width: 1rem;
     height: 1rem;
@@ -113,50 +130,14 @@
     background-color: currentColor;
 }
 
-.weekdaySelector {
-    background-color: var(--dark);
+.courseColor:hover {
+    background-color: #ffffff20;
+}
+
+.courseTimeDaysRow {
     display: flex;
 }
 
-.weekdaySelector > * {
-    flex-basis: 100%;
-}
-
-.termVacationRow,
-.courseTimeRow {
-    border: 1px solid var(--dark);
-    border-radius: 0.5rem;
-    padding: 0.25rem;
-    margin-bottom: 0.25rem;
-}
-
-.termVacationRowDates,
-.courseTimeRowTimes {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 0.25rem;
-}
-
-.termVacationRowName {
-    display: flex;
-    flex-direction: column;
-}
-
-.termVacationRowNameLabel {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-}
-
-.courseTimeRowDays {
-    display: flex;
-    align-items: flex-end;
-}
-
-.courseTimeRowDaySelector {
+.courseTimeDaysRow :first-child {
     flex-grow: 1;
-}
-
-.alignCenter {
-    align-self: center;
 }

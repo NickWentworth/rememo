@@ -5,11 +5,9 @@ import Panel, { Centered } from '@/components/Panel';
 import SearchBar from '@/components/SearchBar';
 import TypedSelect from '@/components/forms/TypedSelect';
 import { TaskCard } from '@/components/cards';
-import { TaskForm } from '@/components/forms';
-import { TaskPayload } from '@/lib/types';
+import { TaskForm, useTaskFormController } from '@/components/forms';
 import { GetTaskOptions } from '@/lib/actions/tasks';
 import { useTaskMutations, useTasksWithOptions } from '@/lib/query/tasks';
-import { useFormState } from '@/lib/hooks/useFormState';
 import { useState } from 'react';
 import styles from './tasks.module.css';
 
@@ -24,13 +22,13 @@ export default function TasksPage() {
     const { status, fetchNextPage, isFetchingNextPage, hasNextPage } = query;
     const { remove: removeTask } = useTaskMutations();
 
-    const taskFormState = useFormState<TaskPayload>();
+    const taskFormController = useTaskFormController();
 
     const header = (
         <div className={styles.header}>
             <div className={styles.title}>
                 <h1>Tasks</h1>
-                <AddButton onClick={taskFormState.create} />
+                <AddButton onClick={taskFormController.create} />
             </div>
 
             <SearchBar
@@ -95,7 +93,7 @@ export default function TasksPage() {
                     <TaskCard
                         key={task.id}
                         task={task}
-                        onEditClick={() => taskFormState.update(task)}
+                        onEditClick={() => taskFormController.update(task)}
                         onDeleteClick={() => removeTask(task.id)}
                     />
                 ))}
@@ -123,10 +121,7 @@ export default function TasksPage() {
         <>
             <Panel header={header} body={list} flex={1} width={800} />
 
-            <TaskForm
-                state={taskFormState.formState}
-                onCloseClick={taskFormState.close}
-            />
+            <TaskForm controller={taskFormController} />
         </>
     );
 }

@@ -3,11 +3,14 @@
 import { AddButton } from '@/components/Button';
 import Panel, { Centered } from '@/components/Panel';
 import { CourseCard, TermCard } from '@/components/cards';
-import { CourseForm, TermForm } from '@/components/forms';
-import { useFormState } from '@/lib/hooks/useFormState';
+import {
+    CourseForm,
+    TermForm,
+    useCourseFormController,
+    useTermFormController,
+} from '@/components/forms';
 import { useCourseMutations, useCoursesByTermId } from '@/lib/query/courses';
 import { useAllTerms, useTermMutations } from '@/lib/query/terms';
-import { CoursePayload, TermPayload } from '@/lib/types';
 import { useState } from 'react';
 
 export default function CoursesPage() {
@@ -17,7 +20,7 @@ export default function CoursesPage() {
     const { data: terms, status: termStatus } = useAllTerms();
     const { remove: removeTerm } = useTermMutations();
 
-    const termFormState = useFormState<TermPayload>();
+    const termFormController = useTermFormController();
 
     const termList = (() => {
         if (termStatus === 'error') {
@@ -44,7 +47,7 @@ export default function CoursesPage() {
                     <TermCard
                         key={term.id}
                         term={term}
-                        onEditClick={() => termFormState.update(term)}
+                        onEditClick={() => termFormController.update(term)}
                         onDeleteClick={() => {
                             if (selectedTermId === term.id) {
                                 setSelectedTermId(undefined);
@@ -64,7 +67,7 @@ export default function CoursesPage() {
         useCoursesByTermId(selectedTermId);
     const { remove: removeCourse } = useCourseMutations();
 
-    const courseFormState = useFormState<CoursePayload>();
+    const courseFormController = useCourseFormController();
 
     const courseList = (() => {
         if (courseStatus === 'error') {
@@ -92,7 +95,7 @@ export default function CoursesPage() {
                     <CourseCard
                         key={course.id}
                         course={course}
-                        onEditClick={() => courseFormState.update(course)}
+                        onEditClick={() => courseFormController.update(course)}
                         onDeleteClick={() => removeCourse(course.id)}
                     />
                 ))}
@@ -106,7 +109,7 @@ export default function CoursesPage() {
                 header={
                     <>
                         <h1>Terms</h1>
-                        <AddButton onClick={termFormState.create} />
+                        <AddButton onClick={termFormController.create} />
                     </>
                 }
                 body={termList}
@@ -118,7 +121,7 @@ export default function CoursesPage() {
                     <>
                         <h1>Courses</h1>
                         <AddButton
-                            onClick={courseFormState.create}
+                            onClick={courseFormController.create}
                             disabled={selectedTermId === undefined}
                         />
                     </>
@@ -127,15 +130,11 @@ export default function CoursesPage() {
                 flex={3}
             />
 
-            <TermForm
-                state={termFormState.formState}
-                onCloseClick={termFormState.close}
-            />
+            <TermForm controller={termFormController} />
 
             {selectedTermId && (
                 <CourseForm
-                    state={courseFormState.formState}
-                    onCloseClick={courseFormState.close}
+                    controller={courseFormController}
                     selectedTermId={selectedTermId}
                 />
             )}

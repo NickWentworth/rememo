@@ -3,10 +3,8 @@
 import Panel, { Centered } from '@/components/Panel';
 import Calendar from '@/components/Calendar';
 import { TaskCard } from '@/components/cards';
-import { TaskForm } from '@/components/forms';
-import { useFormState } from '@/lib/hooks/useFormState';
+import { TaskForm, useTaskFormController } from '@/components/forms';
 import { useTaskMutations, useTasksWithOptions } from '@/lib/query/tasks';
-import { TaskPayload } from '@/lib/types';
 import Button from '@/components/Button';
 
 export default function DashboardPage() {
@@ -18,7 +16,8 @@ export default function DashboardPage() {
     const { status, fetchNextPage, isFetchingNextPage, hasNextPage } = query;
     const { remove: removeTask } = useTaskMutations();
 
-    const taskFormState = useFormState<TaskPayload>();
+    // TODO: no add button here, is there a need for a task form?
+    const taskFormController = useTaskFormController();
 
     // TODO: make (inifinite) list component that will handle these common states
     const list = (() => {
@@ -45,7 +44,7 @@ export default function DashboardPage() {
                     <TaskCard
                         key={task.id}
                         task={task}
-                        onEditClick={() => taskFormState.update(task)}
+                        onEditClick={() => taskFormController.update(task)}
                         onDeleteClick={() => removeTask(task.id)}
                     />
                 ))}
@@ -79,10 +78,7 @@ export default function DashboardPage() {
 
             <Panel header={<h1>This Week's Tasks</h1>} body={list} flex={3} />
 
-            <TaskForm
-                state={taskFormState.formState}
-                onCloseClick={taskFormState.close}
-            />
+            <TaskForm controller={taskFormController} />
         </>
     );
 }

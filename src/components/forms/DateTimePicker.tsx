@@ -1,5 +1,5 @@
 import { dateISO, timeISO, updateDate, updateTime } from '@/lib/date';
-import styles from './form.module.css';
+import styles from './comps.module.css';
 
 type DateTimePickerProps = {
     // fields from controller component
