@@ -3,7 +3,7 @@
 import Button, { AddButton } from '@/components/Button';
 import Panel, { Centered } from '@/components/Panel';
 import SearchBar from '@/components/SearchBar';
-import TypedSelect from '@/components/forms/TypedSelect';
+import TypedSelect from '@/components/TypedSelect';
 import { TaskCard } from '@/components/cards';
 import { TaskForm, useTaskFormController } from '@/components/forms';
 import { GetTaskOptions } from '@/lib/actions/tasks';

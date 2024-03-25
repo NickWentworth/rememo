@@ -1,7 +1,7 @@
-import { Close } from '../icons';
-import Button from '../Button';
+import { Close } from '@/components/icons';
+import Button from '@/components/Button';
 import { FormController } from '@/lib/hooks/useFormController';
-import styles from './form.module.css';
+import styles from './structure.module.css';
 
 type FormProps<T> = {
     /** Returned from useFormController hook */
@@ -17,7 +17,7 @@ type FormProps<T> = {
     sections: React.ReactNode[];
 };
 
-export default function Form<T>(props: FormProps<T>) {
+export function Form<T>(props: FormProps<T>) {
     let title;
     switch (props.controller.state.mode) {
         case 'closed':

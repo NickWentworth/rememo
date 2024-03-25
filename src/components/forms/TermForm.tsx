@@ -2,10 +2,8 @@
 
 import { Trash } from '@/components/icons';
 import Button, { AddButton } from '@/components/Button';
-import Form from './Form';
-import FormSection from './FormSection';
-import Spacer from './Spacer';
-import { DateTimePicker } from './DateTimePicker';
+import { Form, FormSection, Spacer } from './structure';
+import { DateTimePicker } from './comps';
 import { TermPayload } from '@/lib/types';
 import { TermVacation } from '@prisma/client';
 import { todayUTC } from '@/lib/date';

@@ -2,11 +2,8 @@
 
 import { Trash } from '@/components/icons';
 import Button, { AddButton } from '@/components/Button';
-import Form from './Form';
-import FormSection from './FormSection';
-import Spacer from './Spacer';
-import { DateTimePicker } from './DateTimePicker';
-import { WeekdaySelector } from './WeekdaySelector';
+import { Form, FormSection, Spacer } from './structure';
+import { DateTimePicker, WeekdaySelector } from './comps';
 import { useAllTerms } from '@/lib/query/terms';
 import { useCourseMutations } from '@/lib/query/courses';
 import { useFormController } from '@/lib/hooks/useFormController';
