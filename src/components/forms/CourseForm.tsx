@@ -185,7 +185,9 @@ export function CourseForm(props: CourseFormProps) {
                 <FormSection>
                     <p>Course Times</p>
 
-                    {timesField.fields.map((field, idx) => (
+                    <Spacer />
+
+                    {timesField.fields.flatMap((field, idx) => [
                         <div key={field.id} className={styles.courseTime}>
                             <div className={styles.termDates}>
                                 <FormField label='Start Time'>
@@ -256,8 +258,10 @@ export function CourseForm(props: CourseFormProps) {
                             <p className={styles.error}>
                                 {errors.times?.at?.(idx)?.days?.message}
                             </p>
-                        </div>
-                    ))}
+                        </div>,
+
+                        <Spacer key={`${field.id}spacer`} />,
+                    ])}
 
                     <div className={styles.alignCenter}>
                         <AddButton

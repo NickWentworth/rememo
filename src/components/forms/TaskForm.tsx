@@ -174,6 +174,8 @@ export function TaskForm(props: TaskFormProps) {
                 <FormSection>
                     <p>Subtasks</p>
 
+                    <Spacer />
+
                     {subtasksField.fields.flatMap((field, idx) => [
                         <div key={field.id} className={styles.subtaskRow}>
                             <input
@@ -204,6 +206,9 @@ export function TaskForm(props: TaskFormProps) {
                             {errors.subtasks?.at?.(idx)?.name?.message}
                         </p>,
                     ])}
+
+                    {/* add space between bottom subtask and add button */}
+                    {subtasksField.fields.length > 0 && <Spacer />}
 
                     <div className={styles.alignCenter}>
                         <AddButton

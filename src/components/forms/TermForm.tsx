@@ -161,8 +161,9 @@ export function TermForm(props: TermFormProps) {
                 <FormSection>
                     <p>Vacations</p>
 
-                    {/* TODO: adjust styling of term vacation field */}
-                    {vacationsField.fields.map((field, idx) => (
+                    <Spacer />
+
+                    {vacationsField.fields.flatMap((field, idx) => [
                         <div key={field.id} className={styles.termVacation}>
                             <FormField label='Vacation Name'>
                                 <div className={styles.termVacationNameRow}>
@@ -186,8 +187,6 @@ export function TermForm(props: TermFormProps) {
                             <p className={styles.error}>
                                 {errors.vacations?.at?.(idx)?.name?.message}
                             </p>
-
-                            {/* <Spacer /> */}
 
                             <div className={styles.termDates}>
                                 <FormField label='Start Date'>
@@ -241,14 +240,14 @@ export function TermForm(props: TermFormProps) {
                                 </FormField>
                             </div>
 
-                            {/* <Spacer /> */}
-
                             <p className={styles.error}>
                                 {errors.vacations?.at?.(idx)?.start?.message ||
                                     errors.vacations?.at?.(idx)?.end?.message}
                             </p>
-                        </div>
-                    ))}
+                        </div>,
+
+                        <Spacer key={`${field.id}spacer`} />,
+                    ])}
 
                     <div className={styles.alignCenter}>
                         <AddButton

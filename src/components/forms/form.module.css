@@ -22,7 +22,7 @@
 .courseTime {
     display: flex;
     flex-direction: column;
-    border: 1px solid var(--dark);
+    border: 2px solid var(--dark);
     border-radius: 0.5rem;
     padding: 0.25rem;
 }
