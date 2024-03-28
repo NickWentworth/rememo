@@ -7,8 +7,8 @@ import { DateTimePicker } from './comps';
 import { TaskPayload } from '@/lib/types';
 import { todayUTC } from '@/lib/date';
 import { Subtask } from '@prisma/client';
+import { trpc } from '@/lib/trpc/client';
 import { useFormController } from '@/lib/hooks/useFormController';
-import { useAllCourses } from '@/lib/query/courses';
 import { useTaskMutations } from '@/lib/query/tasks';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import styles from './form.module.css';
@@ -40,7 +40,7 @@ type TaskFormProps = {
 };
 
 export function TaskForm(props: TaskFormProps) {
-    const { data: courses } = useAllCourses();
+    const { data: courses } = trpc.course.allBasic.useQuery();
 
     const { create: createTask, update: updateTask } = useTaskMutations();
 

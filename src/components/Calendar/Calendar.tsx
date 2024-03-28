@@ -14,8 +14,8 @@ import {
     isBetweenTimes,
 } from '@/lib/date';
 import { buildClass, inverseLerp, range } from '@/lib/utils';
+import { trpc } from '@/lib/trpc/client';
 import { useElementAttribute } from '@/lib/hooks/useElementAttribute';
-import { useCourseTimesByDates } from '@/lib/query/courses';
 import { useCurrentTime } from '@/lib/hooks/useCurrentTime';
 import { useEffect, useRef, useState } from 'react';
 import styles from './calendar.module.css';
@@ -79,7 +79,7 @@ export default function Calendar(props: CalendarProps) {
     const hourRange = range(props.start ?? 0, props.end ?? 24);
 
     // query all course times for the given week
-    const courseTimesQuery = useCourseTimesByDates(dayRange);
+    const courseTimesQuery = trpc.course.timesByDateArray.useQuery(dayRange);
 
     // onClick functions for calendar controls
     const prev = () => setCalendarStart((c) => daysAhead(c, -display.range));

@@ -4,8 +4,8 @@ import { Trash } from '@/components/icons';
 import Button, { AddButton } from '@/components/Button';
 import { Form, FormSection, FormField, Spacer } from './structure';
 import { DateTimePicker, WeekdaySelector } from './comps';
+import { trpc } from '@/lib/trpc/client';
 import { useAllTerms } from '@/lib/query/terms';
-import { useCourseMutations } from '@/lib/query/courses';
 import { useFormController } from '@/lib/hooks/useFormController';
 import { CoursePayload } from '@/lib/types';
 import { CourseTime } from '@prisma/client';
@@ -56,7 +56,7 @@ export function CourseForm(props: CourseFormProps) {
     // reference all terms to link a course to a term
     const { data: terms } = useAllTerms();
 
-    const { create: createCourse, update: updateCourse } = useCourseMutations();
+    const { mutate: upsertCourse } = trpc.course.upsert.useMutation();
 
     // form data managed by useForm hook
     const {
@@ -98,7 +98,7 @@ export function CourseForm(props: CourseFormProps) {
                 break;
 
             case 'create':
-                createCourse({
+                upsertCourse({
                     ...partialCourse,
                     id: '',
                 });
@@ -106,7 +106,11 @@ export function CourseForm(props: CourseFormProps) {
 
             case 'update':
                 const initial = props.controller.state.data;
-                updateCourse({
+                console.log({
+                    ...partialCourse,
+                    id: initial.id,
+                });
+                upsertCourse({
                     ...partialCourse,
                     id: initial.id,
                 });

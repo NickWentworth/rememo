@@ -9,7 +9,6 @@ import {
     useCourseFormController,
     useTermFormController,
 } from '@/components/forms';
-import { useCourseMutations, useCoursesByTermId } from '@/lib/query/courses';
 import { trpc } from '@/lib/trpc/client';
 import { useState } from 'react';
 
@@ -64,8 +63,8 @@ export default function CoursesPage() {
 
     // courses
     const { data: courses, status: courseStatus } =
-        useCoursesByTermId(selectedTermId);
-    const { remove: removeCourse } = useCourseMutations();
+        trpc.course.byTermId.useQuery(selectedTermId);
+    const { mutate: removeCourse } = trpc.course.remove.useMutation();
 
     const courseFormController = useCourseFormController();
 
