@@ -11,13 +11,14 @@ import {
 } from '@/components/forms';
 import { useCourseMutations, useCoursesByTermId } from '@/lib/query/courses';
 import { useAllTerms, useTermMutations } from '@/lib/query/terms';
+import { trpc } from '@/lib/trpc/client';
 import { useState } from 'react';
 
 export default function CoursesPage() {
     // terms
     const [selectedTermId, setSelectedTermId] = useState<string>();
 
-    const { data: terms, status: termStatus } = useAllTerms();
+    const { data: terms, status: termStatus } = trpc.term.all.useQuery();
     const { remove: removeTerm } = useTermMutations();
 
     const termFormController = useTermFormController();
