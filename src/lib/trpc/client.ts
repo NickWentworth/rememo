@@ -2,7 +2,20 @@ import { type AppRouter } from '.';
 import { TRPCCombinedDataTransformer } from '@trpc/server';
 import { createTRPCReact } from '@trpc/react-query';
 
-export const trpc = createTRPCReact<AppRouter>();
+export const trpc = createTRPCReact<AppRouter>({
+    overrides: {
+        useMutation: {
+            onSuccess: async (options) => {
+                // apply original function
+                await options.originalFn();
+
+                // TODO: might want to create hooks to prevent needless fetches
+                // automatically invalidate ALL queries on successful mutation
+                options.queryClient.invalidateQueries();
+            },
+        },
+    },
+});
 
 const serialize = (object: any) => JSON.stringify(object);
 
