@@ -1,8 +1,7 @@
 import Providers from './Providers';
 import Sidebar from '@/components/Sidebar';
 import { buildMetadata } from '@/lib/metadata';
-import { LOGIN_ROUTE } from '@/lib/auth';
-import { isAuthenticated } from '@/lib/actions/user';
+import { LOGIN_ROUTE, isAuthenticated } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import '../global.css';
 

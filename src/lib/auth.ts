@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { NextAuthOptions } from 'next-auth';
+import { NextAuthOptions, getServerSession } from 'next-auth';
 import Google, { GoogleProfile } from 'next-auth/providers/google';
 
 const prisma = new PrismaClient();
@@ -51,3 +51,8 @@ export const authOptions = {
         },
     },
 } satisfies NextAuthOptions;
+
+export async function isAuthenticated() {
+    const session = await getServerSession(authOptions);
+    return session !== null;
+}

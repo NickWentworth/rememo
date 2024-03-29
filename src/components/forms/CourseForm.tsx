@@ -5,7 +5,6 @@ import Button, { AddButton } from '@/components/Button';
 import { Form, FormSection, FormField, Spacer } from './structure';
 import { DateTimePicker, WeekdaySelector } from './comps';
 import { trpc } from '@/lib/trpc/client';
-import { useAllTerms } from '@/lib/query/terms';
 import { useFormController } from '@/lib/hooks/useFormController';
 import { CoursePayload } from '@/lib/types';
 import { CourseTime } from '@prisma/client';
@@ -54,7 +53,7 @@ type CourseFormProps = {
 
 export function CourseForm(props: CourseFormProps) {
     // reference all terms to link a course to a term
-    const { data: terms } = useAllTerms();
+    const { data: terms } = trpc.term.all.useQuery();
 
     const { mutate: upsertCourse } = trpc.course.upsert.useMutation();
 

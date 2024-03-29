@@ -1,7 +1,7 @@
 import { Logo } from '@/components/icons';
 import { ProviderButton } from '@/components/Button';
 import { buildMetadata } from '@/lib/metadata';
-import { isAuthenticated } from '@/lib/actions/user';
+import { isAuthenticated } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { getProviders } from 'next-auth/react';
 import styles from './login.module.css';
