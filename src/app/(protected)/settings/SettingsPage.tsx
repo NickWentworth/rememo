@@ -3,14 +3,14 @@
 import { Info } from '@/components/icons';
 import Button from '@/components/Button';
 import Panel from '@/components/Panel';
-import { useUser, useUserMutations } from '@/lib/query/user';
+import { trpc } from '@/lib/trpc/client';
 import { signOut } from 'next-auth/react';
 import { useState } from 'react';
 import styles from './settings.module.css';
 
 export default function SettingsPage() {
-    const { data: user, status } = useUser();
-    const { deleteUser } = useUserMutations();
+    const { data: user, status } = trpc.user.get.useQuery();
+    const { mutate: deleteUser } = trpc.user.permanentlyDelete.useMutation();
 
     const [hideTooltip, setHideTooltip] = useState(true);
 

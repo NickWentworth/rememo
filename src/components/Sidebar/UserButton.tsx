@@ -1,5 +1,5 @@
 import { SIDEBAR_ICON_SIZE } from './Sidebar';
-import { useUser } from '@/lib/query/user';
+import { trpc } from '@/lib/trpc/client';
 import Link from 'next/link';
 import styles from './sidebar.module.css';
 
@@ -8,7 +8,7 @@ type UserButtonProps = {
 };
 
 export function UserButton(props: UserButtonProps) {
-    const { data: user } = useUser();
+    const { data: user } = trpc.user.get.useQuery();
 
     if (user === undefined) {
         return;
