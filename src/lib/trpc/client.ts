@@ -1,6 +1,7 @@
 import { type AppRouter } from '.';
 import { TRPCCombinedDataTransformer } from '@trpc/server';
 import { createTRPCReact } from '@trpc/react-query';
+import { type GetTaskOptions } from './task';
 
 export const trpc = createTRPCReact<AppRouter>({
     overrides: {
@@ -35,3 +36,16 @@ export const trpcTransformer: TRPCCombinedDataTransformer = {
     input: { serialize, deserialize },
     output: { serialize, deserialize },
 };
+
+// TODO: re-implement remaining task count
+/** Wraps `trpc.task.withOptionsPaginated` and provides easy access to all fetched tasks */
+export function usePaginatedTasks(options: GetTaskOptions) {
+    const query = trpc.task.withOptionsPaginated.useInfiniteQuery(options, {
+        getNextPageParam: (lastPage) => lastPage.nextCursor,
+    });
+
+    return {
+        query: query,
+        tasks: query.data?.pages.flatMap((page) => page.tasks) ?? [],
+    };
+}

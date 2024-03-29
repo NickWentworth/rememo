@@ -7,7 +7,7 @@ import { BUTTON_ICON_SIZE } from '.';
 import { TaskPayload } from '@/lib/types';
 import { formatTaskDate } from '@/lib/date';
 import { buildClass } from '@/lib/utils';
-import { useTaskMutations } from '@/lib/query/tasks';
+import { trpc } from '@/lib/trpc/client';
 import { useState } from 'react';
 import styles from './card.module.css';
 
@@ -18,7 +18,8 @@ type TaskCardProps = {
 };
 
 export function TaskCard(props: TaskCardProps) {
-    const { setTaskCompletion } = useTaskMutations();
+    const { mutate: setTaskCompletion } =
+        trpc.task.setTaskCompletion.useMutation();
 
     // is the mouse currently hovering over the task card?
     const [hovering, setHovering] = useState(false);

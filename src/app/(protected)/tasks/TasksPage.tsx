@@ -6,8 +6,8 @@ import SearchBar from '@/components/SearchBar';
 import TypedSelect from '@/components/TypedSelect';
 import { TaskCard } from '@/components/cards';
 import { TaskForm, useTaskFormController } from '@/components/forms';
-import { GetTaskOptions } from '@/lib/actions/tasks';
-import { useTaskMutations, useTasksWithOptions } from '@/lib/query/tasks';
+import { type GetTaskOptions } from '@/lib/trpc/task';
+import { trpc, usePaginatedTasks } from '@/lib/trpc/client';
 import { useState } from 'react';
 import styles from './tasks.module.css';
 
@@ -18,9 +18,9 @@ export default function TasksPage() {
         show: 'current',
     });
 
-    const { tasks, remainingTasks, query } = useTasksWithOptions(options);
+    const { tasks, query } = usePaginatedTasks(options);
     const { status, fetchNextPage, isFetchingNextPage, hasNextPage } = query;
-    const { remove: removeTask } = useTaskMutations();
+    const { mutate: removeTask } = trpc.task.remove.useMutation();
 
     const taskFormController = useTaskFormController();
 
@@ -107,7 +107,8 @@ export default function TasksPage() {
                             onClick={fetchNextPage}
                             disabled={isFetchingNextPage}
                         >
-                            Fetch More Tasks ({remainingTasks} remaining)
+                            {/* Fetch More Tasks ({remainingTasks} remaining) */}
+                            Fetch More Tasks
                         </Button>
                     ) : (
                         'No more remaining tasks'

@@ -1,7 +1,7 @@
 import { Subtask } from '@prisma/client';
 import { formatTaskDate } from '@/lib/date';
 import { buildClass } from '@/lib/utils';
-import { useTaskMutations } from '@/lib/query/tasks';
+import { trpc } from '@/lib/trpc/client';
 import styles from './card.module.css';
 
 type SubtaskRowProps = {
@@ -9,7 +9,8 @@ type SubtaskRowProps = {
 };
 
 export function Subtask(props: SubtaskRowProps) {
-    const { setSubtaskCompletion } = useTaskMutations();
+    const { mutate: setSubtaskCompletion } =
+        trpc.task.setSubtaskCompletion.useMutation();
 
     const dueFormat = formatTaskDate(
         props.subtask.due,

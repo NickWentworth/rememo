@@ -5,16 +5,16 @@ import Panel, { Centered } from '@/components/Panel';
 import Calendar from '@/components/Calendar';
 import { TaskCard } from '@/components/cards';
 import { TaskForm, useTaskFormController } from '@/components/forms';
-import { useTaskMutations, useTasksWithOptions } from '@/lib/query/tasks';
+import { trpc, usePaginatedTasks } from '@/lib/trpc/client';
 
 export default function DashboardPage() {
     // only include tasks for this week
-    const { tasks, remainingTasks, query } = useTasksWithOptions({
+    const { tasks, query } = usePaginatedTasks({
         search: '',
         show: 'this week',
     });
     const { status, fetchNextPage, isFetchingNextPage, hasNextPage } = query;
-    const { remove: removeTask } = useTaskMutations();
+    const { mutate: removeTask } = trpc.task.remove.useMutation();
 
     // TODO: no add button here, is there a need for a task form?
     const taskFormController = useTaskFormController();
@@ -58,7 +58,8 @@ export default function DashboardPage() {
                             onClick={fetchNextPage}
                             disabled={isFetchingNextPage}
                         >
-                            Fetch More Tasks ({remainingTasks} remaining)
+                            {/* Fetch More Tasks ({remainingTasks} remaining) */}
+                            Fetch More Tasks
                         </Button>
                     ) : (
                         'No more remaining tasks this week'
