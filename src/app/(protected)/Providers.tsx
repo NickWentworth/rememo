@@ -17,7 +17,7 @@ export default function Providers(props: React.PropsWithChildren) {
         trpc.createClient({
             links: [
                 httpBatchLink({
-                    url: `http://localhost:3000/api/trpc`,
+                    url: `/api/trpc`,
                     transformer: trpcTransformer,
                 }),
             ],
