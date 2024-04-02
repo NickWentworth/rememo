@@ -3,7 +3,6 @@ import Sidebar from '@/components/Sidebar';
 import { buildMetadata } from '@/lib/metadata';
 import { LOGIN_ROUTE, isAuthenticated } from '@/lib/auth';
 import { redirect } from 'next/navigation';
-import '../global.css';
 
 // Pages in the (protected) layout group require the user to be signed into an active session.
 
@@ -22,13 +21,9 @@ export default async function Layout(props: LayoutProps) {
     }
 
     return (
-        <html>
-            <body>
-                <Providers>
-                    <Sidebar />
-                    {props.children}
-                </Providers>
-            </body>
-        </html>
+        <Providers>
+            <Sidebar />
+            {props.children}
+        </Providers>
     );
 }
