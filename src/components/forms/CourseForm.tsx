@@ -105,10 +105,6 @@ export function CourseForm(props: CourseFormProps) {
 
             case 'update':
                 const initial = props.controller.state.data;
-                console.log({
-                    ...partialCourse,
-                    id: initial.id,
-                });
                 upsertCourse({
                     ...partialCourse,
                     id: initial.id,
