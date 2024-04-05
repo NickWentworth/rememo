@@ -52,7 +52,16 @@ export const authOptions = {
     },
 } satisfies NextAuthOptions;
 
+/**
+ * Returns whether or not the user is authenticated and exists
+ */
 export async function isAuthenticated() {
     const session = await getServerSession(authOptions);
-    return session !== null;
+    const email = session?.user?.email ?? '';
+
+    const user = await prisma.user.findUnique({
+        where: { email },
+    });
+
+    return user !== null;
 }
