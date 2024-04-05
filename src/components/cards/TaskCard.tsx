@@ -2,7 +2,7 @@
 
 import { Edit, Trash } from '@/components/icons';
 import Button from '@/components/Button';
-import { Subtask } from './Subtask';
+import { TaskCardSubtask } from './TaskCardSubtask';
 import { BUTTON_ICON_SIZE } from '.';
 import { TaskPayload } from '@/lib/types';
 import { formatTaskDate } from '@/lib/date';
@@ -101,7 +101,7 @@ export function TaskCard(props: TaskCardProps) {
                 {/* Subtasks */}
                 {props.task.subtasks.length != 0 && <hr />}
                 {props.task.subtasks.map((s) => (
-                    <Subtask key={s.id} subtask={s} />
+                    <TaskCardSubtask key={s.id} subtask={s} />
                 ))}
 
                 {/* Description */}

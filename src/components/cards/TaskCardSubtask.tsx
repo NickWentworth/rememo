@@ -1,14 +1,16 @@
-import { Subtask } from '@prisma/client';
 import { formatTaskDate } from '@/lib/date';
 import { buildClass } from '@/lib/utils';
 import { trpc } from '@/lib/trpc/client';
+import { TaskPayload } from '@/lib/types';
 import styles from './card.module.css';
 
-type SubtaskRowProps = {
+type Subtask = TaskPayload['subtasks'][number];
+
+type TaskCardSubtaskProps = {
     subtask: Subtask;
 };
 
-export function Subtask(props: SubtaskRowProps) {
+export function TaskCardSubtask(props: TaskCardSubtaskProps) {
     const { mutate: setSubtaskCompletion } =
         trpc.task.setSubtaskCompletion.useMutation();
 
