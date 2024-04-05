@@ -67,6 +67,11 @@
     padding: 0.125rem 0.5rem;
 }
 
+.taskDescription {
+    /* allow line breaks, ex: for lists */
+    white-space: pre-wrap;
+}
+
 .iconField {
     display: flex;
     gap: 0.25rem;

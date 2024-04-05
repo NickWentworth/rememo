@@ -108,7 +108,9 @@ export function TaskCard(props: TaskCardProps) {
                 {props.task.description && (
                     <>
                         <hr />
-                        <p>{props.task.description}</p>
+                        <p className={styles.taskDescription}>
+                            {props.task.description}
+                        </p>
                     </>
                 )}
             </div>
