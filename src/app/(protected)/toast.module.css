@@ -1,0 +1,42 @@
+.container {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 200;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 1rem;
+    gap: 0.5rem;
+}
+
+.message {
+    color: var(--dark);
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+    padding-left: 1rem;
+
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* TODO: choose better colors for various toast severities */
+/* TODO: use similar colors with card due date labels */
+
+.error {
+    background-color: #e58686;
+}
+
+.warning {
+    background-color: #dcd384;
+}
+
+.success {
+    background-color: #81c26c;
+}
+
+.info {
+    background-color: var(--light);
+}

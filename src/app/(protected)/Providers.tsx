@@ -1,5 +1,6 @@
 'use client';
 
+import { ToastProvider } from './ToastProvider';
 import { trpc, trpcTransformer } from '@/lib/trpc/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { httpBatchLink } from '@trpc/client';
@@ -27,7 +28,7 @@ export default function Providers(props: React.PropsWithChildren) {
     return (
         <trpc.Provider client={trpcClient} queryClient={queryClient}>
             <QueryClientProvider client={queryClient}>
-                {props.children}
+                <ToastProvider>{props.children}</ToastProvider>
             </QueryClientProvider>
         </trpc.Provider>
     );
