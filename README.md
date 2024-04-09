@@ -27,16 +27,19 @@ Development of Rememo is nearing completion and will soon be hosted and availabl
 
 1. Install [Node.js](https://nodejs.org/en/) and clone this repository
 
-2. Install npm dependencies and initialize the database with the following commands at the root of the repository:
+2. Install npm dependencies with the following command at the root of the repository:
 
     ```bash
     npm install
-    npm run init
     ```
 
-3. Rememo expects multiple environment variables to securely handle authentication. Create a `.env.local` file in the root folder and include the following variables:
+3. Rememo expects multiple environment variables to function properly. Create a `.env` file in the root folder and include the following variables:
 
     ```bash
+    # connection URL to a running PostgreSQL server
+    DATABASE_URL="postgresql://<your connection url>"
+
+    # authentication
     NEXTAUTH_URL="http://localhost:3000/"
     NEXTAUTH_SECRET="<randomized 32-character base64 string>"
 
@@ -50,9 +53,9 @@ Development of Rememo is nearing completion and will soon be hosted and availabl
 
     ```bash
     # development
-    npx run dev
+    npm run dev
 
     # production
-    npx run build
-    npx run start
+    npm run build
+    npm run start
     ```
