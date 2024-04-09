@@ -25,7 +25,7 @@ export const authedProcedure = t.procedure.use(async (options) => {
     });
 
     if (user === null) {
-        throw new Error('UNAUTHORIZED');
+        throw new Error('Error 401 (Unauthorized)');
     }
 
     return options.next({

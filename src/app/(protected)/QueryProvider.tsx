@@ -3,6 +3,7 @@
 import { trpc, trpcTransformer } from '@/lib/trpc/client';
 import {
     MutationCache,
+    QueryCache,
     QueryClient,
     QueryClientProvider,
 } from '@tanstack/react-query';
@@ -18,8 +19,14 @@ export function QueryProvider(props: React.PropsWithChildren) {
     const [queryClient] = useState(
         () =>
             new QueryClient({
-                defaultOptions: { queries: { staleTime: Infinity } },
+                defaultOptions: {
+                    queries: { staleTime: Infinity, retry: false },
+                },
                 mutationCache: new MutationCache({
+                    onError: (error) =>
+                        sendToast({ msg: error.message, severity: 'error' }),
+                }),
+                queryCache: new QueryCache({
                     onError: (error) =>
                         sendToast({ msg: error.message, severity: 'error' }),
                 }),
