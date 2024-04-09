@@ -1,3 +1,5 @@
+'use client';
+
 import { Close } from '@/components/icons';
 import Button from '@/components/Button';
 import { buildClass } from '@/lib/utils';
