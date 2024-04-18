@@ -175,7 +175,10 @@ export default function Calendar(props: CalendarProps) {
 
                             return [
                                 <div key={h} className={styles.cell}>
-                                    <p>{formatTime(hour)}</p>
+                                    {/* TODO: unsure why hydration error was happening here */}
+                                    <p suppressHydrationWarning>
+                                        {formatTime(hour)}
+                                    </p>
                                 </div>,
                                 <div
                                     key={`${h}empty`}
@@ -285,7 +288,12 @@ export default function Calendar(props: CalendarProps) {
                         style={{ top: heightOf(now) }}
                     >
                         <p className={styles.currentTimeText}>
-                            <b>{formatTime(now)}</b>
+                            <b
+                                // time on client may be different from server's time
+                                suppressHydrationWarning
+                            >
+                                {formatTime(now)}
+                            </b>
                         </p>
                         <hr className={styles.currentTimeLine} />
                     </div>
