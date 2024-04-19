@@ -22,15 +22,13 @@ export function PageLink(props: PageLinkProps) {
     // styling for the link's display name, if shown
     const textStyle = { color: `var(--${active ? 'accent' : 'white'})` };
 
-    // icon to render
-    const icon = props.icon({
-        color: active ? 'accent' : 'white',
-        size: SIDEBAR_ICON_SIZE,
-    });
-
     return (
         <Link className={styles.button} href={props.to}>
-            {icon}
+            <props.icon
+                color={active ? 'accent' : 'white'}
+                size={SIDEBAR_ICON_SIZE}
+            />
+
             {props.expanded && <h1 style={textStyle}>{props.name}</h1>}
         </Link>
     );
