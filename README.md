@@ -21,7 +21,7 @@ Rememo is a modern planner application that allows you to track your tasks, cour
 
 ## Usage
 
-Development of Rememo is nearing completion and will soon be hosted and available online. Until then, Rememo can be run locally:
+Rememo is online and available [here](https://rememo.nickwentworth.me)! If you instead would prefer to run it locally:
 
 ### Hosting Locally
 
