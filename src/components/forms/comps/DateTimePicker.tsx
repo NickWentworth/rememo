@@ -1,5 +1,5 @@
 import { dateISO, timeISO, updateDate, updateTime } from '@/lib/date';
-import styles from './comps.module.css';
+import { Input, SimpleGrid } from '@chakra-ui/react';
 
 type DateTimePickerProps = {
     // fields from controller component
@@ -12,9 +12,9 @@ type DateTimePickerProps = {
 
 export function DateTimePicker(props: DateTimePickerProps) {
     return (
-        <div className={styles.dateTimePicker}>
+        <SimpleGrid autoColumns='1fr' gridAutoFlow='column'>
             {!props.hideDate && (
-                <input
+                <Input
                     type='date'
                     value={dateISO(props.value)}
                     onChange={(e) =>
@@ -24,7 +24,7 @@ export function DateTimePicker(props: DateTimePickerProps) {
             )}
 
             {!props.hideTime && (
-                <input
+                <Input
                     type='time'
                     value={timeISO(props.value)}
                     onChange={(e) =>
@@ -32,6 +32,6 @@ export function DateTimePicker(props: DateTimePickerProps) {
                     }
                 />
             )}
-        </div>
+        </SimpleGrid>
     );
 }
