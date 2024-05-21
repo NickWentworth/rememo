@@ -1,8 +1,8 @@
 import { SVGComponent } from '../icons/props';
 import { SIDEBAR_ICON_SIZE } from './Sidebar';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import styles from './sidebar.module.css';
+import { Link } from '@chakra-ui/next-js';
+import { Flex, IconButton, Text } from '@chakra-ui/react';
 
 type PageLinkProps = {
     // display name of link
@@ -19,17 +19,33 @@ export function PageLink(props: PageLinkProps) {
     // is this page link the active one?
     const active = usePathname() === props.to;
 
-    // styling for the link's display name, if shown
-    const textStyle = { color: `var(--${active ? 'accent' : 'white'})` };
-
     return (
-        <Link className={styles.button} href={props.to}>
-            <props.icon
-                color={active ? 'accent' : 'white'}
-                size={SIDEBAR_ICON_SIZE}
-            />
+        <Link href={props.to}>
+            <IconButton
+                size='lg'
+                variant='ghost'
+                w='100%'
+                justifyContent='start'
+                px='0.5rem'
+                icon={
+                    <Flex align='center' gap='0.5rem'>
+                        <props.icon
+                            color={active ? 'accent' : 'white'}
+                            size={SIDEBAR_ICON_SIZE}
+                        />
 
-            {props.expanded && <h1 style={textStyle}>{props.name}</h1>}
+                        {props.expanded && (
+                            <Text
+                                variant='h1'
+                                color={active ? 'accent.500' : undefined}
+                            >
+                                {props.name}
+                            </Text>
+                        )}
+                    </Flex>
+                }
+                aria-label={props.name}
+            />
         </Link>
     );
 }

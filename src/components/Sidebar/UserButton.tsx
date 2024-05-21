@@ -1,7 +1,6 @@
-import { SIDEBAR_ICON_SIZE } from './Sidebar';
 import { trpc } from '@/lib/trpc/client';
-import Link from 'next/link';
-import styles from './sidebar.module.css';
+import { Link } from '@chakra-ui/next-js';
+import { Avatar, Flex, IconButton, Spinner, Text } from '@chakra-ui/react';
 
 type UserButtonProps = {
     expanded: boolean;
@@ -10,22 +9,33 @@ type UserButtonProps = {
 export function UserButton(props: UserButtonProps) {
     const { data: user } = trpc.user.get.useQuery();
 
-    if (user === undefined) {
-        return;
-    }
-
     return (
-        <Link className={styles.button} href='/settings'>
-            <img
-                className={styles.userImage}
-                src={user.image ?? undefined}
-                width={SIDEBAR_ICON_SIZE}
-                height={SIDEBAR_ICON_SIZE}
-            />
+        <Link href='/settings'>
+            <IconButton
+                size='lg'
+                variant='ghost'
+                w='100%'
+                justifyContent='start'
+                px='0.5rem'
+                icon={
+                    user ? (
+                        <Flex align='center' gap='0.5rem'>
+                            <Avatar
+                                size='sm'
+                                src={user.image ?? undefined}
+                                name={user.name ?? undefined}
+                            />
 
-            {props.expanded && (
-                <h4 className={styles.userName}>{user?.name}</h4>
-            )}
+                            {props.expanded && (
+                                <Text variant='h4'>{user.name}</Text>
+                            )}
+                        </Flex>
+                    ) : (
+                        <Spinner size='lg' color='accent.500' />
+                    )
+                }
+                aria-label='user'
+            />
         </Link>
     );
 }

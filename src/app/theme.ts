@@ -35,12 +35,21 @@ export const theme = extendTheme({
     },
     components: {
         Text: defineStyleConfig({
+            baseStyle: {
+                fontFamily: '"Inter", sans-serif',
+            },
             variants: {
                 h1: { fontSize: '20px', fontWeight: '500', color: 'bg.50' },
                 h2: { fontSize: '20px', fontWeight: '400', color: 'bg.50' },
                 h3: { fontSize: '16px', fontWeight: '400', color: 'bg.50' },
                 h4: { fontSize: '16px', fontWeight: '300', color: 'bg.200' },
                 p: { fontSize: '14px', fontWeight: '300', color: 'bg.200' },
+                logo: {
+                    fontFamily: '"Quicksand", sans-serif',
+                    fontSize: '36px',
+                    fontWeight: '600',
+                    color: 'accent.500',
+                },
             },
             defaultProps: {
                 variant: 'p',

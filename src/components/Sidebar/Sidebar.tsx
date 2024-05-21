@@ -3,28 +3,36 @@
 import { Calendar, Courses, Dashboard, Hamburger, Logo, Tasks } from '../icons';
 import { PageLink } from './PageLink';
 import { UserButton } from './UserButton';
-import { useReducer } from 'react';
-import styles from './sidebar.module.css';
+import {
+    Box,
+    Divider,
+    Flex,
+    IconButton,
+    Spacer,
+    Stack,
+    Text,
+    useBoolean,
+} from '@chakra-ui/react';
 
 export const SIDEBAR_ICON_SIZE = 32;
 const LOGO_SIZE = SIDEBAR_ICON_SIZE + 16;
 
 export function Sidebar() {
-    const [expanded, toggleExpanded] = useReducer((curr) => !curr, false);
+    const [expanded, { toggle: toggleExpanded }] = useBoolean(false);
 
     return (
-        <div className={styles.sidebar}>
-            {/* Logo */}
-            <div className={styles.logo}>
-                <Logo color='accent' size={LOGO_SIZE} />
+        <Stack p='0.5rem' bg='bg.800' shadow='lg'>
+            <Flex align='center' gap='0.5rem'>
+                <Box my='0.25rem'>
+                    <Logo color='accent' size={LOGO_SIZE} />
+                </Box>
 
-                {expanded && <h1 className={styles.logoText}>Rememo</h1>}
-            </div>
+                {expanded && <Text variant='logo'>Rememo</Text>}
+            </Flex>
 
-            <hr />
+            <Divider />
 
-            <div className={styles.sidebarBody}>
-                {/* Links */}
+            <Stack gap='0'>
                 <PageLink
                     name='Dashboard'
                     to='/dashboard'
@@ -49,18 +57,23 @@ export function Sidebar() {
                     icon={Calendar}
                     expanded={expanded}
                 />
+            </Stack>
 
-                {/* Filling div */}
-                <div className={styles.fill} />
+            <Spacer />
 
-                {/* User */}
+            <Stack gap='0'>
                 <UserButton expanded={expanded} />
 
-                {/* Hamburger */}
-                <button className={styles.button} onClick={toggleExpanded}>
-                    <Hamburger color='white' size={SIDEBAR_ICON_SIZE} />
-                </button>
-            </div>
-        </div>
+                <IconButton
+                    size='lg'
+                    variant='ghost'
+                    justifyContent='start'
+                    px='0.5rem'
+                    icon={<Hamburger color='white' size={SIDEBAR_ICON_SIZE} />}
+                    onClick={toggleExpanded}
+                    aria-label='hamburger'
+                />
+            </Stack>
+        </Stack>
     );
 }
