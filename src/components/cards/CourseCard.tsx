@@ -1,13 +1,16 @@
-'use client';
-
 import { Edit, Location, Trash, User } from '@/components/icons';
-import Button from '@/components/Button';
-import { BUTTON_ICON_SIZE } from '.';
 import { formatCourseTimeDays, formatCourseTimeRange } from '@/lib/date';
 import { CoursePayload } from '@/lib/types';
 import { bitfieldToList } from '@/lib/bitfield';
 import { useState } from 'react';
-import styles from './card.module.css';
+import {
+    Card,
+    CardBody,
+    Grid,
+    IconButton,
+    Stack,
+    Text,
+} from '@chakra-ui/react';
 
 type CourseCardProps = {
     course: CoursePayload;
@@ -16,88 +19,81 @@ type CourseCardProps = {
 };
 
 export function CourseCard(props: CourseCardProps) {
-    // is the mouse currently hovering over the task card?
     const [hovering, setHovering] = useState(false);
 
     return (
-        <div
-            className={styles.card}
+        <Card
+            direction='row'
+            overflow='hidden'
             onMouseOver={() => setHovering(true)}
             onMouseLeave={() => setHovering(false)}
         >
-            <div className={styles.body}>
-                <h1 style={{ color: props.course.color }}>
-                    {props.course.name}
-                </h1>
+            <CardBody>
+                <Stack>
+                    <Text variant='h1' color={props.course.color}>
+                        {props.course.name}
+                    </Text>
 
-                {(props.course.instructor || props.course.location) && (
-                    <div className={styles.courseDataSection}>
+                    <Grid
+                        templateColumns='auto 1fr'
+                        gap='0.25rem'
+                        alignItems='center'
+                    >
                         {props.course.instructor && (
-                            <div className={styles.iconField}>
-                                <User size={16} color='light' />
-                                <p>{props.course.instructor}</p>
-                            </div>
+                            <>
+                                <User color='light' size={18} />
+                                <Text>{props.course.instructor}</Text>
+                            </>
                         )}
 
                         {props.course.location && (
-                            <div className={styles.iconField}>
-                                <Location size={16} color='light' />
-                                <p>{props.course.location}</p>
-                            </div>
+                            <>
+                                <Location color='light' size={18} />
+                                <Text>{props.course.location}</Text>
+                            </>
                         )}
-                    </div>
-                )}
+                    </Grid>
 
-                {props.course.times.length > 0 && (
-                    <div className={styles.courseDataSection}>
+                    <Stack gap='0.25rem'>
                         {props.course.times.map((time) => (
-                            <p key={time.id}>
-                                <span className={styles.white}>
+                            <Text key={time.id}>
+                                <Text as='span' color='bg.50'>
                                     {formatCourseTimeRange(
                                         time.start,
                                         time.end
                                     )}
-                                </span>
+                                </Text>
 
                                 {' | '}
 
                                 {formatCourseTimeDays(
                                     bitfieldToList(time.days)
                                 )}
-                            </p>
+                            </Text>
                         ))}
-                    </div>
-                )}
-            </div>
+                    </Stack>
+                </Stack>
+            </CardBody>
 
-            {/* TODO: don't really love the location of these buttons, feels awkward */}
-            <div className={styles.buttons}>
-                <Button
-                    type='transparent'
+            <Stack gap='0'>
+                <IconButton
+                    icon={<Edit color='white' size={20} />}
                     onClick={props.onEditClick}
-                    icon={
-                        <Edit
-                            size={BUTTON_ICON_SIZE}
-                            color={hovering ? 'white' : 'transparent'}
-                        />
-                    }
-                    usualPadding
-                    border='square'
+                    rounded='0'
+                    variant='ghost'
+                    opacity={hovering ? '100%' : '0%'}
+                    aria-label='edit'
                 />
 
-                <Button
-                    type='transparent'
+                <IconButton
+                    icon={<Trash color='white' size={20} />}
                     onClick={props.onDeleteClick}
-                    icon={
-                        <Trash
-                            size={BUTTON_ICON_SIZE}
-                            color={hovering ? 'white' : 'transparent'}
-                        />
-                    }
-                    usualPadding
-                    border='square'
+                    rounded='0'
+                    variant='ghost'
+                    opacity={hovering ? '100%' : '0%'}
+                    aria-label='delete'
                 />
-            </div>
-        </div>
+            </Stack>
+        </Card>
     );
 }

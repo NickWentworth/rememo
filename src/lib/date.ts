@@ -222,7 +222,7 @@ type FormattedTaskDate = {
     status: TaskStatus;
 };
 
-type TaskStatus = 'late' | 'soon' | 'ok';
+export type TaskStatus = 'late' | 'soon' | 'ok';
 
 /**
  * Formats the given due date to display on a task card

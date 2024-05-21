@@ -1,15 +1,21 @@
-'use client';
-
 import { Edit, Trash } from '@/components/icons';
-import Button from '@/components/Button';
-import { TaskCardSubtask } from './TaskCardSubtask';
-import { BUTTON_ICON_SIZE } from '.';
+import { TaskStatus, formatTaskDate } from '@/lib/date';
 import { TaskPayload } from '@/lib/types';
-import { formatTaskDate } from '@/lib/date';
-import { buildClass } from '@/lib/utils';
 import { trpc } from '@/lib/trpc/client';
 import { useState } from 'react';
-import styles from './card.module.css';
+import {
+    Box,
+    Card,
+    CardBody,
+    Checkbox,
+    Divider,
+    Flex,
+    IconButton,
+    Spacer,
+    Stack,
+    Tag,
+    Text,
+} from '@chakra-ui/react';
 
 type TaskCardProps = {
     task: TaskPayload;
@@ -17,103 +23,135 @@ type TaskCardProps = {
     onDeleteClick?: () => void;
 };
 
+function statusToColor(status: TaskStatus) {
+    switch (status) {
+        case 'late':
+            return 'red.400';
+        case 'soon':
+            return 'yellow.300';
+        case 'ok':
+            return undefined;
+    }
+}
+
 export function TaskCard(props: TaskCardProps) {
     const { mutate: setTaskCompletion } =
         trpc.task.setTaskCompletion.useMutation();
 
-    // is the mouse currently hovering over the task card?
+    const onCheckboxChange = () => {
+        setTaskCompletion({
+            id: props.task.id,
+            completed: !props.task.completed,
+        });
+    };
+
     const [hovering, setHovering] = useState(false);
 
     const dueFormat = formatTaskDate(props.task.due, props.task.completed);
-
-    const cardClass = buildClass(
-        styles.card,
-        props.task.completed && styles.completed
-    );
+    const dueColor = statusToColor(dueFormat.status);
 
     return (
-        <div
-            className={cardClass}
+        <Card
+            direction='row'
+            overflow='hidden'
             onMouseOver={() => setHovering(true)}
             onMouseLeave={() => setHovering(false)}
+            opacity={props.task.completed ? '40%' : '100%'}
         >
-            <div
-                className={styles.banner}
-                style={{ backgroundColor: props.task.course?.color }}
-            >
-                <Button
-                    type='transparent'
+            <Stack bg={props.task.course?.color ?? 'bg.200'} gap='0'>
+                <IconButton
+                    icon={<Edit color='dark' size={20} />}
                     onClick={props.onEditClick}
-                    icon={
-                        <Edit
-                            size={BUTTON_ICON_SIZE}
-                            color={hovering ? 'dark' : 'transparent'}
-                        />
-                    }
-                    usualPadding
-                    border='square'
+                    rounded='0'
+                    variant='ghost'
+                    opacity={hovering ? '100%' : '0%'}
+                    aria-label='edit'
                 />
 
-                <Button
-                    type='transparent'
+                <IconButton
+                    icon={<Trash color='dark' size={20} />}
                     onClick={props.onDeleteClick}
-                    icon={
-                        <Trash
-                            size={BUTTON_ICON_SIZE}
-                            color={hovering ? 'dark' : 'transparent'}
-                        />
-                    }
-                    usualPadding
-                    border='square'
+                    rounded='0'
+                    variant='ghost'
+                    opacity={hovering ? '100%' : '0%'}
+                    aria-label='delete'
                 />
-            </div>
+            </Stack>
 
-            <div className={styles.body}>
-                {/* Header */}
-                <div>
-                    <div className={styles.headerTitle}>
-                        {/* TODO: style checkbox */}
-                        <input
-                            type='checkbox'
-                            checked={props.task.completed}
-                            onChange={() =>
-                                setTaskCompletion({
-                                    id: props.task.id,
-                                    completed: !props.task.completed,
-                                })
-                            }
-                            readOnly
-                        />
+            <CardBody>
+                <Stack divider={<Divider />}>
+                    <Box>
+                        <Flex gap='0.5rem'>
+                            <Checkbox
+                                size='lg'
+                                isChecked={props.task.completed}
+                                onChange={onCheckboxChange}
+                            />
 
-                        <h1 className={styles.headerTask}>{props.task.name}</h1>
+                            <Text variant='h1'>{props.task.name}</Text>
 
-                        <h3
-                            className={styles.headerCourse}
-                            style={{ color: props.task.course?.color }}
-                        >
-                            {props.task.course?.name}
-                        </h3>
-                    </div>
+                            <Spacer />
 
-                    <p className={styles[dueFormat.status]}>{dueFormat.str}</p>
-                </div>
+                            <Text variant='h3' color={props.task.course?.color}>
+                                {props.task.course?.name}
+                            </Text>
+                        </Flex>
 
-                {/* Subtasks */}
-                {props.task.subtasks.length != 0 && <hr />}
-                {props.task.subtasks.map((s) => (
-                    <TaskCardSubtask key={s.id} subtask={s} />
-                ))}
+                        <Text color={dueColor}>{dueFormat.str}</Text>
+                    </Box>
 
-                {/* Description */}
-                {props.task.description && (
-                    <>
-                        <hr />
-                        <p className={styles.taskDescription}>
+                    <Stack gap='0.5rem'>
+                        {props.task.subtasks.map((subtask) => (
+                            <TaskCardSubtaskRow
+                                key={subtask.id}
+                                subtask={subtask}
+                            />
+                        ))}
+                    </Stack>
+
+                    {props.task.description && (
+                        <Text whiteSpace='pre-wrap'>
                             {props.task.description}
-                        </p>
-                    </>
-                )}
-            </div>
-        </div>
+                        </Text>
+                    )}
+                </Stack>
+            </CardBody>
+        </Card>
+    );
+}
+
+type TaskCardSubtaskRowProps = {
+    subtask: TaskPayload['subtasks'][number];
+};
+
+function TaskCardSubtaskRow(props: TaskCardSubtaskRowProps) {
+    const { mutate: setSubtaskCompletion } =
+        trpc.task.setSubtaskCompletion.useMutation();
+
+    const onCheckboxChange = () =>
+        setSubtaskCompletion({
+            id: props.subtask.id,
+            completed: !props.subtask.completed,
+        });
+
+    const dueFormat = formatTaskDate(
+        props.subtask.due,
+        props.subtask.completed
+    );
+    const dueColor = statusToColor(dueFormat.status);
+
+    return (
+        <Flex gap='0.5rem' opacity={props.subtask.completed ? '60%' : '100%'}>
+            <Checkbox
+                isChecked={props.subtask.completed}
+                onChange={onCheckboxChange}
+            />
+
+            <Text variant='h3'>{props.subtask.name}</Text>
+
+            <Tag rounded='full'>
+                <Text color={dueColor}>{dueFormat.str}</Text>
+            </Tag>
+        </Flex>
     );
 }

@@ -1,12 +1,15 @@
-'use client';
-
 import { Calendar, Edit, Trash } from '@/components/icons';
-import Button from '@/components/Button';
-import { BUTTON_ICON_SIZE } from '.';
 import { TermPayload } from '@/lib/types';
 import { formatTermDate, formatTermVacationDate } from '@/lib/date';
 import { useState } from 'react';
-import styles from './card.module.css';
+import {
+    Card,
+    CardBody,
+    Flex,
+    IconButton,
+    Stack,
+    Text,
+} from '@chakra-ui/react';
 
 type TermCardProps = {
     term: TermPayload;
@@ -19,35 +22,33 @@ type TermCardProps = {
 export function TermCard(props: TermCardProps) {
     const [hovering, setHovering] = useState(false);
 
-    const borderColor = props.selected ? 'var(--white)' : 'transparent';
-
-    if (status === 'error') {
-        return;
-    }
-
     return (
-        <div
-            className={`${styles.card} ${styles.termCard}`}
-            style={{ borderColor }}
+        <Card
+            direction='row'
+            overflow='hidden'
             onMouseOver={() => setHovering(true)}
             onMouseLeave={() => setHovering(false)}
+            borderWidth='2px'
+            borderColor={props.selected ? 'bg.50' : 'transparent'}
         >
-            <div className={styles.body} onClick={props.onClick}>
-                <h1>{props.term.name}</h1>
+            <CardBody onClick={props.onClick} cursor='pointer'>
+                <Stack>
+                    <Text variant='h1'>{props.term.name}</Text>
 
-                <div className={styles.iconField}>
-                    <Calendar size={16} color='light' />
+                    <Flex gap='0.25rem' align='center'>
+                        <Calendar color='light' size={16} />
 
-                    <p>{formatTermDate(props.term.start, props.term.end)}</p>
-                </div>
+                        <Text>
+                            {formatTermDate(props.term.start, props.term.end)}
+                        </Text>
+                    </Flex>
 
-                {props.term.vacations.length > 0 && (
-                    <div className={styles.termVacations}>
+                    <Stack gap='0.25rem'>
                         {props.term.vacations.map((vacation) => (
-                            <p key={vacation.id}>
-                                <span className={styles.white}>
+                            <Text key={vacation.id}>
+                                <Text as='span' color='bg.50'>
                                     {vacation.name}
-                                </span>
+                                </Text>
 
                                 {' | '}
 
@@ -55,39 +56,31 @@ export function TermCard(props: TermCardProps) {
                                     vacation.start,
                                     vacation.end
                                 )}
-                            </p>
+                            </Text>
                         ))}
-                    </div>
-                )}
-            </div>
+                    </Stack>
+                </Stack>
+            </CardBody>
 
-            <div className={styles.buttons}>
-                <Button
-                    type='transparent'
+            <Stack gap='0'>
+                <IconButton
+                    icon={<Edit color='white' size={20} />}
                     onClick={props.onEditClick}
-                    icon={
-                        <Edit
-                            size={BUTTON_ICON_SIZE}
-                            color={hovering ? 'white' : 'transparent'}
-                        />
-                    }
-                    usualPadding
-                    border='square'
+                    rounded='0'
+                    variant='ghost'
+                    opacity={hovering ? '100%' : '0%'}
+                    aria-label='edit'
                 />
 
-                <Button
-                    type='transparent'
+                <IconButton
+                    icon={<Trash color='white' size={20} />}
                     onClick={props.onDeleteClick}
-                    icon={
-                        <Trash
-                            size={BUTTON_ICON_SIZE}
-                            color={hovering ? 'white' : 'transparent'}
-                        />
-                    }
-                    usualPadding
-                    border='square'
+                    rounded='0'
+                    variant='ghost'
+                    opacity={hovering ? '100%' : '0%'}
+                    aria-label='delete'
                 />
-            </div>
-        </div>
+            </Stack>
+        </Card>
     );
 }
