@@ -60,5 +60,17 @@ export const theme = extendTheme({
         ]).defineMultiStyleConfig({
             baseStyle: { container: { bg: 'bg.800' } },
         }),
+        Radio: createMultiStyleConfigHelpers([
+            'control',
+        ]).defineMultiStyleConfig({
+            sizes: {
+                xl: {
+                    control: {
+                        w: '7',
+                        h: '7',
+                    },
+                },
+            },
+        }),
     },
 });

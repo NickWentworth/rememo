@@ -1,16 +1,34 @@
-'use client';
-
-import { Trash } from '@/components/icons';
-import Button, { AddButton } from '@/components/Button';
-import { Form, FormSection, FormField, Spacer } from './structure';
+import { Plus, Trash } from '@/components/icons';
 import { DateTimePicker, WeekdaySelector } from './comps';
-import { trpc } from '@/lib/trpc/client';
 import { useFormController } from '@/lib/hooks/useFormController';
 import { CoursePayload } from '@/lib/types';
-import { CourseTime } from '@prisma/client';
 import { todayUTC } from '@/lib/date';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
-import styles from './form.module.css';
+import { trpc } from '@/lib/trpc/client';
+import {
+    Button,
+    Divider,
+    Flex,
+    FormControl,
+    FormErrorMessage,
+    FormLabel,
+    GridItem,
+    IconButton,
+    Input,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    Radio,
+    RadioGroup,
+    Select,
+    SimpleGrid,
+    Stack,
+    Text,
+} from '@chakra-ui/react';
 
 const COLORS = [
     '#EFFFFF', // global white color
@@ -40,7 +58,7 @@ const DEFAULT_COURSE_TIME = {
     end: todayUTC('10:00'),
     days: 0,
     courseId: '',
-} satisfies CourseTime;
+} satisfies CoursePayload['times'][number];
 
 export const useCourseFormController = useFormController<CoursePayload>;
 
@@ -116,161 +134,263 @@ export function CourseForm(props: CourseFormProps) {
         reset();
     }
 
+    let title = '';
+    switch (props.controller.state.mode) {
+        case 'create':
+            title = 'Add Course';
+            break;
+        case 'update':
+            title = 'Modify Course';
+            break;
+    }
+
     return (
-        <Form
-            controller={props.controller}
-            onSubmit={handleSubmit(onSubmit)}
-            title='Course'
-            sections={[
-                // main course data
-                <FormSection>
-                    <FormField label='Name'>
-                        <input
-                            type='text'
-                            {...register('name', {
-                                required: 'Course must have a name',
-                            })}
-                        />
-                    </FormField>
-                    <p className={styles.error}>{errors.name?.message}</p>
+        <Modal
+            size='2xl'
+            isOpen={props.controller.state.mode !== 'closed'}
+            onClose={props.controller.close}
+            scrollBehavior='inside'
+        >
+            <ModalOverlay />
 
-                    <Spacer />
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <ModalContent>
+                    <ModalHeader>
+                        <Text variant='h1'>{title}</Text>
+                        <ModalCloseButton size='lg' />
+                    </ModalHeader>
 
-                    <FormField label='Term'>
-                        <select id='term' {...register('termId')}>
-                            {terms?.map((term) => (
-                                <option key={term.id} value={term.id}>
-                                    {term.name}
-                                </option>
-                            ))}
-                        </select>
-                    </FormField>
-                </FormSection>,
+                    <Divider />
 
-                // course color
-                <FormSection>
-                    <p>Course Color</p>
+                    <ModalBody>
+                        <Stack>
+                            {/* course name */}
+                            <FormControl isInvalid={!!errors.name}>
+                                <FormLabel>Name</FormLabel>
 
-                    <Spacer />
+                                <Input
+                                    type='text'
+                                    {...register('name', {
+                                        required: 'Course must have a name',
+                                    })}
+                                />
 
-                    <div className={styles.courseColorPicker}>
-                        {COLORS.map((color) => (
-                            <input
-                                key={color}
-                                className={styles.courseColor}
-                                type='radio'
-                                value={color}
-                                style={{ color }}
-                                {...register('color')}
-                            />
-                        ))}
-                    </div>
-                </FormSection>,
+                                <FormErrorMessage>
+                                    {errors.name?.message}
+                                </FormErrorMessage>
+                            </FormControl>
 
-                // optional course data
-                <FormSection>
-                    <FormField label='Instructor' optional>
-                        <input type='text' {...register('instructor')} />
-                    </FormField>
+                            {/* course's term parent */}
+                            <FormControl>
+                                <FormLabel>Term</FormLabel>
 
-                    <Spacer />
+                                <Select {...register('termId')}>
+                                    {terms?.map((term) => (
+                                        <option key={term.id} value={term.id}>
+                                            {term.name}
+                                        </option>
+                                    ))}
+                                </Select>
+                            </FormControl>
 
-                    <FormField label='Location' optional>
-                        <input type='text' {...register('location')} />
-                    </FormField>
-                </FormSection>,
+                            <Divider />
 
-                // course times
-                <FormSection>
-                    <p>Course Times</p>
+                            <FormControl>
+                                <FormLabel>Course Color</FormLabel>
 
-                    <Spacer />
-
-                    {timesField.fields.flatMap((field, idx) => [
-                        <div key={field.id} className={styles.courseTime}>
-                            <div className={styles.termDates}>
-                                <FormField label='Start Time'>
-                                    <Controller
-                                        control={control}
-                                        name={`times.${idx}.start`}
-                                        rules={{
-                                            validate: (v, f) =>
-                                                v < f.times[idx].end,
-                                        }}
-                                        render={({ field }) => (
-                                            <DateTimePicker
-                                                value={field.value}
-                                                onChange={field.onChange}
-                                                hideDate
-                                            />
-                                        )}
-                                    />
-                                </FormField>
-
-                                <FormField label='End Time'>
-                                    <Controller
-                                        control={control}
-                                        name={`times.${idx}.end`}
-                                        rules={{
-                                            validate: (v, f) =>
-                                                v > f.times[idx].start,
-                                        }}
-                                        render={({ field }) => (
-                                            <DateTimePicker
-                                                value={field.value}
-                                                onChange={field.onChange}
-                                                hideDate
-                                            />
-                                        )}
-                                    />
-                                </FormField>
-                            </div>
-                            <p className={styles.error}>
-                                {(errors.times?.at?.(idx)?.start ||
-                                    errors.times?.at?.(idx)?.end) &&
-                                    'End time must come after start time'}
-                            </p>
-
-                            <p>Repeated Days</p>
-                            <div className={styles.courseTimeDaysRow}>
                                 <Controller
                                     control={control}
-                                    name={`times.${idx}.days`}
-                                    rules={{
-                                        validate: (v) =>
-                                            v !== 0 ||
-                                            'Select the day(s) this course time repeats',
-                                    }}
+                                    name='color'
                                     render={({ field }) => (
-                                        <WeekdaySelector
+                                        <RadioGroup
+                                            name={field.name}
                                             value={field.value}
                                             onChange={field.onChange}
-                                        />
+                                        >
+                                            <Flex justify='space-around'>
+                                                {COLORS.map((color) => (
+                                                    <Radio
+                                                        key={color}
+                                                        value={color}
+                                                        size='xl'
+                                                        borderColor={color}
+                                                        _checked={{
+                                                            bg: color,
+                                                        }}
+                                                    />
+                                                ))}
+                                            </Flex>
+                                        </RadioGroup>
                                     )}
                                 />
-                                <Button
-                                    type='transparent'
-                                    onClick={() => timesField.remove(idx)}
-                                    icon={<Trash color='light' size={16} />}
+                            </FormControl>
+
+                            <Divider />
+
+                            {/* instructor */}
+                            <FormControl>
+                                <FormLabel>Instructor (optional)</FormLabel>
+
+                                <Input
+                                    type='text'
+                                    {...register('instructor')}
                                 />
-                            </div>
-                            <p className={styles.error}>
-                                {errors.times?.at?.(idx)?.days?.message}
-                            </p>
-                        </div>,
+                            </FormControl>
 
-                        <Spacer key={`${field.id}spacer`} />,
-                    ])}
+                            {/* location */}
+                            <FormControl>
+                                <FormLabel>Location (optional)</FormLabel>
 
-                    <div className={styles.alignCenter}>
-                        <AddButton
-                            onClick={() =>
-                                timesField.append(DEFAULT_COURSE_TIME)
-                            }
-                        />
-                    </div>
-                </FormSection>,
-            ]}
-        />
+                                <Input type='text' {...register('location')} />
+                            </FormControl>
+
+                            <Divider />
+
+                            {/* course times */}
+                            <FormLabel>Course Times</FormLabel>
+                            {timesField.fields.map((field, idx) => (
+                                <SimpleGrid
+                                    key={field.id}
+                                    columns={2}
+                                    bg='gray.800'
+                                    p='0.5rem'
+                                    rounded='md'
+                                    gap='0.5rem'
+                                >
+                                    <FormControl
+                                        isInvalid={
+                                            !!errors.times?.at?.(idx)?.start
+                                        }
+                                    >
+                                        <FormLabel>Start Time</FormLabel>
+                                        <Controller
+                                            control={control}
+                                            name={`times.${idx}.start`}
+                                            rules={{
+                                                validate: (v, f) =>
+                                                    v < f.times[idx].end ||
+                                                    'End time must come after start time',
+                                            }}
+                                            render={({ field }) => (
+                                                <DateTimePicker
+                                                    value={field.value}
+                                                    onChange={field.onChange}
+                                                    hideDate
+                                                />
+                                            )}
+                                        />
+
+                                        <FormErrorMessage>
+                                            {
+                                                errors.times?.at?.(idx)?.start
+                                                    ?.message
+                                            }
+                                        </FormErrorMessage>
+                                    </FormControl>
+
+                                    <FormControl
+                                        isInvalid={
+                                            !!errors.times?.at?.(idx)?.start
+                                        }
+                                    >
+                                        <Flex>
+                                            <FormLabel flex='1'>
+                                                End Time
+                                            </FormLabel>
+
+                                            <IconButton
+                                                onClick={() =>
+                                                    timesField.remove(idx)
+                                                }
+                                                size='xs'
+                                                _hover={{ bg: 'red.400' }}
+                                                icon={
+                                                    <Trash
+                                                        color='white'
+                                                        size={16}
+                                                    />
+                                                }
+                                                aria-label='delete time'
+                                            />
+                                        </Flex>
+
+                                        <Controller
+                                            control={control}
+                                            name={`times.${idx}.end`}
+                                            render={({ field }) => (
+                                                <DateTimePicker
+                                                    value={field.value}
+                                                    onChange={field.onChange}
+                                                    hideDate
+                                                />
+                                            )}
+                                        />
+                                    </FormControl>
+
+                                    <GridItem colSpan={2}>
+                                        <FormControl
+                                            isInvalid={
+                                                !!errors.times?.at?.(idx)?.days
+                                            }
+                                        >
+                                            <FormLabel>Repeated Days</FormLabel>
+
+                                            <Controller
+                                                control={control}
+                                                name={`times.${idx}.days`}
+                                                rules={{
+                                                    validate: (v) =>
+                                                        v !== 0 ||
+                                                        'Select the day(s) this course time repeats',
+                                                }}
+                                                render={({ field }) => (
+                                                    <WeekdaySelector
+                                                        value={field.value}
+                                                        onChange={
+                                                            field.onChange
+                                                        }
+                                                        isInvalid={
+                                                            !!errors.times?.at?.(
+                                                                idx
+                                                            )?.days
+                                                        }
+                                                    />
+                                                )}
+                                            />
+
+                                            <FormErrorMessage>
+                                                {
+                                                    errors.times?.at?.(idx)
+                                                        ?.days?.message
+                                                }
+                                            </FormErrorMessage>
+                                        </FormControl>
+                                    </GridItem>
+                                </SimpleGrid>
+                            ))}
+
+                            <IconButton
+                                onClick={() =>
+                                    timesField.append(DEFAULT_COURSE_TIME)
+                                }
+                                icon={<Plus color='dark' size={24} />}
+                                colorScheme='accent'
+                                alignSelf='center'
+                                rounded='full'
+                                aria-label='add vacation'
+                            />
+                        </Stack>
+                    </ModalBody>
+
+                    <Divider />
+
+                    <ModalFooter>
+                        <Button m='auto' colorScheme='accent' type='submit'>
+                            Submit
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </form>
+        </Modal>
     );
 }

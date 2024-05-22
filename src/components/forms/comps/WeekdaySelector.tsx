@@ -1,6 +1,5 @@
-import Button from '@/components/Button';
 import { getBitAt, toggleBitAt } from '@/lib/bitfield';
-import styles from './comps.module.css';
+import { Button, ButtonGroup } from '@chakra-ui/react';
 
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -8,23 +7,34 @@ type WeekdaySelectorProps = {
     // fields from controller component
     value: number;
     onChange: (days: number) => void;
+    isInvalid: boolean;
 };
 
 export function WeekdaySelector(props: WeekdaySelectorProps) {
     return (
-        <div className={styles.weekdaySelector}>
-            {WEEKDAYS.map((day, idx) => (
-                <Button
-                    key={idx}
-                    type={getBitAt(props.value, idx) ? 'solid' : 'outline'}
-                    border='square'
-                    onClick={() =>
-                        props.onChange(toggleBitAt(props.value, idx))
-                    }
-                >
-                    {day}
-                </Button>
-            ))}
-        </div>
+        <ButtonGroup
+            isAttached
+            display='grid'
+            gridAutoFlow='column'
+            gridAutoColumns='1fr'
+            overflow='hidden'
+        >
+            {WEEKDAYS.map((day, idx) => {
+                const isActive = getBitAt(props.value, idx);
+
+                return (
+                    <Button
+                        key={day}
+                        variant={isActive ? 'solid' : 'outline'}
+                        colorScheme={props.isInvalid ? 'red' : 'accent'}
+                        onClick={() =>
+                            props.onChange(toggleBitAt(props.value, idx))
+                        }
+                    >
+                        {day}
+                    </Button>
+                );
+            })}
+        </ButtonGroup>
     );
 }
