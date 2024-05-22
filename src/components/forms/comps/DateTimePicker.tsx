@@ -12,7 +12,7 @@ type DateTimePickerProps = {
 
 export function DateTimePicker(props: DateTimePickerProps) {
     return (
-        <SimpleGrid autoColumns='1fr' gridAutoFlow='column'>
+        <SimpleGrid autoColumns='1fr' gridAutoFlow='column' gap='0.5rem'>
             {!props.hideDate && (
                 <Input
                     type='date'

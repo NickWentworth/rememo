@@ -1,16 +1,31 @@
-'use client';
-
-import { Trash } from '../icons';
-import Button, { AddButton } from '../Button';
-import { Form, FormSection, FormField, Spacer } from './structure';
+import { Plus, Trash } from '@/components/icons';
 import { DateTimePicker } from './comps';
 import { TaskPayload } from '@/lib/types';
 import { todayUTC } from '@/lib/date';
-import { Subtask } from '@prisma/client';
 import { trpc } from '@/lib/trpc/client';
 import { useFormController } from '@/lib/hooks/useFormController';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
-import styles from './form.module.css';
+import {
+    Button,
+    Divider,
+    Flex,
+    FormControl,
+    FormErrorMessage,
+    FormLabel,
+    IconButton,
+    Input,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    Select,
+    Stack,
+    Text,
+    Textarea,
+} from '@chakra-ui/react';
 
 const DEFAULT_TASK = {
     id: '',
@@ -30,7 +45,7 @@ const DEFAULT_SUBTASK = {
     completed: false,
     due: todayUTC('23:59'),
     taskId: '',
-} satisfies Subtask;
+} satisfies TaskPayload['subtasks'][number];
 
 export const useTaskFormController = useFormController<TaskPayload>;
 
@@ -110,120 +125,205 @@ export function TaskForm(props: TaskFormProps) {
         reset();
     }
 
+    let title = '';
+    switch (props.controller.state.mode) {
+        case 'create':
+            title = 'Add Task';
+            break;
+        case 'update':
+            title = 'Modify Task';
+            break;
+    }
+
     return (
-        <Form
-            controller={props.controller}
-            onSubmit={handleSubmit(onSubmit)}
-            title='Task'
-            sections={[
-                // main task data
-                <FormSection>
-                    <FormField label='Name'>
-                        <input
-                            type='text'
-                            {...register('name', {
-                                required: 'Task must have a name',
-                            })}
-                        />
-                    </FormField>
-                    <p className={styles.error}>{errors.name?.message}</p>
+        <Modal
+            size='2xl'
+            isOpen={props.controller.state.mode !== 'closed'}
+            onClose={props.controller.close}
+            scrollBehavior='inside'
+        >
+            <ModalOverlay />
 
-                    <Spacer />
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <ModalContent>
+                    <ModalHeader>
+                        <Text variant='h1'>{title}</Text>
+                        <ModalCloseButton size='lg' />
+                    </ModalHeader>
 
-                    <FormField label='Course'>
-                        <select
-                            style={{ color: selectedCourseColor }}
-                            id='courseId'
-                            {...register('courseId')}
-                        >
-                            <option value='' style={{ color: 'var(--white)' }}>
-                                None
-                            </option>
+                    <Divider />
 
-                            {courses?.map((course) => (
-                                <option
-                                    key={course.id}
-                                    value={course.id}
-                                    style={{ color: course.color }}
-                                >
-                                    {course.name}
-                                </option>
-                            ))}
-                        </select>
-                    </FormField>
+                    <ModalBody>
+                        <Stack>
+                            {/* task name */}
+                            <FormControl isInvalid={!!errors.name}>
+                                <FormLabel>Name</FormLabel>
 
-                    <Spacer />
-
-                    <FormField label='Due'>
-                        <Controller
-                            control={control}
-                            name='due'
-                            render={({ field }) => (
-                                <DateTimePicker
-                                    value={field.value}
-                                    onChange={field.onChange}
+                                <Input
+                                    type='text'
+                                    {...register('name', {
+                                        required: 'Task must have a name',
+                                    })}
                                 />
-                            )}
-                        />
-                    </FormField>
-                </FormSection>,
 
-                // subtasks field array
-                <FormSection>
-                    <p>Subtasks</p>
+                                <FormErrorMessage>
+                                    {errors.name?.message}
+                                </FormErrorMessage>
+                            </FormControl>
 
-                    <Spacer />
+                            {/* linked course */}
+                            <FormControl>
+                                <FormLabel>Course</FormLabel>
 
-                    {subtasksField.fields.flatMap((field, idx) => [
-                        <div key={field.id} className={styles.subtaskRow}>
-                            <input
-                                type='text'
-                                {...register(`subtasks.${idx}.name`, {
-                                    required: 'Subtask must have a name',
-                                })}
+                                <Select
+                                    {...register('courseId')}
+                                    color={selectedCourseColor}
+                                    sx={{ color: selectedCourseColor }}
+                                >
+                                    <option
+                                        value=''
+                                        style={{
+                                            color: 'var(--chakra-colors-bg-50)',
+                                        }}
+                                    >
+                                        None
+                                    </option>
+
+                                    {courses?.map((course) => (
+                                        <option
+                                            key={course.id}
+                                            value={course.id}
+                                            style={{ color: course.color }}
+                                        >
+                                            {course.name}
+                                        </option>
+                                    ))}
+                                </Select>
+                            </FormControl>
+
+                            {/* due date and time */}
+                            <FormControl>
+                                <FormLabel>Due</FormLabel>
+
+                                <Controller
+                                    control={control}
+                                    name='due'
+                                    render={({ field }) => (
+                                        <DateTimePicker
+                                            value={field.value}
+                                            onChange={field.onChange}
+                                        />
+                                    )}
+                                />
+                            </FormControl>
+
+                            <Divider />
+
+                            {/* subtasks */}
+                            <FormLabel>Subtasks</FormLabel>
+                            {subtasksField.fields.map((field, idx) => (
+                                <Flex
+                                    key={field.id}
+                                    bg='gray.800'
+                                    p='0.5rem'
+                                    rounded='md'
+                                    gap='0.5rem'
+                                    wrap='wrap'
+                                >
+                                    <FormControl
+                                        isInvalid={
+                                            !!errors.subtasks?.at?.(idx)?.name
+                                        }
+                                        flex='4'
+                                    >
+                                        <FormLabel>Name</FormLabel>
+
+                                        <Input
+                                            {...register(
+                                                `subtasks.${idx}.name`,
+                                                {
+                                                    required:
+                                                        'Subtask must include a name',
+                                                }
+                                            )}
+                                        />
+
+                                        <FormErrorMessage>
+                                            {
+                                                errors.subtasks?.at?.(idx)?.name
+                                                    ?.message
+                                            }
+                                        </FormErrorMessage>
+                                    </FormControl>
+
+                                    <FormControl flex='5'>
+                                        <Flex>
+                                            <FormLabel flex='1'>Due</FormLabel>
+
+                                            <IconButton
+                                                onClick={() =>
+                                                    subtasksField.remove(idx)
+                                                }
+                                                size='xs'
+                                                _hover={{ bg: 'red.400' }}
+                                                icon={
+                                                    <Trash
+                                                        color='white'
+                                                        size={16}
+                                                    />
+                                                }
+                                                aria-label='delete time'
+                                            />
+                                        </Flex>
+
+                                        <Controller
+                                            control={control}
+                                            name={`subtasks.${idx}.due`}
+                                            render={({ field }) => (
+                                                <DateTimePicker
+                                                    value={field.value}
+                                                    onChange={field.onChange}
+                                                />
+                                            )}
+                                        />
+                                    </FormControl>
+                                </Flex>
+                            ))}
+
+                            <IconButton
+                                onClick={() =>
+                                    subtasksField.append(DEFAULT_SUBTASK)
+                                }
+                                icon={<Plus color='dark' size={24} />}
+                                colorScheme='accent'
+                                alignSelf='center'
+                                rounded='full'
+                                aria-label='add vacation'
                             />
 
-                            <Controller
-                                control={control}
-                                name={`subtasks.${idx}.due`}
-                                render={({ field }) => (
-                                    <DateTimePicker
-                                        onChange={field.onChange}
-                                        value={field.value}
-                                    />
-                                )}
-                            />
+                            <Divider />
 
-                            <Button
-                                type='transparent'
-                                onClick={() => subtasksField.remove(idx)}
-                                icon={<Trash color='light' size={16} />}
-                            />
-                        </div>,
-                        <p key={`${field.id}error`} className={styles.error}>
-                            {errors.subtasks?.at?.(idx)?.name?.message}
-                        </p>,
-                    ])}
+                            {/* description */}
+                            <FormControl>
+                                <FormLabel>Description (optional)</FormLabel>
 
-                    {/* add space between bottom subtask and add button */}
-                    {subtasksField.fields.length > 0 && <Spacer />}
+                                <Textarea
+                                    {...register('description')}
+                                    rows={4}
+                                />
+                            </FormControl>
+                        </Stack>
+                    </ModalBody>
 
-                    <div className={styles.alignCenter}>
-                        <AddButton
-                            onClick={() =>
-                                subtasksField.append(DEFAULT_SUBTASK)
-                            }
-                        />
-                    </div>
-                </FormSection>,
+                    <Divider />
 
-                // description
-                <FormSection>
-                    <FormField label='Description' optional>
-                        <textarea {...register('description')} rows={4} />
-                    </FormField>
-                </FormSection>,
-            ]}
-        />
+                    <ModalFooter>
+                        <Button m='auto' colorScheme='accent' type='submit'>
+                            Submit
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </form>
+        </Modal>
     );
 }
