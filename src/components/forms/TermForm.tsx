@@ -1,5 +1,5 @@
 import { Plus, Trash } from '@/components/icons';
-import { DateTimePicker } from './comps';
+import { DateTimePicker } from './elements';
 import { TermPayload } from '@/lib/types';
 import { todayUTC } from '@/lib/date';
 import { trpc } from '@/lib/trpc/client';
