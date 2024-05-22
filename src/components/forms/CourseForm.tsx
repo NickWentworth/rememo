@@ -1,5 +1,5 @@
 import { Plus, Trash } from '@/components/icons';
-import { DateTimePicker, WeekdaySelector } from './comps';
+import { DateTimePicker, WeekdaySelector } from './elements';
 import { useFormController } from '@/lib/hooks/useFormController';
 import { CoursePayload } from '@/lib/types';
 import { todayUTC } from '@/lib/date';
