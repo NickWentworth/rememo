@@ -57,6 +57,14 @@ export const theme = extendTheme({
             },
         }),
 
+        // default divider styling
+        Divider: defineStyleConfig({
+            baseStyle: {
+                borderColor: 'bg.400',
+                opacity: '25%',
+            },
+        }),
+
         // default card color
         Card: createMultiStyleConfigHelpers([
             'container',

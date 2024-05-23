@@ -6,7 +6,7 @@ import { Panel, PanelBody, PanelHeader } from '@/components/panel';
 import { TaskCard } from '@/components/cards';
 import { TaskForm, useTaskFormController } from '@/components/forms';
 import { trpc, usePaginatedTasks } from '@/lib/trpc/client';
-import { Button, Text } from '@chakra-ui/react';
+import { Button, Divider, Text } from '@chakra-ui/react';
 
 export default function DashboardPage() {
     // only include tasks for this week
@@ -32,6 +32,12 @@ export default function DashboardPage() {
                     ifUndefined={[]}
                 />
             </Panel>
+
+            <Divider
+                orientation='vertical'
+                borderColor='bg.800'
+                opacity='100%'
+            />
 
             <Panel flex={3}>
                 <PanelHeader>

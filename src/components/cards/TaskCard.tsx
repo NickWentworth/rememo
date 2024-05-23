@@ -100,14 +100,16 @@ export function TaskCard(props: TaskCardProps) {
                         <Text color={dueColor}>{dueFormat.str}</Text>
                     </Box>
 
-                    <Stack gap='0.5rem'>
-                        {props.task.subtasks.map((subtask) => (
-                            <TaskCardSubtaskRow
-                                key={subtask.id}
-                                subtask={subtask}
-                            />
-                        ))}
-                    </Stack>
+                    {props.task.subtasks.length > 0 && (
+                        <Stack gap='0.5rem'>
+                            {props.task.subtasks.map((subtask) => (
+                                <TaskCardSubtaskRow
+                                    key={subtask.id}
+                                    subtask={subtask}
+                                />
+                            ))}
+                        </Stack>
+                    )}
 
                     {props.task.description && (
                         <Text whiteSpace='pre-wrap'>
