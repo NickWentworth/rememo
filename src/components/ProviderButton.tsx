@@ -1,6 +1,6 @@
 'use client';
 
-import Button from '.';
+import { Button } from '@chakra-ui/react';
 import { ClientSafeProvider, signIn } from 'next-auth/react';
 
 const PROVIDER_ICON_SIZE = 24;
@@ -9,14 +9,16 @@ type ProviderButtonProps = {
     provider: ClientSafeProvider;
 };
 
-export default function ProviderButton(props: ProviderButtonProps) {
+export function ProviderButton(props: ProviderButtonProps) {
     const providerIcon = `https://authjs.dev/img/providers/${props.provider.id}.svg`;
 
     return (
         <Button
-            type='outline'
+            size='lg'
+            variant='outline'
+            colorScheme='accent'
             onClick={() => signIn(props.provider.id)}
-            icon={<img src={providerIcon} height={PROVIDER_ICON_SIZE} />}
+            leftIcon={<img src={providerIcon} height={PROVIDER_ICON_SIZE} />}
         >
             Sign in with {props.provider.name}
         </Button>

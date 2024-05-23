@@ -1,10 +1,18 @@
 import { Logo } from '@/components/icons';
-import { ProviderButton } from '@/components/Button';
+import { ProviderButton } from '@/components/ProviderButton';
 import { buildMetadata } from '@/lib/metadata';
 import { isAuthenticated } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { getProviders } from 'next-auth/react';
-import styles from './login.module.css';
+import {
+    AbsoluteCenter,
+    Box,
+    Card,
+    CardBody,
+    Divider,
+    Stack,
+    Text,
+} from '@chakra-ui/react';
 
 const LOGO_SIZE = 64;
 
@@ -16,23 +24,40 @@ export default async function Login() {
         return redirect('/dashboard');
     }
 
-    const providers = await getProviders();
+    const authProviders = await getProviders();
 
     return (
-        <div className={styles.fill}>
-            <div className={styles.body}>
-                <Logo size={LOGO_SIZE} color='accent' />
+        <Box w='100dvw' h='100dvh' bg='bg.750'>
+            <AbsoluteCenter>
+                <Card size='lg'>
+                    <CardBody>
+                        <Stack align='center' gap='1rem'>
+                            <Logo size={LOGO_SIZE} color='accent' />
 
-                <h2>Sign in to access Rememo</h2>
+                            <Text variant='h2'>Sign in to access Rememo</Text>
 
-                {providers ? (
-                    Object.values(providers).map((p) => (
-                        <ProviderButton key={p.id} provider={p} />
-                    ))
-                ) : (
-                    <p>Error: no providers were found!</p>
-                )}
-            </div>
-        </div>
+                            <Divider />
+
+                            <Stack>
+                                {authProviders ? (
+                                    Object.values(authProviders).map(
+                                        (provider) => (
+                                            <ProviderButton
+                                                key={provider.id}
+                                                provider={provider}
+                                            />
+                                        )
+                                    )
+                                ) : (
+                                    <Text color='red.400'>
+                                        Error: No auth providers were found!
+                                    </Text>
+                                )}
+                            </Stack>
+                        </Stack>
+                    </CardBody>
+                </Card>
+            </AbsoluteCenter>
+        </Box>
     );
 }
