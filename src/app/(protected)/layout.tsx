@@ -1,4 +1,4 @@
-import Providers from './Providers';
+import { QueryProvider, ToastProvider } from '@/providers';
 import Sidebar from '@/components/Sidebar';
 import { buildMetadata } from '@/lib/metadata';
 import { LOGIN_ROUTE, isAuthenticated } from '@/lib/auth';
@@ -11,22 +11,20 @@ import { Flex } from '@chakra-ui/react';
 
 export const metadata = buildMetadata();
 
-type LayoutProps = {
-    children: React.ReactNode;
-};
-
-export default async function Layout(props: LayoutProps) {
+export default async function Layout(props: React.PropsWithChildren) {
     // redirect is user is unauthenticated
     if (!(await isAuthenticated())) {
         redirect(LOGIN_ROUTE);
     }
 
     return (
-        <Providers>
-            <Flex w='100dvw' h='100dvh' bg='bg.750'>
-                <Sidebar />
-                {props.children}
-            </Flex>
-        </Providers>
+        <ToastProvider>
+            <QueryProvider>
+                <Flex w='100dvw' h='100dvh' bg='bg.750'>
+                    <Sidebar />
+                    {props.children}
+                </Flex>
+            </QueryProvider>
+        </ToastProvider>
     );
 }
