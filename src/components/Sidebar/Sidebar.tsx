@@ -21,7 +21,7 @@ export function Sidebar() {
     const [expanded, { toggle: toggleExpanded }] = useBoolean(false);
 
     return (
-        <Stack p='0.5rem' bg='bg.800' shadow='lg'>
+        <Stack p='0.5rem' bg='bg.800' shadow='dark-lg' zIndex='sidebar'>
             <Flex align='center' gap='0.5rem'>
                 <Box my='0.25rem'>
                     <Logo color='accent' size={LOGO_SIZE} />

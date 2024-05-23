@@ -34,6 +34,9 @@ export const theme = extendTheme({
             900: '#001710',
         },
     },
+    zIndices: {
+        sidebar: 1, // sidebar should display shadow over neighboring content
+    },
     components: {
         Text: defineStyleConfig({
             baseStyle: {
@@ -65,11 +68,16 @@ export const theme = extendTheme({
             },
         }),
 
-        // default card color
+        // remove card shadow effect
         Card: createMultiStyleConfigHelpers([
             'container',
         ]).defineMultiStyleConfig({
-            baseStyle: { container: { bg: 'bg.800' } },
+            baseStyle: {
+                container: {
+                    bg: 'bg.800',
+                    shadow: 'none',
+                },
+            },
         }),
 
         Modal: createMultiStyleConfigHelpers(['dialog']).defineMultiStyleConfig(
