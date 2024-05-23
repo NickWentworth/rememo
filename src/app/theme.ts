@@ -16,6 +16,7 @@ export const theme = extendTheme({
             500: '#717977',
             600: '#575e5d',
             700: '#3f4343',
+            750: '#323636', // added
             800: '#242928',
             900: '#06100b',
         },
@@ -55,11 +56,39 @@ export const theme = extendTheme({
                 variant: 'p',
             },
         }),
+
+        // default card color
         Card: createMultiStyleConfigHelpers([
             'container',
         ]).defineMultiStyleConfig({
             baseStyle: { container: { bg: 'bg.800' } },
         }),
+
+        Modal: createMultiStyleConfigHelpers(['dialog']).defineMultiStyleConfig(
+            {
+                baseStyle: { dialog: { bg: 'bg.800' } },
+            }
+        ),
+
+        // make input be a bit smaller by default
+        Input: createMultiStyleConfigHelpers(['field']).defineMultiStyleConfig({
+            baseStyle: { field: { pr: '0.5rem' } },
+            defaultProps: { size: 'sm', variant: 'filled' },
+        }),
+        Select: defineStyleConfig({
+            defaultProps: { size: 'sm', variant: 'filled' },
+        }),
+        Textarea: defineStyleConfig({
+            defaultProps: { size: 'sm', variant: 'filled' },
+        }),
+        FormLabel: defineStyleConfig({
+            baseStyle: {
+                fontWeight: '400',
+                mb: '0.25rem',
+            },
+        }),
+
+        // include larger radio size
         Radio: createMultiStyleConfigHelpers([
             'control',
         ]).defineMultiStyleConfig({

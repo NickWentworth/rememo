@@ -83,22 +83,3 @@ hr {
     height: 1px;
     border: 0;
 }
-
-/* input styling */
-input,
-select,
-textarea {
-    background-color: var(--dark);
-    color: var(--white);
-    border: 1px solid var(--medium);
-    border-radius: 0.25rem;
-    padding: 0.125rem 0.25rem;
-}
-
-select {
-    cursor: pointer;
-}
-
-textarea {
-    resize: vertical;
-}

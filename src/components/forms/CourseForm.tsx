@@ -6,6 +6,7 @@ import { todayUTC } from '@/lib/date';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { trpc } from '@/lib/trpc/client';
 import {
+    Box,
     Button,
     Divider,
     Flex,
@@ -198,31 +199,33 @@ export function CourseForm(props: CourseFormProps) {
                             <FormControl>
                                 <FormLabel>Course Color</FormLabel>
 
-                                <Controller
-                                    control={control}
-                                    name='color'
-                                    render={({ field }) => (
-                                        <RadioGroup
-                                            name={field.name}
-                                            value={field.value}
-                                            onChange={field.onChange}
-                                        >
-                                            <Flex justify='space-around'>
-                                                {COLORS.map((color) => (
-                                                    <Radio
-                                                        key={color}
-                                                        value={color}
-                                                        size='xl'
-                                                        borderColor={color}
-                                                        _checked={{
-                                                            bg: color,
-                                                        }}
-                                                    />
-                                                ))}
-                                            </Flex>
-                                        </RadioGroup>
-                                    )}
-                                />
+                                <Box py='0.5rem'>
+                                    <Controller
+                                        control={control}
+                                        name='color'
+                                        render={({ field }) => (
+                                            <RadioGroup
+                                                name={field.name}
+                                                value={field.value}
+                                                onChange={field.onChange}
+                                            >
+                                                <Flex justify='space-around'>
+                                                    {COLORS.map((color) => (
+                                                        <Radio
+                                                            key={color}
+                                                            value={color}
+                                                            size='xl'
+                                                            borderColor={color}
+                                                            _checked={{
+                                                                bg: color,
+                                                            }}
+                                                        />
+                                                    ))}
+                                                </Flex>
+                                            </RadioGroup>
+                                        )}
+                                    />
+                                </Box>
                             </FormControl>
 
                             <Divider />
@@ -247,12 +250,12 @@ export function CourseForm(props: CourseFormProps) {
                             <Divider />
 
                             {/* course times */}
-                            <FormLabel>Course Times</FormLabel>
+                            <FormLabel mb='0'>Course Times</FormLabel>
                             {timesField.fields.map((field, idx) => (
                                 <SimpleGrid
                                     key={field.id}
                                     columns={2}
-                                    bg='gray.800'
+                                    bg='bg.750'
                                     p='0.5rem'
                                     rounded='md'
                                     gap='0.5rem'

@@ -220,11 +220,11 @@ export function TaskForm(props: TaskFormProps) {
                             <Divider />
 
                             {/* subtasks */}
-                            <FormLabel>Subtasks</FormLabel>
+                            <FormLabel mb='0'>Subtasks</FormLabel>
                             {subtasksField.fields.map((field, idx) => (
                                 <Flex
                                     key={field.id}
-                                    bg='gray.800'
+                                    bg='bg.750'
                                     p='0.5rem'
                                     rounded='md'
                                     gap='0.5rem'

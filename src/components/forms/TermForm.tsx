@@ -203,12 +203,12 @@ export function TermForm(props: TermFormProps) {
                             <Divider />
 
                             {/* term vacations */}
-                            <FormLabel>Vacations</FormLabel>
+                            <FormLabel mb='0'>Vacations</FormLabel>
                             {vacationsField.fields.map((field, idx) => (
                                 <SimpleGrid
                                     key={field.id}
                                     columns={2}
-                                    bg='gray.800'
+                                    bg='bg.750'
                                     p='0.5rem'
                                     rounded='md'
                                     gap='0.5rem'
