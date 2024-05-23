@@ -1,8 +1,8 @@
 'use client';
 
-import { AddButton } from '@/components/Button';
-import Panel, { Centered } from '@/components/Panel';
+import { AddButton } from '@/components/AddButton';
 import { CourseCard, TermCard } from '@/components/cards';
+import { Panel, PanelBody, PanelHeader } from '@/components/panel';
 import {
     CourseForm,
     TermForm,
@@ -11,123 +11,123 @@ import {
 } from '@/components/forms';
 import { trpc } from '@/lib/trpc/client';
 import { useState } from 'react';
+import { Divider, Text } from '@chakra-ui/react';
 
 export default function CoursesPage() {
-    // terms
     const [selectedTermId, setSelectedTermId] = useState<string>();
 
     const { data: terms, status: termStatus } = trpc.term.all.useQuery();
     const { mutate: removeTerm } = trpc.term.remove.useMutation();
 
-    const termFormController = useTermFormController();
-
-    const termList = (() => {
-        if (termStatus === 'error') {
-            return <Centered>Error!</Centered>;
-        }
-
-        if (termStatus === 'pending') {
-            return <Centered>Loading...</Centered>;
-        }
-
-        // display message if no terms exist
-        if (terms.length == 0) {
-            return (
-                <Centered>
-                    No terms yet, add one with the button above!
-                </Centered>
-            );
-        }
-
-        // by default, return all terms mapped to a card component
-        return (
-            <>
-                {terms.map((term) => (
-                    <TermCard
-                        key={term.id}
-                        term={term}
-                        onEditClick={() => termFormController.update(term)}
-                        onDeleteClick={() => {
-                            if (selectedTermId === term.id) {
-                                setSelectedTermId(undefined);
-                            }
-                            removeTerm(term.id);
-                        }}
-                        selected={term.id === selectedTermId}
-                        onClick={() => setSelectedTermId(term.id)}
-                    />
-                ))}
-            </>
-        );
-    })();
-
-    // courses
     const { data: courses, status: courseStatus } =
         trpc.course.byTermId.useQuery(selectedTermId);
     const { mutate: removeCourse } = trpc.course.remove.useMutation();
 
+    const termFormController = useTermFormController();
     const courseFormController = useCourseFormController();
-
-    const courseList = (() => {
-        if (courseStatus === 'error') {
-            return <Centered>Error!</Centered>;
-        }
-
-        if (courseStatus === 'pending') {
-            return <Centered>Loading...</Centered>;
-        }
-
-        // display message if there are no courses for the selected term
-        if (courses.length == 0) {
-            // TODO: show the selected term name if it exists
-            return (
-                <Centered>
-                    Select a term and add courses to it with the button above!
-                </Centered>
-            );
-        }
-
-        // by default, return all selected courses mapped to a card component
-        return (
-            <>
-                {courses.map((course) => (
-                    <CourseCard
-                        key={course.id}
-                        course={course}
-                        onEditClick={() => courseFormController.update(course)}
-                        onDeleteClick={() => removeCourse(course.id)}
-                    />
-                ))}
-            </>
-        );
-    })();
 
     return (
         <>
-            <Panel
-                header={
-                    <>
-                        <h1>Terms</h1>
-                        <AddButton onClick={termFormController.create} />
-                    </>
-                }
-                body={termList}
-                flex={2}
+            <Panel flex={2}>
+                <PanelHeader>
+                    <Text variant='h1'>Terms</Text>
+
+                    <AddButton
+                        onClick={termFormController.create}
+                        aria-label='add term'
+                    />
+                </PanelHeader>
+
+                <PanelBody
+                    data={terms}
+                    ifExists={(terms) =>
+                        terms.map((term) => (
+                            <TermCard
+                                key={term.id}
+                                term={term}
+                                onEditClick={() =>
+                                    termFormController.update(term)
+                                }
+                                onDeleteClick={() => {
+                                    if (selectedTermId === term.id) {
+                                        setSelectedTermId(undefined);
+                                    }
+                                    removeTerm(term.id);
+                                }}
+                                selected={term.id === selectedTermId}
+                                onClick={() => setSelectedTermId(term.id)}
+                            />
+                        ))
+                    }
+                    ifUndefined={[
+                        [
+                            termStatus === 'error',
+                            <Text align='center'>Error!</Text>,
+                        ],
+                        [
+                            termStatus === 'pending',
+                            <Text align='center'>Loading...</Text>,
+                        ],
+                        [
+                            terms?.length == 0,
+                            <Text align='center'>
+                                No terms yet, add one with the button above!
+                            </Text>,
+                        ],
+                    ]}
+                />
+            </Panel>
+
+            <Divider
+                orientation='vertical'
+                borderColor='bg.800'
+                opacity='100%'
             />
 
-            <Panel
-                header={
-                    <>
-                        <h1>Courses</h1>
-                        <AddButton
-                            onClick={courseFormController.create}
-                            disabled={selectedTermId === undefined}
-                        />
-                    </>
-                }
-                body={courseList}
-                flex={3}
-            />
+            <Panel flex={3}>
+                <PanelHeader>
+                    <Text variant='h1'>Courses</Text>
+
+                    <AddButton
+                        onClick={courseFormController.create}
+                        isDisabled={selectedTermId === undefined}
+                        aria-label='add course'
+                    />
+                </PanelHeader>
+
+                <PanelBody
+                    data={courses}
+                    ifExists={(courses) =>
+                        courses.map((course) => (
+                            <CourseCard
+                                key={course.id}
+                                course={course}
+                                onEditClick={() =>
+                                    courseFormController.update(course)
+                                }
+                                onDeleteClick={() => removeCourse(course.id)}
+                            />
+                        ))
+                    }
+                    ifUndefined={[
+                        [
+                            courseStatus === 'error',
+                            <Text align='center'>Error!</Text>,
+                        ],
+                        [
+                            courseStatus === 'pending',
+                            <Text align='center'>Loading...</Text>,
+                        ],
+                        [
+                            courses?.length === 0,
+                            <Text align='center'>
+                                Select a term and add courses to it with the
+                                button above!
+                            </Text>,
+                        ],
+                    ]}
+                />
+            </Panel>
 
             <TermForm controller={termFormController} />
 

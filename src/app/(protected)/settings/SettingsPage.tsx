@@ -1,18 +1,26 @@
 'use client';
 
 import { Info } from '@/components/icons';
-import Button from '@/components/Button';
-import Panel from '@/components/Panel';
+import { Panel, PanelBody, PanelHeader } from '@/components/panel';
 import { trpc } from '@/lib/trpc/client';
 import { signOut } from 'next-auth/react';
 import { useState } from 'react';
-import styles from './settings.module.css';
+import {
+    Avatar,
+    Box,
+    Button,
+    Divider,
+    Flex,
+    Icon,
+    Image,
+    Stack,
+    Text,
+    Tooltip,
+} from '@chakra-ui/react';
 
 export default function SettingsPage() {
     const { data: user, status } = trpc.user.get.useQuery();
     const { mutate: deleteUser } = trpc.user.permanentlyDelete.useMutation();
-
-    const [hideTooltip, setHideTooltip] = useState(true);
 
     function onDeleteClick() {
         if (
@@ -25,60 +33,53 @@ export default function SettingsPage() {
         }
     }
 
-    const body = (() => {
-        if (status === 'error') {
-            return <p>Error!</p>;
-        }
+    return (
+        <Panel flex={1}>
+            <PanelHeader>
+                <Text variant='h1'>Settings</Text>
+            </PanelHeader>
 
-        if (status === 'pending') {
-            return <p>Loading...</p>;
-        }
-
-        return (
-            <>
-                <div className={styles.userProfile}>
-                    <div
-                        className={styles.userProfileLabel}
-                        onMouseLeave={() => setHideTooltip(true)}
-                        onMouseOver={() => setHideTooltip(false)}
+            {/* TODO: refactor PanelBody to allow its use for a single element */}
+            <Stack flex='1' p='1rem' divider={<Divider />}>
+                <Flex gap='1rem'>
+                    <Tooltip
+                        label='Profile picture and name must be changed through your Google profile'
+                        w='200px'
+                        textAlign='center'
+                        rounded='lg'
                     >
-                        <h3>User Profile</h3>
-
-                        <div>
+                        <Flex alignSelf='start' align='center' gap='0.25rem'>
+                            <Text variant='h3'>User Profile</Text>
                             <Info size={20} color='white' />
-                        </div>
+                        </Flex>
+                    </Tooltip>
 
-                        <p className={styles.infoTooltip} hidden={hideTooltip}>
-                            Profile picture and name must be changed through
-                            your Google profile
-                        </p>
-                    </div>
+                    <Avatar
+                        size='xl'
+                        src={user?.image ?? undefined}
+                        name={user?.name ?? undefined}
+                    />
 
-                    <img src={user.image ?? ''} className={styles.userImage} />
+                    <Box alignSelf='center'>
+                        <Text variant='h4'>{user?.name}</Text>
+                        <Text>{user?.email}</Text>
+                    </Box>
+                </Flex>
 
-                    <div className={styles.userName}>
-                        <h4>{user.name}</h4>
-                        <p>{user.email}</p>
-                    </div>
-                </div>
-
-                <hr className={styles.hr} />
-
-                <div>
-                    <Button type='outline' onClick={signOut}>
+                <Stack align='start'>
+                    <Button
+                        colorScheme='accent'
+                        variant='outline'
+                        onClick={() => signOut()}
+                    >
                         Sign Out
                     </Button>
-                </div>
 
-                <div>
-                    {/* TODO: add red warning variant for buttons */}
-                    <Button type='solid' onClick={onDeleteClick}>
+                    <Button colorScheme='red' onClick={onDeleteClick}>
                         Delete Account
                     </Button>
-                </div>
-            </>
-        );
-    })();
-
-    return <Panel header={<h1>Settings</h1>} body={body} flex={1} />;
+                </Stack>
+            </Stack>
+        </Panel>
+    );
 }

@@ -1,3 +1,4 @@
+import { Select } from '@chakra-ui/react';
 import { useState } from 'react';
 
 type TypedSelectProps<T extends string> = {
@@ -29,7 +30,10 @@ export default function TypedSelect<T extends string>(
     }
 
     return (
-        <select
+        <Select
+            w='fit-content'
+            variant='outline'
+            size='md'
             value={value}
             onChange={(e) => {
                 // e.target.value's type T is lost when given to option's value prop, ensure an option has not been changed
@@ -49,6 +53,6 @@ export default function TypedSelect<T extends string>(
                     {opt.display}
                 </option>
             ))}
-        </select>
+        </Select>
     );
 }

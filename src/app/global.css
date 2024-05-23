@@ -1,17 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
 
-/* fonts */
-/* @font-face {
-    font-family: 'Inter';
-    src: url('/fonts/Inter.ttf');
-}
-
-@font-face {
-    font-family: 'Quicksand';
-    src: url('/fonts/Quicksand.ttf');
-} */
-
 :root {
     /* color variables */
     --dark: #1c1e1e;
@@ -23,63 +12,4 @@
     /* transparent color variables */
     --light30: #afc7c230;
     --accent30: #27c69b30;
-}
-
-body {
-    background-color: var(--medium);
-    color: var(--white);
-    margin: 0;
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-}
-
-h1,
-h2,
-h3,
-h4,
-p,
-input,
-textarea,
-select,
-label {
-    margin: 0;
-    font-family: 'Inter';
-}
-
-/* global text styles */
-h1 {
-    font-size: 20px;
-    font-weight: 500;
-}
-h2 {
-    font-size: 20px;
-    font-weight: 400;
-}
-h3 {
-    font-size: 16px;
-    font-weight: 400;
-}
-h4 {
-    font-size: 16px;
-    font-weight: 300;
-    color: var(--light);
-}
-p,
-label {
-    font-size: 14px;
-    font-weight: 300;
-    color: var(--light);
-}
-
-a {
-    text-decoration: none;
-}
-
-/* horizontal rule fills container and defaults to the light color */
-hr {
-    background-color: var(--light);
-    margin: 0;
-    height: 1px;
-    border: 0;
 }

@@ -3,6 +3,7 @@ import Sidebar from '@/components/Sidebar';
 import { buildMetadata } from '@/lib/metadata';
 import { LOGIN_ROUTE, isAuthenticated } from '@/lib/auth';
 import { redirect } from 'next/navigation';
+import { Flex } from '@chakra-ui/react';
 
 // Pages in the (protected) layout group require the user to be signed into an active session.
 
@@ -22,8 +23,10 @@ export default async function Layout(props: LayoutProps) {
 
     return (
         <Providers>
-            <Sidebar />
-            {props.children}
+            <Flex w='100dvw' h='100dvh' bg='bg.750'>
+                <Sidebar />
+                {props.children}
+            </Flex>
         </Providers>
     );
 }

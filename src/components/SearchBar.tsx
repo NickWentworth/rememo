@@ -1,7 +1,5 @@
-'use client';
-
+import { Input } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import styles from './search.module.css';
 
 type SearchBarProps = {
     /** Callback function for when user stops typing */
@@ -30,9 +28,10 @@ export default function SearchBar(props: SearchBarProps) {
     }, [term]);
 
     return (
-        <input
+        <Input
             type='text'
-            className={styles.searchBar}
+            variant='outline'
+            size='md'
             placeholder={props.placeholder ?? 'Search'}
             value={term}
             onChange={(e) => setTerm(e.target.value)}
