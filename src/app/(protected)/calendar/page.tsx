@@ -12,12 +12,9 @@ export default function CalendarPage() {
                 <Text variant='h1'>Calendar</Text>
             </PanelHeader>
 
-            <PanelBody
-                ifExists={() => <></>}
-                ifUndefined={[
-                    [true, <Calendar display='week' initialTime={7} />],
-                ]}
-            />
+            <PanelBody>
+                <Calendar display='week' initialTime={7} />
+            </PanelBody>
         </Panel>
     );
 }

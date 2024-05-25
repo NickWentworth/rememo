@@ -40,46 +40,58 @@ export default function SettingsPage() {
             </PanelHeader>
 
             {/* TODO: refactor PanelBody to allow its use for a single element */}
-            <Stack flex='1' p='1rem' divider={<Divider />}>
-                <Flex gap='1rem'>
-                    <Tooltip
-                        label='Profile picture and name must be changed through your Google profile'
-                        w='200px'
-                        textAlign='center'
-                        rounded='lg'
-                    >
-                        <Flex alignSelf='start' align='center' gap='0.25rem'>
-                            <Text variant='h3'>User Profile</Text>
-                            <Info size={20} color='white' />
+            <PanelBody
+                data={user}
+                ifExists={(user) => (
+                    <>
+                        <Flex gap='1rem'>
+                            <Tooltip
+                                label='Profile picture and name must be changed through your Google profile'
+                                w='200px'
+                                textAlign='center'
+                                rounded='lg'
+                            >
+                                <Flex
+                                    alignSelf='start'
+                                    align='center'
+                                    gap='0.25rem'
+                                >
+                                    <Text variant='h3'>User Profile</Text>
+                                    <Info size={20} color='white' />
+                                </Flex>
+                            </Tooltip>
+
+                            <Avatar
+                                size='xl'
+                                src={user.image ?? undefined}
+                                name={user.name ?? undefined}
+                            />
+
+                            <Box alignSelf='center'>
+                                <Text variant='h4'>{user.name}</Text>
+                                <Text>{user.email}</Text>
+                            </Box>
                         </Flex>
-                    </Tooltip>
 
-                    <Avatar
-                        size='xl'
-                        src={user?.image ?? undefined}
-                        name={user?.name ?? undefined}
-                    />
+                        <Divider />
 
-                    <Box alignSelf='center'>
-                        <Text variant='h4'>{user?.name}</Text>
-                        <Text>{user?.email}</Text>
-                    </Box>
-                </Flex>
+                        <Stack align='start'>
+                            <Button
+                                colorScheme='accent'
+                                variant='outline'
+                                onClick={() => signOut()}
+                            >
+                                Sign Out
+                            </Button>
 
-                <Stack align='start'>
-                    <Button
-                        colorScheme='accent'
-                        variant='outline'
-                        onClick={() => signOut()}
-                    >
-                        Sign Out
-                    </Button>
-
-                    <Button colorScheme='red' onClick={onDeleteClick}>
-                        Delete Account
-                    </Button>
-                </Stack>
-            </Stack>
+                            <Button colorScheme='red' onClick={onDeleteClick}>
+                                Delete Account
+                            </Button>
+                        </Stack>
+                    </>
+                )}
+                ifUndefined={[[status === 'pending', <Text>Loading...</Text>]]}
+            />
         </Panel>
     );
 }

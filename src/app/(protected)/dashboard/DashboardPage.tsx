@@ -26,11 +26,9 @@ export default function DashboardPage() {
                     <Text variant='h1'>Daily Calendar</Text>
                 </PanelHeader>
 
-                <PanelBody
-                    data={[true]}
-                    ifExists={() => <Calendar display='day' initialTime={7} />}
-                    ifUndefined={[]}
-                />
+                <PanelBody>
+                    <Calendar display='day' initialTime={7} />
+                </PanelBody>
             </Panel>
 
             <Divider
@@ -89,7 +87,7 @@ export default function DashboardPage() {
                             <Text align='center'>Loading...</Text>,
                         ],
                         [
-                            tasks.length === 0,
+                            tasks?.length === 0,
                             <Text align='center'>
                                 No tasks due this week, create one with the
                                 button above!

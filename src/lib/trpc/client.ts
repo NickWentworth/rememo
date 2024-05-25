@@ -46,6 +46,6 @@ export function usePaginatedTasks(options: GetTaskOptions) {
 
     return {
         query: query,
-        tasks: query.data?.pages.flatMap((page) => page.tasks) ?? [],
+        tasks: query.data?.pages.flatMap((page) => page.tasks),
     };
 }
