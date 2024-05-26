@@ -1,33 +1,30 @@
-import Link from 'next/link';
-import Button from '@/components/Button';
+import { buildMetadata } from '@/lib/metadata';
+import { Button, Link, Stack, Text } from '@chakra-ui/react';
 
-const fill: React.CSSProperties = {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    right: 0,
-    left: 0,
-
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '1rem',
-};
+export const metadata = buildMetadata({
+    title: 'Not Found',
+});
 
 export default async function NotFoundPage() {
     return (
-        <div style={fill}>
-            <h1>404 - Page not found</h1>
+        <Stack
+            w='100dvw'
+            h='100dvh'
+            bg='bg.750'
+            align='center'
+            justify='center'
+            gap='1rem'
+        >
+            <Text variant='h1'>404 - Page not found</Text>
 
-            <p>
+            <Text>
                 The page you are looking for doesn't exist or it might have been
                 removed
-            </p>
+            </Text>
 
             <Link href='/dashboard'>
-                <Button type='solid'>Return to Dashboard</Button>
+                <Button colorScheme='accent'>Return to Dashboard</Button>
             </Link>
-        </div>
+        </Stack>
     );
 }
