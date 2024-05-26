@@ -68,6 +68,14 @@ export const COURSE_PROCEDURES = {
             });
         }),
 
+    /** Fetch a list of course times that occur on the given `Date` */
+    timesByDate: authedProcedure
+        .input(z.date())
+        .query(async ({ input: date, ctx }) => {
+            return await getCourseTimesByDate(date, ctx.user.id);
+        }),
+
+    // TODO: this might not be needed, queries are batched automatically
     /**
      * Fetch a list of course times for each given `Date` in input array
      *

@@ -1,7 +1,7 @@
 'use client';
 
 import { AddButton } from '@/components/AddButton';
-import Calendar from '@/components/Calendar';
+import { DailyCalendar } from '@/components/Calendar';
 import { Panel, PanelBody, PanelHeader } from '@/components/panel';
 import { TaskCard } from '@/components/cards';
 import { TaskForm, useTaskFormController } from '@/components/forms';
@@ -27,7 +27,7 @@ export default function DashboardPage() {
                 </PanelHeader>
 
                 <PanelBody>
-                    <Calendar display='day' initialTime={7} />
+                    <DailyCalendar initialTime={7} />
                 </PanelBody>
             </Panel>
 

@@ -1,4 +1,4 @@
-import Calendar from '@/components/Calendar';
+import { WeeklyCalendar } from '@/components/Calendar';
 import { Panel, PanelBody, PanelHeader } from '@/components/panel';
 import { buildMetadata } from '@/lib/metadata';
 import { Text } from '@chakra-ui/react';
@@ -13,7 +13,7 @@ export default function CalendarPage() {
             </PanelHeader>
 
             <PanelBody>
-                <Calendar display='week' initialTime={7} />
+                <WeeklyCalendar initialTime={7} />
             </PanelBody>
         </Panel>
     );
