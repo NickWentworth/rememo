@@ -30,7 +30,7 @@ export function TermCard(props: TermCardProps) {
                     <Text variant='h1'>{props.term.name}</Text>
 
                     <Flex gap='0.25rem' align='center'>
-                        <Icon icon='calendar' />
+                        <Icon icon='calendar' variant='light' />
 
                         <Text>
                             {formatTermDate(props.term.start, props.term.end)}

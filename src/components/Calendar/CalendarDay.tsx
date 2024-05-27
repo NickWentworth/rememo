@@ -78,7 +78,11 @@ export function CalendarDay(props: CalendarDayProps) {
 
                         {time.course.location && (
                             <Flex align='center' gap='0.25rem'>
-                                <Icon icon='location' fontSize='sm' />
+                                <Icon
+                                    icon='location'
+                                    variant='light'
+                                    fontSize='sm'
+                                />
                                 <Text>{time.course.location}</Text>
                             </Flex>
                         )}

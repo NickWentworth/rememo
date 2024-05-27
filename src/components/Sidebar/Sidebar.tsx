@@ -70,7 +70,11 @@ export function Sidebar() {
                     justifyContent='start'
                     px='0.5rem'
                     icon={
-                        <Icon icon='hamburger' fontSize={SIDEBAR_ICON_SIZE} />
+                        <Icon
+                            icon='hamburger'
+                            variant='white'
+                            fontSize={SIDEBAR_ICON_SIZE}
+                        />
                     }
                     onClick={toggleExpanded}
                     aria-label='hamburger'

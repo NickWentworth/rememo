@@ -35,14 +35,14 @@ export function CourseCard(props: CourseCardProps) {
                     >
                         {props.course.instructor && (
                             <>
-                                <Icon icon='user' />
+                                <Icon icon='user' variant='light' />
                                 <Text>{props.course.instructor}</Text>
                             </>
                         )}
 
                         {props.course.location && (
                             <>
-                                <Icon icon='location' />
+                                <Icon icon='location' variant='light' />
                                 <Text>{props.course.location}</Text>
                             </>
                         )}

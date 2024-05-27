@@ -67,12 +67,6 @@ export const theme = extendTheme({
                 dark: { color: 'bg.800' },
                 accent: { color: 'accent.500' },
             },
-            defaultProps: {
-                variant: 'light',
-            },
-            baseStyle: {
-                fontSize: 'md',
-            },
         }),
 
         // default divider styling
