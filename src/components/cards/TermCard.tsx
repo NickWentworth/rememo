@@ -1,15 +1,9 @@
+import { CardIcons } from './CardIcons';
 import { Icon } from '@/components/Icon';
 import { TermPayload } from '@/lib/types';
 import { formatTermDate, formatTermVacationDate } from '@/lib/date';
 import { useState } from 'react';
-import {
-    Card,
-    CardBody,
-    Flex,
-    IconButton,
-    Stack,
-    Text,
-} from '@chakra-ui/react';
+import { Card, CardBody, Flex, Stack, Text } from '@chakra-ui/react';
 
 type TermCardProps = {
     term: TermPayload;
@@ -62,25 +56,12 @@ export function TermCard(props: TermCardProps) {
                 </Stack>
             </CardBody>
 
-            <Stack gap='0'>
-                <IconButton
-                    icon={<Icon icon='edit' variant='white' fontSize='lg' />}
-                    onClick={props.onEditClick}
-                    rounded='0'
-                    variant='ghost'
-                    opacity={hovering ? '100%' : '0%'}
-                    aria-label='edit'
-                />
-
-                <IconButton
-                    icon={<Icon icon='trash' variant='white' fontSize='lg' />}
-                    onClick={props.onDeleteClick}
-                    rounded='0'
-                    variant='ghost'
-                    opacity={hovering ? '100%' : '0%'}
-                    aria-label='delete'
-                />
-            </Stack>
+            <CardIcons
+                hovering={hovering}
+                iconVariant='white'
+                onEditClick={props.onEditClick}
+                onDeleteClick={props.onDeleteClick}
+            />
         </Card>
     );
 }

@@ -57,7 +57,11 @@ export default function SettingsPage() {
                                         User Profile
                                     </Text>
 
-                                    <Icon icon='info' variant='white' />
+                                    <Icon
+                                        icon='info'
+                                        variant='white'
+                                        fontSize='xl'
+                                    />
                                 </Flex>
                             </Tooltip>
 

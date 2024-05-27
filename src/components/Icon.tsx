@@ -2,22 +2,22 @@
 
 import { As, Icon as ChakraIcon, createIcon } from '@chakra-ui/react';
 import {
-    FaBars,
-    FaBookOpen,
-    FaCalendarAlt,
-    FaChevronLeft,
-    FaChevronRight,
-    FaEdit,
-    FaHome,
-    FaInfoCircle,
-    FaMapMarkerAlt,
-    FaPlus,
-    FaSearch,
-    FaTasks,
-    FaTimes,
-    FaTrashAlt,
-    FaUser,
-} from 'react-icons/fa';
+    AiOutlineBook,
+    AiOutlineCalendar,
+    AiOutlineClose,
+    AiOutlineDelete,
+    AiOutlineForm,
+    AiOutlineHome,
+    AiOutlineInfoCircle,
+    AiOutlineLeft,
+    AiOutlineMenu,
+    AiOutlinePlus,
+    AiOutlineRight,
+    AiOutlineSearch,
+    AiOutlineUser,
+} from 'react-icons/ai';
+import { FiMapPin } from 'react-icons/fi';
+import { GoTasklist } from 'react-icons/go';
 
 export type IconName =
     | 'calendar'
@@ -40,35 +40,35 @@ export type IconName =
 function nameToIcon(icon: IconName): As {
     switch (icon) {
         case 'calendar':
-            return FaCalendarAlt;
+            return AiOutlineCalendar;
         case 'close':
-            return FaTimes;
+            return AiOutlineClose;
         case 'courses':
-            return FaBookOpen;
+            return AiOutlineBook;
         case 'dashboard':
-            return FaHome;
+            return AiOutlineHome;
         case 'edit':
-            return FaEdit;
+            return AiOutlineForm;
         case 'hamburger':
-            return FaBars;
+            return AiOutlineMenu;
         case 'info':
-            return FaInfoCircle;
+            return AiOutlineInfoCircle;
         case 'left':
-            return FaChevronLeft;
+            return AiOutlineLeft;
         case 'location':
-            return FaMapMarkerAlt;
+            return FiMapPin;
         case 'plus':
-            return FaPlus;
+            return AiOutlinePlus;
         case 'right':
-            return FaChevronRight;
+            return AiOutlineRight;
         case 'search':
-            return FaSearch;
+            return AiOutlineSearch;
         case 'tasks':
-            return FaTasks;
+            return GoTasklist;
         case 'trash':
-            return FaTrashAlt;
+            return AiOutlineDelete;
         case 'user':
-            return FaUser;
+            return AiOutlineUser;
         case 'logo':
             return LogoIcon;
         default:

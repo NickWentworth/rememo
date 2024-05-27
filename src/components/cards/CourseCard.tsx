@@ -1,16 +1,10 @@
+import { CardIcons } from './CardIcons';
 import { Icon } from '@/components/Icon';
 import { formatCourseTimeDays, formatCourseTimeRange } from '@/lib/date';
 import { CoursePayload } from '@/lib/types';
 import { bitfieldToList } from '@/lib/bitfield';
 import { useState } from 'react';
-import {
-    Card,
-    CardBody,
-    Grid,
-    IconButton,
-    Stack,
-    Text,
-} from '@chakra-ui/react';
+import { Card, CardBody, Grid, Stack, Text } from '@chakra-ui/react';
 
 type CourseCardProps = {
     course: CoursePayload;
@@ -75,25 +69,12 @@ export function CourseCard(props: CourseCardProps) {
                 </Stack>
             </CardBody>
 
-            <Stack gap='0'>
-                <IconButton
-                    icon={<Icon icon='edit' variant='white' fontSize='lg' />}
-                    onClick={props.onEditClick}
-                    rounded='0'
-                    variant='ghost'
-                    opacity={hovering ? '100%' : '0%'}
-                    aria-label='edit'
-                />
-
-                <IconButton
-                    icon={<Icon icon='trash' variant='white' fontSize='lg' />}
-                    onClick={props.onDeleteClick}
-                    rounded='0'
-                    variant='ghost'
-                    opacity={hovering ? '100%' : '0%'}
-                    aria-label='delete'
-                />
-            </Stack>
+            <CardIcons
+                hovering={hovering}
+                iconVariant='white'
+                onEditClick={props.onEditClick}
+                onDeleteClick={props.onDeleteClick}
+            />
         </Card>
     );
 }

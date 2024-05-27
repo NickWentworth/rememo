@@ -25,7 +25,7 @@ export function CalendarHeader(props: CalendarHeaderProps) {
 
             <Box>
                 <IconButton
-                    icon={<Icon icon='left' variant='white' fontSize='xl' />}
+                    icon={<Icon icon='left' variant='white' fontSize='2xl' />}
                     onClick={props.controller.onPrevClick}
                     variant='ghost'
                     colorScheme='accent'
@@ -33,7 +33,7 @@ export function CalendarHeader(props: CalendarHeaderProps) {
                 />
 
                 <IconButton
-                    icon={<Icon icon='right' variant='white' fontSize='xl' />}
+                    icon={<Icon icon='right' variant='white' fontSize='2xl' />}
                     onClick={props.controller.onNextClick}
                     variant='ghost'
                     colorScheme='accent'

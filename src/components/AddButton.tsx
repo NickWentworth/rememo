@@ -4,7 +4,7 @@ import { IconButton, IconButtonProps } from '@chakra-ui/react';
 export function AddButton(props: IconButtonProps) {
     return (
         <IconButton
-            icon={<Icon icon='plus' variant='dark' />}
+            icon={<Icon icon='plus' variant='dark' fontSize='xl' />}
             size='sm'
             rounded='full'
             colorScheme='accent'

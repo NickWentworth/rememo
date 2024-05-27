@@ -1,4 +1,4 @@
-import { Icon } from '@/components/Icon';
+import { CardIcons } from './CardIcons';
 import { TaskStatus, formatTaskDate } from '@/lib/date';
 import { TaskPayload } from '@/lib/types';
 import { trpc } from '@/lib/trpc/client';
@@ -10,7 +10,6 @@ import {
     Checkbox,
     Divider,
     Flex,
-    IconButton,
     Spacer,
     Stack,
     Tag,
@@ -58,25 +57,13 @@ export function TaskCard(props: TaskCardProps) {
             onMouseLeave={() => setHovering(false)}
             opacity={props.task.completed ? '40%' : '100%'}
         >
-            <Stack bg={props.task.course?.color ?? 'bg.200'} gap='0'>
-                <IconButton
-                    icon={<Icon icon='edit' variant='dark' fontSize='lg' />}
-                    onClick={props.onEditClick}
-                    rounded='0'
-                    variant='ghost'
-                    opacity={hovering ? '100%' : '0%'}
-                    aria-label='edit'
-                />
-
-                <IconButton
-                    icon={<Icon icon='trash' variant='dark' fontSize='lg' />}
-                    onClick={props.onDeleteClick}
-                    rounded='0'
-                    variant='ghost'
-                    opacity={hovering ? '100%' : '0%'}
-                    aria-label='delete'
-                />
-            </Stack>
+            <CardIcons
+                hovering={hovering}
+                iconVariant='dark'
+                bg={props.task.course?.color ?? 'bg.200'}
+                onEditClick={props.onEditClick}
+                onDeleteClick={props.onDeleteClick}
+            />
 
             <CardBody>
                 <Stack divider={<Divider />}>
