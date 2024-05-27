@@ -11,6 +11,9 @@ type CalendarWeekBodyProps = {
 
     /** How many days to display */
     days: number;
+
+    /** Hide the weekday label above each day (ex: Mon 1/24) */
+    hideWeekdayLabel?: boolean;
 };
 
 export function CalendarWeekBody(props: CalendarWeekBodyProps) {
@@ -20,33 +23,35 @@ export function CalendarWeekBody(props: CalendarWeekBodyProps) {
     return (
         <Box overflow='auto' pos='relative' ref={props.controller.scrollRef}>
             {/* weekday labels */}
-            <Grid
-                pos='sticky'
-                top='0'
-                bg='bg.750'
-                zIndex='1' // to appear on top of other columns
-                templateColumns='5rem'
-                autoColumns='1fr'
-                autoFlow='column'
-                borderBottom='1px'
-                borderColor={primary}
-            >
-                <CalendarCell />
+            {!props.hideWeekdayLabel && (
+                <Grid
+                    pos='sticky'
+                    top='0'
+                    bg='bg.750'
+                    zIndex='1' // to appear on top of other columns
+                    templateColumns='5rem'
+                    autoColumns='1fr'
+                    autoFlow='column'
+                    borderBottom='1px'
+                    borderColor={primary}
+                >
+                    <CalendarCell />
 
-                {days.map((day) => (
-                    <CalendarCell
-                        key={day}
-                        text={formatCalendarWeeklyDate(
-                            daysAhead(props.controller.calendarStart, day)
-                        )}
-                        textVariant='h3'
-                        pl='0.5rem'
-                        align='center'
-                        borderLeft='1px'
-                        borderColor={primary}
-                    />
-                ))}
-            </Grid>
+                    {days.map((day) => (
+                        <CalendarCell
+                            key={day}
+                            text={formatCalendarWeeklyDate(
+                                daysAhead(props.controller.calendarStart, day)
+                            )}
+                            textVariant='h3'
+                            pl='0.5rem'
+                            align='center'
+                            borderLeft='1px'
+                            borderColor={primary}
+                        />
+                    ))}
+                </Grid>
+            )}
 
             {/* main day columns */}
             <Grid

@@ -25,7 +25,11 @@ export function DailyCalendar(props: DailyCalendarProps) {
                 buttonText='Today'
             />
 
-            <CalendarWeekBody controller={controller} days={1} />
+            <CalendarWeekBody
+                controller={controller}
+                days={1}
+                hideWeekdayLabel
+            />
         </Flex>
     );
 }
