@@ -138,7 +138,7 @@ function TaskCardSubtaskRow(props: TaskCardSubtaskRowProps) {
 
             <Text variant='h3'>{props.subtask.name}</Text>
 
-            <Tag rounded='full'>
+            <Tag rounded='full' bg='bg.750'>
                 <Text color={dueColor}>{dueFormat.str}</Text>
             </Tag>
         </Flex>
