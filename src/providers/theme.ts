@@ -60,6 +60,21 @@ export const theme = extendTheme({
             },
         }),
 
+        Icon: defineStyleConfig({
+            variants: {
+                white: { color: 'bg.50' },
+                light: { color: 'bg.200' },
+                dark: { color: 'bg.800' },
+                accent: { color: 'accent.500' },
+            },
+            defaultProps: {
+                variant: 'light',
+            },
+            baseStyle: {
+                fontSize: 'md',
+            },
+        }),
+
         // default divider styling
         Divider: defineStyleConfig({
             baseStyle: {

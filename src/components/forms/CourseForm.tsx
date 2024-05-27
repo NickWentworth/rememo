@@ -1,4 +1,5 @@
-import { Plus, Trash } from '@/components/icons';
+import { AddButton } from '@/components/AddButton';
+import { TrashButton } from '@/components/TrashButton';
 import { DateTimePicker, WeekdaySelector } from './elements';
 import { useFormController } from '@/lib/hooks/useFormController';
 import { CoursePayload } from '@/lib/types';
@@ -301,17 +302,9 @@ export function CourseForm(props: CourseFormProps) {
                                                 End Time
                                             </FormLabel>
 
-                                            <IconButton
+                                            <TrashButton
                                                 onClick={() =>
                                                     timesField.remove(idx)
-                                                }
-                                                size='xs'
-                                                _hover={{ bg: 'red.400' }}
-                                                icon={
-                                                    <Trash
-                                                        color='white'
-                                                        size={16}
-                                                    />
                                                 }
                                                 aria-label='delete time'
                                             />
@@ -372,14 +365,11 @@ export function CourseForm(props: CourseFormProps) {
                                 </SimpleGrid>
                             ))}
 
-                            <IconButton
+                            <AddButton
                                 onClick={() =>
                                     timesField.append(DEFAULT_COURSE_TIME)
                                 }
-                                icon={<Plus color='dark' size={24} />}
-                                colorScheme='accent'
                                 alignSelf='center'
-                                rounded='full'
                                 aria-label='add vacation'
                             />
                         </Stack>

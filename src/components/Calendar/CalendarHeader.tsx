@@ -1,4 +1,4 @@
-import { Left, Right } from '../icons';
+import { Icon } from '@/components/Icon';
 import { CalendarController } from '@/lib/hooks/useCalendarController';
 import { Box, Button, Flex, IconButton, Text } from '@chakra-ui/react';
 
@@ -25,7 +25,7 @@ export function CalendarHeader(props: CalendarHeaderProps) {
 
             <Box>
                 <IconButton
-                    icon={<Left color='white' size={30} />}
+                    icon={<Icon icon='left' variant='white' fontSize='xl' />}
                     onClick={props.controller.onPrevClick}
                     variant='ghost'
                     colorScheme='accent'
@@ -33,7 +33,7 @@ export function CalendarHeader(props: CalendarHeaderProps) {
                 />
 
                 <IconButton
-                    icon={<Right color='white' size={30} />}
+                    icon={<Icon icon='right' variant='white' fontSize='xl' />}
                     onClick={props.controller.onNextClick}
                     variant='ghost'
                     colorScheme='accent'

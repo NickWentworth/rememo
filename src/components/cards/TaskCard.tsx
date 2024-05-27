@@ -1,4 +1,4 @@
-import { Edit, Trash } from '@/components/icons';
+import { Icon } from '@/components/Icon';
 import { TaskStatus, formatTaskDate } from '@/lib/date';
 import { TaskPayload } from '@/lib/types';
 import { trpc } from '@/lib/trpc/client';
@@ -60,7 +60,7 @@ export function TaskCard(props: TaskCardProps) {
         >
             <Stack bg={props.task.course?.color ?? 'bg.200'} gap='0'>
                 <IconButton
-                    icon={<Edit color='dark' size={20} />}
+                    icon={<Icon icon='edit' variant='dark' fontSize='lg' />}
                     onClick={props.onEditClick}
                     rounded='0'
                     variant='ghost'
@@ -69,7 +69,7 @@ export function TaskCard(props: TaskCardProps) {
                 />
 
                 <IconButton
-                    icon={<Trash color='dark' size={20} />}
+                    icon={<Icon icon='trash' variant='dark' fontSize='lg' />}
                     onClick={props.onDeleteClick}
                     rounded='0'
                     variant='ghost'

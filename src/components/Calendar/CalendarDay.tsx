@@ -1,6 +1,6 @@
 import { primary, secondary } from '.';
 import { CalendarCell } from './CalendarCell';
-import { Location } from '@/components/icons';
+import { Icon } from '@/components/Icon';
 import { formatCourseTimeRange } from '@/lib/date';
 import { trpc } from '@/lib/trpc/client';
 import { range } from '@/lib/utils';
@@ -78,7 +78,7 @@ export function CalendarDay(props: CalendarDayProps) {
 
                         {time.course.location && (
                             <Flex align='center' gap='0.25rem'>
-                                <Location size={14} color='light' />
+                                <Icon icon='location' fontSize='sm' />
                                 <Text>{time.course.location}</Text>
                             </Flex>
                         )}

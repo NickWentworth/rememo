@@ -1,4 +1,5 @@
-import { Plus, Trash } from '@/components/icons';
+import { AddButton } from '@/components/AddButton';
+import { TrashButton } from '@/components/TrashButton';
 import { DateTimePicker } from './elements';
 import { TaskPayload } from '@/lib/types';
 import { todayUTC } from '@/lib/date';
@@ -260,17 +261,9 @@ export function TaskForm(props: TaskFormProps) {
                                         <Flex>
                                             <FormLabel flex='1'>Due</FormLabel>
 
-                                            <IconButton
+                                            <TrashButton
                                                 onClick={() =>
                                                     subtasksField.remove(idx)
-                                                }
-                                                size='xs'
-                                                _hover={{ bg: 'red.400' }}
-                                                icon={
-                                                    <Trash
-                                                        color='white'
-                                                        size={16}
-                                                    />
                                                 }
                                                 aria-label='delete time'
                                             />
@@ -290,14 +283,11 @@ export function TaskForm(props: TaskFormProps) {
                                 </Flex>
                             ))}
 
-                            <IconButton
+                            <AddButton
                                 onClick={() =>
                                     subtasksField.append(DEFAULT_SUBTASK)
                                 }
-                                icon={<Plus color='dark' size={24} />}
-                                colorScheme='accent'
                                 alignSelf='center'
-                                rounded='full'
                                 aria-label='add vacation'
                             />
 

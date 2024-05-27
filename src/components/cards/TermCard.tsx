@@ -1,4 +1,4 @@
-import { Calendar, Edit, Trash } from '@/components/icons';
+import { Icon } from '@/components/Icon';
 import { TermPayload } from '@/lib/types';
 import { formatTermDate, formatTermVacationDate } from '@/lib/date';
 import { useState } from 'react';
@@ -36,7 +36,7 @@ export function TermCard(props: TermCardProps) {
                     <Text variant='h1'>{props.term.name}</Text>
 
                     <Flex gap='0.25rem' align='center'>
-                        <Calendar color='light' size={16} />
+                        <Icon icon='calendar' />
 
                         <Text>
                             {formatTermDate(props.term.start, props.term.end)}
@@ -64,7 +64,7 @@ export function TermCard(props: TermCardProps) {
 
             <Stack gap='0'>
                 <IconButton
-                    icon={<Edit color='white' size={20} />}
+                    icon={<Icon icon='edit' variant='white' fontSize='lg' />}
                     onClick={props.onEditClick}
                     rounded='0'
                     variant='ghost'
@@ -73,7 +73,7 @@ export function TermCard(props: TermCardProps) {
                 />
 
                 <IconButton
-                    icon={<Trash color='white' size={20} />}
+                    icon={<Icon icon='trash' variant='white' fontSize='lg' />}
                     onClick={props.onDeleteClick}
                     rounded='0'
                     variant='ghost'

@@ -1,6 +1,6 @@
 'use client';
 
-import { Close } from '@/components/icons';
+import { Icon } from '@/components/Icon';
 import Button from '@/components/Button';
 import { buildClass } from '@/lib/utils';
 import { createContext, useContext, useState } from 'react';
@@ -62,9 +62,7 @@ export function ToastProvider(props: React.PropsWithChildren) {
                                 type='transparent'
                                 onClick={() => remove(toast.id)}
                                 border='round'
-                                icon={
-                                    <Close size={20} color='dark' stroke={1} />
-                                }
+                                icon={<Icon icon='close' variant='dark' />}
                             />
                         </div>
                     );

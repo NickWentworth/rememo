@@ -1,4 +1,4 @@
-import { Logo } from '@/components/icons';
+import { Icon } from '@/components/Icon';
 import { ProviderButton } from '@/components/ProviderButton';
 import { buildMetadata } from '@/lib/metadata';
 import { isAuthenticated } from '@/lib/auth';
@@ -13,8 +13,6 @@ import {
     Stack,
     Text,
 } from '@chakra-ui/react';
-
-const LOGO_SIZE = 64;
 
 export const metadata = buildMetadata({ title: 'Login' });
 
@@ -32,7 +30,7 @@ export default async function Login() {
                 <Card size='lg'>
                     <CardBody>
                         <Stack align='center' gap='1rem'>
-                            <Logo size={LOGO_SIZE} color='accent' />
+                            <Icon icon='logo' variant='accent' fontSize='64' />
 
                             <Text variant='h2'>Sign in to access Rememo</Text>
 

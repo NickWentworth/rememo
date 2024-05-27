@@ -1,4 +1,5 @@
-import { Plus, Trash } from '@/components/icons';
+import { AddButton } from '@/components/AddButton';
+import { TrashButton } from '@/components/TrashButton';
 import { DateTimePicker } from './elements';
 import { TermPayload } from '@/lib/types';
 import { todayUTC } from '@/lib/date';
@@ -225,19 +226,11 @@ export function TermForm(props: TermFormProps) {
                                                     Vacation Name
                                                 </FormLabel>
 
-                                                <IconButton
+                                                <TrashButton
                                                     onClick={() =>
                                                         vacationsField.remove(
                                                             idx
                                                         )
-                                                    }
-                                                    size='xs'
-                                                    _hover={{ bg: 'red.400' }}
-                                                    icon={
-                                                        <Trash
-                                                            color='white'
-                                                            size={16}
-                                                        />
                                                     }
                                                     aria-label='delete vacation'
                                                 />
@@ -324,14 +317,11 @@ export function TermForm(props: TermFormProps) {
                                 </SimpleGrid>
                             ))}
 
-                            <IconButton
+                            <AddButton
                                 onClick={() =>
                                     vacationsField.append(DEFAULT_TERM_VACATION)
                                 }
-                                icon={<Plus color='dark' size={24} />}
-                                colorScheme='accent'
                                 alignSelf='center'
-                                rounded='full'
                                 aria-label='add vacation'
                             />
                         </Stack>

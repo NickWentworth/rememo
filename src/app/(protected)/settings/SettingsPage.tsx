@@ -1,18 +1,15 @@
 'use client';
 
-import { Info } from '@/components/icons';
+import { Icon } from '@/components/Icon';
 import { Panel, PanelBody, PanelHeader } from '@/components/panel';
 import { trpc } from '@/lib/trpc/client';
 import { signOut } from 'next-auth/react';
-import { useState } from 'react';
 import {
     Avatar,
     Box,
     Button,
     Divider,
     Flex,
-    Icon,
-    Image,
     Stack,
     Text,
     Tooltip,
@@ -54,10 +51,13 @@ export default function SettingsPage() {
                                 <Flex
                                     alignSelf='start'
                                     align='center'
-                                    gap='0.25rem'
+                                    gap='0.5rem'
                                 >
-                                    <Text variant='h3'>User Profile</Text>
-                                    <Info size={20} color='white' />
+                                    <Text variant='h3' alignSelf='start'>
+                                        User Profile
+                                    </Text>
+
+                                    <Icon icon='info' variant='white' />
                                 </Flex>
                             </Tooltip>
 

@@ -1,7 +1,7 @@
 'use client';
 
 import Button from '.';
-import { Plus } from '../icons';
+import { Icon } from '@/components/Icon';
 
 type AddButtonProps = {
     onClick: () => void;
@@ -13,7 +13,7 @@ export default function AddButton(props: AddButtonProps) {
         <Button
             type='solid'
             onClick={props.onClick}
-            icon={<Plus size={20} color='dark' />}
+            icon={<Icon icon='plus' />}
             border='round'
             disabled={props.disabled}
         />

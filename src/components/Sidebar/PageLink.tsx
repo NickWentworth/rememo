@@ -1,5 +1,5 @@
-import { SVGComponent } from '../icons/props';
 import { SIDEBAR_ICON_SIZE } from './Sidebar';
+import { Icon, IconName } from '@/components/Icon';
 import { usePathname } from 'next/navigation';
 import { Link } from '@chakra-ui/next-js';
 import { Flex, IconButton, Text } from '@chakra-ui/react';
@@ -10,7 +10,7 @@ type PageLinkProps = {
     // routing location of link
     to: string;
     // icon to display
-    icon: SVGComponent;
+    icon: IconName;
     // is the sidebar expanded?
     expanded: boolean;
 };
@@ -29,9 +29,10 @@ export function PageLink(props: PageLinkProps) {
                 px='0.5rem'
                 icon={
                     <Flex align='center' gap='0.5rem'>
-                        <props.icon
-                            color={active ? 'accent' : 'white'}
-                            size={SIDEBAR_ICON_SIZE}
+                        <Icon
+                            icon={props.icon}
+                            variant={active ? 'accent' : 'white'}
+                            fontSize={SIDEBAR_ICON_SIZE}
                         />
 
                         {props.expanded && (

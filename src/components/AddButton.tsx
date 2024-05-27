@@ -1,10 +1,10 @@
+import { Icon } from '@/components/Icon';
 import { IconButton, IconButtonProps } from '@chakra-ui/react';
-import { Plus } from './icons';
 
 export function AddButton(props: IconButtonProps) {
     return (
         <IconButton
-            icon={<Plus color='dark' size={20} />}
+            icon={<Icon icon='plus' variant='dark' />}
             size='sm'
             rounded='full'
             colorScheme='accent'

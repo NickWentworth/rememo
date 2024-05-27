@@ -1,4 +1,4 @@
-import { Edit, Location, Trash, User } from '@/components/icons';
+import { Icon } from '@/components/Icon';
 import { formatCourseTimeDays, formatCourseTimeRange } from '@/lib/date';
 import { CoursePayload } from '@/lib/types';
 import { bitfieldToList } from '@/lib/bitfield';
@@ -41,14 +41,14 @@ export function CourseCard(props: CourseCardProps) {
                     >
                         {props.course.instructor && (
                             <>
-                                <User color='light' size={18} />
+                                <Icon icon='user' />
                                 <Text>{props.course.instructor}</Text>
                             </>
                         )}
 
                         {props.course.location && (
                             <>
-                                <Location color='light' size={18} />
+                                <Icon icon='location' />
                                 <Text>{props.course.location}</Text>
                             </>
                         )}
@@ -77,7 +77,7 @@ export function CourseCard(props: CourseCardProps) {
 
             <Stack gap='0'>
                 <IconButton
-                    icon={<Edit color='white' size={20} />}
+                    icon={<Icon icon='edit' variant='white' fontSize='lg' />}
                     onClick={props.onEditClick}
                     rounded='0'
                     variant='ghost'
@@ -86,7 +86,7 @@ export function CourseCard(props: CourseCardProps) {
                 />
 
                 <IconButton
-                    icon={<Trash color='white' size={20} />}
+                    icon={<Icon icon='trash' variant='white' fontSize='lg' />}
                     onClick={props.onDeleteClick}
                     rounded='0'
                     variant='ghost'
