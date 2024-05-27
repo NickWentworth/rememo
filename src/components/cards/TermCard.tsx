@@ -37,22 +37,24 @@ export function TermCard(props: TermCardProps) {
                         </Text>
                     </Flex>
 
-                    <Stack gap='0.25rem'>
-                        {props.term.vacations.map((vacation) => (
-                            <Text key={vacation.id}>
-                                <Text as='span' color='bg.50'>
-                                    {vacation.name}
+                    {props.term.vacations.length > 0 && (
+                        <Stack gap='0.25rem'>
+                            {props.term.vacations.map((vacation) => (
+                                <Text key={vacation.id}>
+                                    <Text as='span' color='bg.50'>
+                                        {vacation.name}
+                                    </Text>
+
+                                    {' | '}
+
+                                    {formatTermVacationDate(
+                                        vacation.start,
+                                        vacation.end
+                                    )}
                                 </Text>
-
-                                {' | '}
-
-                                {formatTermVacationDate(
-                                    vacation.start,
-                                    vacation.end
-                                )}
-                            </Text>
-                        ))}
-                    </Stack>
+                            ))}
+                        </Stack>
+                    )}
                 </Stack>
             </CardBody>
 
