@@ -9,11 +9,11 @@ import {
 } from '@tanstack/react-query';
 import { httpBatchLink } from '@trpc/client';
 import { useState } from 'react';
-import { useToastController } from './ToastProvider';
+import { useToast } from '@chakra-ui/react';
 
 export function QueryProvider(props: React.PropsWithChildren) {
-    // query provider must be a child of ToastProvider to send toasts
-    const { send: sendToast } = useToastController();
+    // query provider must be a child of ChakraProvider to send toasts
+    const toast = useToast();
 
     // react query client
     const [queryClient] = useState(
@@ -24,11 +24,20 @@ export function QueryProvider(props: React.PropsWithChildren) {
                 },
                 mutationCache: new MutationCache({
                     onError: (error) =>
-                        sendToast({ msg: error.message, severity: 'error' }),
+                        toast({
+                            title: error.name,
+                            description: error.message,
+                            status: 'error',
+                            isClosable: true,
+                        }),
                 }),
                 queryCache: new QueryCache({
                     onError: (error) =>
-                        sendToast({ msg: error.message, severity: 'error' }),
+                        toast({
+                            description: error.message,
+                            status: 'error',
+                            isClosable: true,
+                        }),
                 }),
             })
     );

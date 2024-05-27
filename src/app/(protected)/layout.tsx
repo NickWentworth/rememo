@@ -1,4 +1,4 @@
-import { QueryProvider, ToastProvider } from '@/providers';
+import { QueryProvider } from '@/providers';
 import Sidebar from '@/components/Sidebar';
 import { buildMetadata } from '@/lib/metadata';
 import { LOGIN_ROUTE, isAuthenticated } from '@/lib/auth';
@@ -18,13 +18,11 @@ export default async function Layout(props: React.PropsWithChildren) {
     }
 
     return (
-        <ToastProvider>
-            <QueryProvider>
-                <Flex w='100dvw' h='100dvh' bg='bg.750'>
-                    <Sidebar />
-                    {props.children}
-                </Flex>
-            </QueryProvider>
-        </ToastProvider>
+        <QueryProvider>
+            <Flex w='100dvw' h='100dvh' bg='bg.750'>
+                <Sidebar />
+                {props.children}
+            </Flex>
+        </QueryProvider>
     );
 }
