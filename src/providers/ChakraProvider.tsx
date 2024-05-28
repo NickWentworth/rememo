@@ -1,8 +1,12 @@
 'use client';
 
 import { ChakraProvider as _ChakraProvider } from '@chakra-ui/react';
-import { theme } from './theme';
+import { cmm, theme } from './theme';
 
 export function ChakraProvider(props: React.PropsWithChildren) {
-    return <_ChakraProvider theme={theme}>{props.children}</_ChakraProvider>;
+    return (
+        <_ChakraProvider theme={theme} colorModeManager={cmm}>
+            {props.children}
+        </_ChakraProvider>
+    );
 }
