@@ -1,17 +1,20 @@
 import { primary, secondary } from '.';
 import { CalendarCell } from './CalendarCell';
 import { Icon } from '@/components/Icon';
-import { formatCourseTimeRange } from '@/lib/date';
+import { formatCourseTimeRange, isBetweenTimes } from '@/lib/date';
+import { CalendarController } from '@/lib/hooks/useCalendarController';
 import { trpc } from '@/lib/trpc/client';
 import { range } from '@/lib/utils';
 import { Box, Flex, Text } from '@chakra-ui/react';
 
 type CalendarDayProps = {
+    controller: CalendarController;
+
     /** Date that this calendar day is displaying */
     date: Date;
 
-    /** How to calculate height of an event */
-    heightOf: (d: Date) => number;
+    /** Is this calendar day today? */
+    isToday?: boolean;
 };
 
 export function CalendarDay(props: CalendarDayProps) {
@@ -21,7 +24,12 @@ export function CalendarDay(props: CalendarDayProps) {
     const times = range(0, 24);
 
     return (
-        <Box pos='relative' borderLeft='1px' borderColor={primary}>
+        <Box
+            pos='relative'
+            borderLeft='1px'
+            borderColor={primary}
+            bg={props.isToday ? 'accent.alpha20' : undefined}
+        >
             {/* regular time cells */}
             {times.flatMap((h) => {
                 const hour = new Date();
@@ -44,11 +52,15 @@ export function CalendarDay(props: CalendarDayProps) {
 
             {/* course time cards */}
             {courseTimes?.map((time) => {
-                const start = props.heightOf(time.start);
-                const end = props.heightOf(time.end);
+                const start = props.controller.heightOf(time.start);
+                const end = props.controller.heightOf(time.end);
 
                 const top = Math.floor(start);
                 const height = Math.floor(end - start) - 1;
+
+                const isActive =
+                    props.isToday &&
+                    isBetweenTimes(props.controller.now, time.start, time.end);
 
                 return (
                     <Box
@@ -59,8 +71,11 @@ export function CalendarDay(props: CalendarDayProps) {
                         left='0'
                         right='0'
                         bg='bg.800'
-                        p='0.5rem'
+                        p='0.25rem'
                         gap='0.25rem'
+                        borderWidth='2px'
+                        borderColor={isActive ? 'accent.500' : 'transparent'}
+                        zIndex='calendar.event'
                     >
                         <Text
                             variant='h3'

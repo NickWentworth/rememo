@@ -32,10 +32,20 @@ export const theme = extendTheme({
             700: '#0b6b52',
             800: '#004131',
             900: '#001710',
+
+            // transparent variants
+            alpha20: '#26c09620',
         },
     },
     zIndices: {
         sidebar: 1, // sidebar should display shadow over neighboring content
+
+        // required z index ordering for calendar components
+        calendar: {
+            time: 1, // current time indicator
+            event: 2, // events on calendar
+            weekdayLabel: 3, // position sticky top weekday labels
+        },
     },
     components: {
         Text: defineStyleConfig({

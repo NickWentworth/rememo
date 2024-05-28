@@ -2,7 +2,12 @@ import { primary, secondary } from '.';
 import { CalendarDay } from './CalendarDay';
 import { CalendarCell } from './CalendarCell';
 import { range } from '@/lib/utils';
-import { daysAhead, formatCalendarWeeklyDate, formatTime } from '@/lib/date';
+import {
+    daysAhead,
+    formatCalendarWeeklyDate,
+    formatTime,
+    isSameDay,
+} from '@/lib/date';
 import { type CalendarController } from '@/lib/hooks/useCalendarController';
 import { Box, Flex, Grid, Text } from '@chakra-ui/react';
 
@@ -28,28 +33,35 @@ export function CalendarWeekBody(props: CalendarWeekBodyProps) {
                     pos='sticky'
                     top='0'
                     bg='bg.750'
-                    zIndex='1' // to appear on top of other columns
                     templateColumns='5rem'
                     autoColumns='1fr'
                     autoFlow='column'
                     borderBottom='1px'
                     borderColor={primary}
+                    zIndex='calendar.weekdayLabel'
                 >
                     <CalendarCell />
 
-                    {days.map((day) => (
-                        <CalendarCell
-                            key={day}
-                            text={formatCalendarWeeklyDate(
-                                daysAhead(props.controller.calendarStart, day)
-                            )}
-                            textVariant='h3'
-                            pl='0.5rem'
-                            align='center'
-                            borderLeft='1px'
-                            borderColor={primary}
-                        />
-                    ))}
+                    {days.map((day) => {
+                        const date = daysAhead(
+                            props.controller.calendarStart,
+                            day
+                        );
+                        const isToday = isSameDay(date, props.controller.now);
+
+                        return (
+                            <CalendarCell
+                                key={day}
+                                text={formatCalendarWeeklyDate(date)}
+                                textVariant='h3'
+                                textColor={isToday ? 'accent.500' : undefined}
+                                pl='0.5rem'
+                                align='center'
+                                borderLeft='1px'
+                                borderColor={primary}
+                            />
+                        );
+                    })}
                 </Grid>
             )}
 
@@ -83,13 +95,19 @@ export function CalendarWeekBody(props: CalendarWeekBodyProps) {
                     })}
                 </Box>
 
-                {days.map((day) => (
-                    <CalendarDay
-                        key={day}
-                        date={daysAhead(props.controller.calendarStart, day)}
-                        heightOf={props.controller.heightOf}
-                    />
-                ))}
+                {days.map((day) => {
+                    const date = daysAhead(props.controller.calendarStart, day);
+                    const isToday = isSameDay(date, props.controller.now);
+
+                    return (
+                        <CalendarDay
+                            key={day}
+                            controller={props.controller}
+                            date={date}
+                            isToday={isToday}
+                        />
+                    );
+                })}
 
                 {/* current time */}
                 <Flex
@@ -97,7 +115,7 @@ export function CalendarWeekBody(props: CalendarWeekBodyProps) {
                     pos='absolute'
                     align='center'
                     top={`${props.controller.heightOf(props.controller.now)}px`}
-                    zIndex='10'
+                    zIndex='calendar.time'
                     translateY='-50%'
                     transform='auto'
                 >
